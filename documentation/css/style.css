@@ -193,3 +193,7 @@ pre {
 .tree-viewer-pd{
 	padding:30px;
 }
+.choose-image{
+    border: 1px solid #333;
+    margin-left: 450px;
+}
