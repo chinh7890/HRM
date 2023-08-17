@@ -186,7 +186,7 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-body">
-                                <a href="./add-employee.html" class="btn btn-outline-primary" id="btn">+ Add</a>
+                                <a href="./add-employee.php" class="btn btn-outline-primary" id="btn">+ Add</a>
                                 <div class="table-responsive ">
                                     <table id="example" class="table table-striped table-bordered second"
                                         style="width:100%">
@@ -372,7 +372,7 @@
                                 <a href="javascript: void(0);">About</a>
                                 <a href="javascript: void(0);">Support</a>
                                 <a href="javascript: void(0);">Contact Us</a>
-                            </div>gi
+                            </div>
                         </div>
                     </div>
                 </div>
