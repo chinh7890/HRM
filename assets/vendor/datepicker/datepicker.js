@@ -42,6 +42,48 @@ jQuery(document).ready(function($) {
         });
 
     }
+    if ($("#datetimepicker43").length) {
+        $('#datetimepicker43').datetimepicker({
+            format: 'L'
+        });
+
+    }
+    if ($("#datetimepicker44").length) {
+        $('#datetimepicker44').datetimepicker({
+            format: 'L'
+        });
+
+    }
+    if ($("#datetimepicker45").length) {
+        $('#datetimepicker45').datetimepicker({
+            format: 'L'
+        });
+
+    }
+    if ($("#datetimepicker46").length) {
+        $('#datetimepicker46').datetimepicker({
+            format: 'L'
+        });
+
+    }
+    if ($("#datetimepicker47").length) {
+        $('#datetimepicker47').datetimepicker({
+            format: 'L'
+        });
+
+    }
+    if ($("#datetimepicker48").length) {
+        $('#datetimepicker48').datetimepicker({
+            format: 'L'
+        });
+
+    }
+    if ($("#datetimepicker49").length) {
+        $('#datetimepicker49').datetimepicker({
+            format: 'L'
+        });
+
+    }
     if ($("#datetimepicker4").length) {
         $('#datetimepicker4').datetimepicker({
             format: 'L'
