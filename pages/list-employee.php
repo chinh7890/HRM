@@ -1,6 +1,6 @@
+
 <!doctype html>
 <html lang="en">
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -192,156 +192,82 @@
                                         style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
+                                                <th>Employee Code</th>
+                                                <th>Employee Name</th>
                                                 <th>Date of Birth</th>
-                                                <th>Address</th>
                                                 <th>Phone Number</th>
+                                                <th>E-mail</th>
+                                                <th>Place of Residence</th>
+                                                <th>Unit</th>
+                                                <th>Team</th>
+                                                <th>Position</th>
+                                                <th>Role</th>
+                                                <th>Level</th>
+                                                <th>Type Contract</th>
+                                                <th>Passport Number</th>
+                                                <th>Citizen Identity Card Number</th>
                                                 <th>Country</th>
+                                                <th>Office</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>
-                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>                                            <tr>
-                                                <td>NLT Chinh</td>
-                                                <td>Intern</td>
-                                                <td>Ho Chi Minh</td>
-                                                <td>25/11/2002</td>
-                                                <td>Vinh Long</td>
-                                                <td>0123456789</td>
-                                                <td>Viet Nam</td>
-                                            </tr>
+                                            <?php 
+                                                require_once("../connect_linh.php");
+                                                 $sql = " SELECT tb_employee.employee_id, tb_employee.employee_code, tb_employee.employee_name, tb_employee.date_of_birth, tb_address.phone_number, tb_address.email, tb_address.place_of_residence, tb_employee.unit, tb_employee.team, tb_position.position_name,tb_role.role_name, tb_level.level_name,tb_type_contract.type_contract_name,tb_passport.pass_number, tb_citizen_identity.cccd_number, tb_country.country_name, tb_office.office_name 
+                                                 FROM tb_employee, tb_type_contract, tb_role, tb_position, tb_passport, tb_office, tb_level, tb_country, tb_contract, tb_address, tb_citizen_identity
+                                                 WHERE tb_employee.position_id=tb_position.position_id 
+                                                 AND tb_employee.role_id=tb_role.role_id
+                                                 AND tb_employee.level_id=tb_level.level_id
+                                                 AND tb_employee.contract_id=tb_contract.contract_id
+                                                 AND tb_contract.type_contract_id=tb_type_contract.type_contract_id
+                                                 AND tb_employee.pass_id=tb_passport.pass_id
+                                                 AND tb_employee.cccd_id=tb_citizen_identity.cccd_id
+                                                 AND tb_employee.address_id=tb_address.address_id
+                                                 AND tb_employee.country_id=tb_country.country_id
+                                                 AND tb_employee.office_id=tb_office.office_id
+                                                 ";
+                                                 $result = $conn->query($sql);
+                                                 while ($row = $result->fetch_assoc()) {
+                                                 ?>  
+                                                    <tr>
+                                                        <td><?php echo $row["employee_code"]?></td>
+                                                        <td><?php echo $row["employee_name"]?></td>
+                                                        <td><?php echo $row["date_of_birth"]?></td>
+                                                        <td><?php echo $row["phone_number"]?></td>
+                                                        <td><?php echo $row["email"]?></td>
+                                                        <td><?php echo $row["place_of_residence"]?></td>
+                                                        <td><?php echo $row["unit"]?></td>
+                                                        <td><?php echo $row["team"]?></td>
+                                                        <td><?php echo $row["position_name"]?></td>
+                                                        <td><?php echo $row["role_name"]?></td>
+                                                        <td><?php echo $row["level_name"]?></td>
+                                                        <td><?php echo $row["type_contract_name"]?></td>
+                                                        <td><?php echo $row["pass_number"]?></td>
+                                                        <td><?php echo $row["cccd_number"]?></td>
+                                                        <td><?php echo $row["country_name"]?></td>                                                        
+                                                        <td><?php echo $row["office_name"]?></td>
+                                                    </tr>
+                                                    <?php }?>
+                                                    
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
+                                                <th>Employee Code</th>
+                                                <th>Employee Name</th>
                                                 <th>Date of Birth</th>
-                                                <th>Address</th>
                                                 <th>Phone Number</th>
+                                                <th>E-mail</th>
+                                                <th>Place of Residence</th>
+                                                <th>Unit</th>
+                                                <th>Team</th>
+                                                <th>Position</th>
+                                                <th>Role</th>
+                                                <th>Level</th>
+                                                <th>Type Contract</th>
+                                                <th>Passport Number</th>
+                                                <th>Citizen Identity Card Number</th>
                                                 <th>Country</th>
+                                                <th>Office</th>
                                             </tr>
                                         </tfoot>
                                     </table>
