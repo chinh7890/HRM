@@ -1,6 +1,9 @@
+<?php
+
+    require_once "../connect.php";
+?>
 <!doctype html>
 <html lang="en">
-
 
 <head>
     <!-- Required meta tags -->
@@ -241,7 +244,7 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form id="validationform" data-parsley-validate="" novalidate="">
+                                <form id="validationform" data-parsley-validate="" novalidate="" action="add-employee-handle.php" method="POST" enctype="multipart/form-data">
                                     <div class="frame-info">
                                         <!-- <div class="card-body">
                                             <div class="user-avatar text-center d-block">
@@ -255,31 +258,35 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Employee
                                                 Code</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="text" required="" class="form-control">
+                                                <input type="text" required="" name="EmployeeCode" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Full
                                                 Name</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" class="form-control">
+                                                <input type="text" required="" name="FullName" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">English
                                                 Name</label>
                                             <div class="col-sm-1 col-lg-2">
-                                                <input type="text" required="" class="form-control">
+                                                <input type="text" required="" name="EngLishName" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Position</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="text" required="" class="form-control">
+                                                <input type="text" required="" name="Position" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Unit</label>
-                                            <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="text" required="" class="form-control">
+                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Unit</label>
+                                            <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
+                                                <input type="text" required="" name="Unit" class="form-control">
+                                            </div>
+                                            <label class="col-12 col-sm-1 col-form-label text-sm-right">Team</label>
+                                            <div class="col-sm-1 col-lg-2">
+                                                <input type="text" required="" name="Team" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -287,14 +294,14 @@
                                                 Number</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
                                                 <input data-parsley-type="number" type="text" required=""
-                                                    data-parsley-minlength="10" data-parsley-maxlength="10"
+                                                    data-parsley-minlength="10" name="PhoneNumber" data-parsley-maxlength="10"
                                                     class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">E-Mail</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="email" required="" data-parsley-type="email"
+                                                <input type="email" required="" name="Email" data-parsley-type="email"
                                                     class="form-control">
                                             </div>
                                         </div>
@@ -304,7 +311,7 @@
                                             <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker4"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker4" />
+                                                    data-target="#datetimepicker4" name="DayOfBirth" />
                                                 <div class="input-group-append" data-target="#datetimepicker4"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -316,7 +323,7 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
                                                 Residence</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="email" required="" data-parsley-type="email"
+                                                <input type="email" name="PlaceOfResidence" required="" data-parsley-type="email"
                                                     class="form-control">
                                             </div>
                                         </div>
@@ -324,24 +331,25 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Permanent
                                                 Address</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="email" required="" data-parsley-type="email"
+                                                <input type="email" name="PermanentAddress" required="" data-parsley-type="email"
                                                     class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Level</label>
                                             <div class="col-sm-4 col-lg-3">
-                                                <select class="selectpicker" data-size="5" data-width="275px">
-                                                    <option>Ketchup</option>
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                    <option>Ketchup</option>
+                                                <select class="selectpicker" name="Level[]" data-size="5" data-width="275px">
+                                                    <?php
+                                                        $SelectLevel = "SELECT level_name FROM tb_level";
+                                                        $ResultLevel = mysqli_query($conn,$SelectLevel);
+                                                        while($RowLevel = mysqli_fetch_assoc($ResultLevel)){
+                                                            echo"<option value='".$RowLevel['level_name']."'>" .$RowLevel['level_name']. "</option>"; }                                                    
+                                                    ?>
                                                 </select>
                                             </div>
                                             <label class="col-sm-0 col-form-label text-sm-right">Contract</label>
                                             <div class="col-lg-1">
-                                                <select class="selectpicker " data-size="7">
+                                                <select class="selectpicker " name="Contract" data-size="7">
                                                     <option>Ketchup</option>
                                                     <option>Mustard</option>
                                                     <option>Ketchup</option>
@@ -353,23 +361,25 @@
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Country</label>
                                             <div class="col-sm-4 col-lg-3">
-                                                <select class="selectpicker" data-size="5" data-width="275px">
-                                                    <option>Ketchup</option>
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                    <option>Ketchup</option>
+                                                <select class="selectpicker" name="Country[]" data-size="5" data-width="275px">
+                                                    <?php
+                                                        $SelectCountry = "SELECT country_name FROM tb_country";
+                                                        $ResultCountry = mysqli_query($conn,$SelectCountry);
+                                                        while($RowCountry = mysqli_fetch_assoc($ResultCountry)){
+                                                            echo"<option value='".$RowCountry['country_name']."'>" .$RowCountry['country_name']. "</option>"; }                                                    
+                                                    ?>
                                                 </select>
                                             </div>
                                             <label style="padding-right: 18px;"
                                                 class="col-sm-0 col-form-label text-sm-right">Office</label>
-                                            <div class="col-lg-1">
-                                                <select class="selectpicker " data-size="7">
-                                                    <option>Ha Noi</option>
-                                                    <option>HCM City</option>
-                                                    <option>Ancovas</option>
-                                                    <option>Relish</option>
-                                                    <option>Ketchup</option>
+                                            <div class="col-sm-4 col-lg-3">
+                                                <select class="selectpicker " name="Office[]" data-size="5">
+                                                    <?php
+                                                        $SelectOffice = "SELECT office_name FROM tb_office";
+                                                        $ResultOffice = mysqli_query($conn,$SelectOffice);
+                                                        while($RowOffice = mysqli_fetch_assoc($ResultOffice)){
+                                                            echo"<option value='".$RowOffice['office_name']."'>" .$RowOffice['office_name']. "</option>"; }                                                    
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -379,7 +389,7 @@
                                             <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker43"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker43" />
+                                                    data-target="#datetimepicker43" name="HealthCheckUpDate"/>
                                                 <div class="input-group-append" data-target="#datetimepicker43"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -393,14 +403,14 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Passport
                                                 Number</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" class="form-control">
+                                                <input type="text" required="" name="PassportNumber" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Issue</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker44"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker44" />
+                                                    data-target="#datetimepicker44" name="DOIpp"/>
                                                 <div class="input-group-append" data-target="#datetimepicker44"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -412,14 +422,14 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
                                                 Issue</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" class="form-control">
+                                                <input type="text" required="" name="POIpp" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Expiry</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker45"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker45" />
+                                                    data-target="#datetimepicker45" name="DOEpp"/>
                                                 <div class="input-group-append" data-target="#datetimepicker45"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -433,14 +443,14 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Citizen identity
                                                 Card Number</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" class="form-control">
+                                                <input type="text" required="" name="CICN" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Issue</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker46"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker46" />
+                                                    data-target="#datetimepicker46" name="DOIcicn"/>
                                                 <div class="input-group-append" data-target="#datetimepicker46"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -452,14 +462,14 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
                                                 Issue</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" class="form-control">
+                                                <input type="text" required="" name="POIcicn" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Expiry</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker47"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker47" />
+                                                    data-target="#datetimepicker47" name="DOEcicn"/>
                                                 <div class="input-group-append" data-target="#datetimepicker47"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -474,10 +484,13 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Type of
                                                 Contract</label>
                                             <div class="col-sm-4 col-lg-3">
-                                                <select class="selectpicker" data-size="5" data-width="275px">
-                                                    <option>A Contract</option>
-                                                    <option>B Contract</option>
-                                                    <option>C Contract</option>
+                                                <select class="selectpicker" name="TypeOfContract[]" data-size="5" data-width="275px">
+                                                    <?php
+                                                        $SelectTypeContract = "SELECT type_contract_name FROM tb_type_contract";
+                                                        $ResultTypeContract = mysqli_query($conn,$SelectTypeContract);
+                                                        while($RowTypeContract = mysqli_fetch_assoc($ResultTypeContract)){
+                                                            echo"<option value='".$RowTypeContract['type_contract_name']."'>" .$RowTypeContract['type_contract_name']. "</option>"; }                                                    
+                                                    ?>
                                                 </select>
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Start
@@ -485,7 +498,7 @@
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker48"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker48" />
+                                                    data-target="#datetimepicker48" name="StartDate"/>
                                                 <div class="input-group-append" data-target="#datetimepicker48"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -497,13 +510,13 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Contract
                                                 Duration</label>
                                             <div class="col-sm-4 col-lg-3">
-                                                <select class="selectpicker" data-size="5" data-width="275px">
-                                                    <option>6 Month</option>
-                                                    <option>1 Year</option>
-                                                    <option>2 Year</option>
-                                                    <option>3 Year</option>
-                                                    <option>4 Year</option>
-                                                    <option>5 Year</option>
+                                                <select class="selectpicker" name="ContractDuration[]" data-size="5" data-width="275px">
+                                                    <option value = "6">6 Month</option>
+                                                    <option value = "1">1 Year</option>
+                                                    <option value = "2">2 Year</option>
+                                                    <option value = "3">3 Year</option>
+                                                    <option value = "4">4 Year</option>
+                                                    <option value = "5">5 Year</option>
                                                 </select>
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">End
@@ -511,7 +524,7 @@
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker49"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker49" />
+                                                    data-target="#datetimepicker49" name="EndDate"/>
                                                 <div class="input-group-append" data-target="#datetimepicker49"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -526,19 +539,19 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Personal
                                                 Profile</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="file" required="" class="form-control">
+                                                <input type="file" name="PersonalProfile" class="form-control">
                                             </div>
                                             <label
                                                 class="col-12 col-sm-1 col-form-label text-sm-right">Certificate</label>
                                             <div class="col-sm-1 col-lg-2">
-                                                <input type="file" required="" class="form-control">
+                                                <input type="file" name="Certificate" class="form-control">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group row text-right">
                                         <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
-                                            <button type="submit" class="btn btn-space btn-primary">Update</button>
+                                            <button type="submit" class="btn btn-space btn-primary" name="add">Add</button>
                                             <button class="btn btn-space btn-secondary">Cancel</button>
                                         </div>
                                     </div>
