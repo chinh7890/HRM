@@ -27,6 +27,9 @@
         margin-bottom: 10px;
         border: #e6e6f2 solid 0.1px;
     }
+    th{
+        text-align: center;
+    }
 </style>
 
 <body>
@@ -161,7 +164,7 @@
                                 Menu
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="data-tables.html">Employee List</a>
+                                <a class="nav-link" href="./list-employee.php">Employee List</a>
                             </li>
                         </ul>
                     </div>
@@ -203,7 +206,7 @@
                                     <table id="example" class="table table-striped table-bordered second"
                                         style="width:100%">
                                         <thead>
-                                            <tr>
+                                                <th>Actions</th>
                                                 <th>Employee Code</th>
                                                 <th>Employee Name</th>
                                                 <th>Date of Birth</th>
@@ -224,13 +227,13 @@
                                         </thead>
                                         <tbody>
                                             <?php 
-                                                require_once("../connect_linh.php");
-                                                 $sql = " SELECT tb_employee.employee_id, tb_employee.employee_code, tb_employee.employee_name, tb_employee.date_of_birth, tb_address.phone_number, tb_address.email, tb_address.place_of_residence, tb_employee.unit, tb_employee.team, tb_position.position_name,tb_role.role_name, tb_level.level_name,tb_type_contract.type_contract_name,tb_passport.pass_number, tb_citizen_identity.cccd_number, tb_country.country_name, tb_office.office_name 
+                                                require_once("../connect.php");
+                                                 $sql = "SELECT tb_employee.employee_id, tb_employee.employee_code, tb_employee.employee_name, tb_employee.date_of_birth, tb_address.phone_number, tb_address.email, tb_address.place_of_residence, tb_employee.unit, tb_employee.team, tb_position.position_name,tb_role.role_name, tb_level.level_name,tb_type_contract.type_contract_name,tb_passport.pass_number, tb_citizen_identity.cccd_number, tb_country.country_name, tb_office.office_name 
                                                  FROM tb_employee, tb_type_contract, tb_role, tb_position, tb_passport, tb_office, tb_level, tb_country, tb_contract, tb_address, tb_citizen_identity
                                                  WHERE tb_employee.position_id=tb_position.position_id 
                                                  AND tb_employee.role_id=tb_role.role_id
                                                  AND tb_employee.level_id=tb_level.level_id
-                                                 AND tb_employee.contract_id=tb_contract.contract_id
+                                                 AND tb_employee.employee_id=tb_contract.employee_id
                                                  AND tb_contract.type_contract_id=tb_type_contract.type_contract_id
                                                  AND tb_employee.pass_id=tb_passport.pass_id
                                                  AND tb_employee.cccd_id=tb_citizen_identity.cccd_id
@@ -242,6 +245,12 @@
                                                  while ($row = $result->fetch_assoc()) {
                                                  ?>  
                                                     <tr>
+                                                        <td>
+                                                            <div class="btn-group ml-auto">
+                                                            <a href="./profile.html?id=<?php echo $row["employee_id"]?>" class="btn btn-sm btn-outline-light"><i class="far fa-edit"></i></a>
+                                                            <a  href="#" class="btn btn-sm btn-outline-light"><i class="far fa-trash-alt"></i></a>
+                                                            </div>
+                                                        </td>
                                                         <td><?php echo $row["employee_code"]?></td>
                                                         <td><?php echo $row["employee_name"]?></td>
                                                         <td><?php echo $row["date_of_birth"]?></td>
@@ -264,6 +273,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th>Actions</th>
                                                 <th>Employee Code</th>
                                                 <th>Employee Name</th>
                                                 <th>Date of Birth</th>

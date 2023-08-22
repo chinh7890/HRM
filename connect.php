@@ -6,5 +6,5 @@
     if ($conn->connect_error) {
         die("Kết nối thất vọng: " . $conn->connect_error);
     }
-    echo "Kết nối thành công";
+    // echo "Kết nối thành công";
 ?>
