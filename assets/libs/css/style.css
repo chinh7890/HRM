@@ -6978,3 +6978,26 @@ Media Query
 @media only screen and (max-width:320px) {}
 
 /*custom menu-list*/
+
+.error-notify{
+    position: relative;
+    margin-top: 6px;
+    height: 34px;
+    padding-left: 15px;
+    padding-top: 1px;
+    color: white;
+    background-color: #f96a6a;
+}
+.error-notify--doc{
+    position: absolute;
+    top: 10px;
+    font-size: 28px;
+    line-height: 0px;
+    padding-right: 5px;
+}
+.error-notify--content{
+    position: absolute;
+    line-height: 0px;
+    top: 18px;
+    left: 30px;
+}

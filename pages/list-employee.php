@@ -1,4 +1,6 @@
-
+<?php
+    session_start();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,6 +17,10 @@
     <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/buttons.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/select.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 </head>
 <style>
     #btn {
@@ -24,6 +30,12 @@
 </style>
 
 <body>
+    <?php
+        if(isset($_SESSION["notify-add"]) && $_SESSION["notify-add"] == "1"){
+            echo "<script type='text/javascript'>toastr.success('Add Employee Successfully')</script>";
+            unset($_SESSION["notify-add"]);
+        }
+    ?>
     <!-- ============================================================== -->
     <!-- main wrapper -->
     <!-- ============================================================== -->
@@ -334,3 +346,7 @@
 </body>
 
 </html>
+
+<?php
+    session_destroy();
+?>
