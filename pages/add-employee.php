@@ -293,7 +293,7 @@
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Gender</label>
                                             <div class="custom-control  custom-radio " style="margin-left: 15px;padding-left:25px; padding-top:3px;">
-                                                <input type="radio" id="customRadio1" name="Gender" class="custom-control-input">
+                                                <input required type="radio" id="customRadio1" name="Gender" class="custom-control-input">
                                                 <label class="custom-control-label" for="customRadio1" >Male</label>
                                             </div>
                                             <div class="custom-control custom-radio " style="margin-left: 70px;padding-left:25px ;padding-top:3px;">
