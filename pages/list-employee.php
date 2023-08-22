@@ -1,4 +1,6 @@
-
+<?php
+    session_start();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,7 +17,8 @@
     <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/buttons.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/select.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
-    <style>
+</head>
+<style>
     #btn {
         margin-bottom: 10px;
         border: #e6e6f2 solid 0.1px;
@@ -475,3 +478,7 @@
 </body>
 
 </html>
+
+<?php
+    session_destroy();
+?>

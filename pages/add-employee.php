@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
     require_once "../connect.php";
 ?>
 <!doctype html>
@@ -18,6 +18,10 @@
     <link rel="stylesheet" href="../assets/vendor/datepicker/tempusdominus-bootstrap-4.css" />
     <link rel="stylesheet" href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
     <link rel="stylesheet" href="../assets/vendor/bootstrap-select/css/bootstrap-select.css">
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 </head>
 <style>
     .frame-info {
@@ -27,6 +31,7 @@
 </style>
 
 <body>
+
     <!-- ============================================================== -->
     <!-- main wrapper -->
     <!-- ============================================================== -->
@@ -197,7 +202,7 @@
                                 Menu
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="data-tables.html">Data Tables</a>
+                                <a class="nav-link" href="list-employee.php">List Employee</a>
                             </li>
                         </ul>
                     </div>
@@ -259,6 +264,18 @@
                                                 Code</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
                                                 <input type="text" required="" name="EmployeeCode" class="form-control">
+                                                <?php
+                                                    if(isset($_SESSION["Error-EmployeeCode"])){
+                                                        echo '
+                                                        <div class ="error-notify">
+                                                            <span class="error-notify--doc">.</span>
+                                                            <span class="error-notify--content">Employee code already exists.</span>
+                                                        </div>
+                                                        ';
+                                                        unset($_SESSION["Error-EmployeeCode"]);
+                                                    }
+                                                ?>
+
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -270,31 +287,76 @@
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">English
                                                 Name</label>
                                             <div class="col-sm-1 col-lg-2">
-                                                <input type="text" required="" name="EngLishName" class="form-control">
+                                                <input type="text" name="EngLishName" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Position</label>
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Gender</label>
+                                            <div class="custom-control  custom-radio " style="margin-left: 15px;padding-left:25px; padding-top:3px;">
+                                                <input required type="radio" id="customRadio1" name="Gender" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio1" >Male</label>
+                                            </div>
+                                            <div class="custom-control custom-radio " style="margin-left: 70px;padding-left:25px ;padding-top:3px;">
+                                                <input type="radio" id="customRadio2" name="Gender" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio2">Female</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Date of
+                                                Birth</label>
+                                            <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker4"
+                                                data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input"
+                                                    data-target="#datetimepicker4" name="DayOfBirth" required=""/>
+                                                <div class="input-group-append" data-target="#datetimepicker4"
+                                                    data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="far fa-calendar-alt"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">National</label>
+                                            <div class="col-sm-4 col-lg-3">
+                                                <select id="countrySelect" class="selectpicker" name="National[]" data-size="5" data-width="275px">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Marital Status</label>
+                                            <div class="custom-control  custom-radio " style="margin-left: 15px;padding-left:25px; padding-top:3px;">
+                                                <input type="radio" id="customRadio3" name="MaritalStatus" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio3" >Single</label>
+                                            </div>
+                                            <div class="custom-control custom-radio " style="margin-left: 66px;padding-left:25px ;padding-top:3px;">
+                                                <input type="radio" id="customRadio4" name="MaritalStatus" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio4">Married</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Military Service</label>
+                                            <div class="custom-control  custom-radio " style="margin-left: 15px;padding-left:25px; padding-top:3px;">
+                                                <input type="radio" id="customRadio5" name="MilitaryService" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio5" >Not yet</label>
+                                            </div>
+                                            <div class="custom-control custom-radio " style="margin-left: 59px;padding-left:25px ;padding-top:3px;">
+                                                <input type="radio" id="customRadio6" name="MilitaryService" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio6">Done</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
+                                                Residence</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="text" required="" name="Position" class="form-control">
+                                                <input type="text" name="PlaceOfResidence" required=""
+                                                    class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Unit</label>
-                                            <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" name="Unit" class="form-control">
-                                            </div>
-                                            <label class="col-12 col-sm-1 col-form-label text-sm-right">Team</label>
-                                            <div class="col-sm-1 col-lg-2">
-                                                <input type="text" required="" name="Team" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Phone
-                                                Number</label>
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Permanent
+                                                Address</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input data-parsley-type="number" type="text" required=""
-                                                    data-parsley-minlength="10" name="PhoneNumber" data-parsley-maxlength="10"
+                                                <input type="text" name="PermanentAddress" required=""
                                                     class="form-control">
                                             </div>
                                         </div>
@@ -304,58 +366,14 @@
                                                 <input type="email" required="" name="Email" data-parsley-type="email"
                                                     class="form-control">
                                             </div>
-                                        </div>
+                                        </div>                                    
                                         <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Date of
-                                                Birth</label>
-                                            <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker4"
-                                                data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker4" name="DayOfBirth" />
-                                                <div class="input-group-append" data-target="#datetimepicker4"
-                                                    data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="far fa-calendar-alt"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
-                                                Residence</label>
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Phone
+                                                Number</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="email" name="PlaceOfResidence" required="" data-parsley-type="email"
+                                                <input data-parsley-type="number" type="tel" required=""
+                                                    data-parsley-minlength="10" name="PhoneNumber" data-parsley-maxlength="10"
                                                     class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Permanent
-                                                Address</label>
-                                            <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="email" name="PermanentAddress" required="" data-parsley-type="email"
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Level</label>
-                                            <div class="col-sm-4 col-lg-3">
-                                                <select class="selectpicker" name="Level[]" data-size="5" data-width="275px">
-                                                    <?php
-                                                        $SelectLevel = "SELECT level_name FROM tb_level";
-                                                        $ResultLevel = mysqli_query($conn,$SelectLevel);
-                                                        while($RowLevel = mysqli_fetch_assoc($ResultLevel)){
-                                                            echo"<option value='".$RowLevel['level_name']."'>" .$RowLevel['level_name']. "</option>"; }                                                    
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <label class="col-sm-0 col-form-label text-sm-right">Contract</label>
-                                            <div class="col-lg-1">
-                                                <select class="selectpicker " name="Contract" data-size="7">
-                                                    <option>Ketchup</option>
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                    <option>Ketchup</option>
-                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -370,16 +388,77 @@
                                                     ?>
                                                 </select>
                                             </div>
-                                            <label style="padding-right: 18px;"
-                                                class="col-sm-0 col-form-label text-sm-right">Office</label>
+                                            <label style="padding-right: 2px;"
+                                                class="col-sm-0 col-form-label text-sm-right">Location</label>
                                             <div class="col-sm-4 col-lg-3">
-                                                <select class="selectpicker " name="Office[]" data-size="5">
+                                                <select class="selectpicker " name="Location[]" data-size="5">
                                                     <?php
-                                                        $SelectOffice = "SELECT office_name FROM tb_office";
-                                                        $ResultOffice = mysqli_query($conn,$SelectOffice);
-                                                        while($RowOffice = mysqli_fetch_assoc($ResultOffice)){
-                                                            echo"<option value='".$RowOffice['office_name']."'>" .$RowOffice['office_name']. "</option>"; }                                                    
+                                                        $SelectLocation = "SELECT location_name FROM tb_location";
+                                                        $ResultLocation = mysqli_query($conn,$SelectLocation);
+                                                        while($RowLocation = mysqli_fetch_assoc($ResultLocation)){
+                                                            echo"<option value='".$RowLocation['location_name']."'>" .$RowLocation['location_name']. "</option>"; }                                                    
                                                     ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label  class="col-12 col-sm-3 col-form-label text-sm-right">Position</label>
+                                            <div class="col-sm-4 col-lg-3">
+                                                <select class="selectpicker" name="Position[]" data-size="5" data-width="275px">
+                                                    <?php
+                                                        $SelectPosition = "SELECT position_name FROM tb_position";
+                                                        $ResultPosition = mysqli_query($conn,$SelectPosition);
+                                                        while($RowPosition = mysqli_fetch_assoc($ResultPosition)){
+                                                            echo"<option value='".$RowPosition['position_name']."'>" .$RowPosition['position_name']. "</option>"; }                                                    
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            <label  style="padding-right: 6px;" class="col-sm-0 col-form-label text-sm-right" >Level</label>
+                                            <div class="col-sm-4 col-lg-3" >
+                                                <select class="selectpicker" name="Level[]" data-size="5" >
+                                                    <?php
+                                                        $SelectLevel = "SELECT level_name FROM tb_level";
+                                                        $ResultLevel = mysqli_query($conn,$SelectLevel);
+                                                        while($RowLevel = mysqli_fetch_assoc($ResultLevel)){
+                                                            echo"<option value='".$RowLevel['level_name']."'>" .$RowLevel['level_name']. "</option>"; }                                                    
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right" >Job Category</label>
+                                            <div class="col-sm-4 col-lg-3">
+                                                <select class="selectpicker" name="JobCategory[]" data-size="5" data-width="275px">
+                                                    <?php
+                                                        $SelectJobCategory = "SELECT job_category_name FROM tb_job_category";
+                                                        $ResultJobCategory = mysqli_query($conn,$SelectJobCategory);
+                                                        while($RowJobCategory = mysqli_fetch_assoc($ResultJobCategory)){
+                                                            echo"<option value='".$RowJobCategory['job_category_name']."'>" .$RowJobCategory['job_category_name']. "</option>"; }                                                    
+                                                            ?>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-0 col-form-label text-sm-right"  >Job Title</label>
+                                            <div class="col-sm-4 col-lg-3" >
+                                                <select class="selectpicker" name="JobTitle[]" data-size="5" >
+                                                    <?php
+                                                        $SelectJobTitle = "SELECT job_title_name FROM tb_job_title";
+                                                        $ResultJobTitle = mysqli_query($conn,$SelectJobTitle);
+                                                        while($RowJobTitle = mysqli_fetch_assoc($ResultJobTitle)){
+                                                            echo"<option value='".$RowJobTitle['job_title_name']."'>" .$RowJobTitle['job_title_name']. "</option>"; }                                                    
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right" >Team</label>
+                                            <div class="col-sm-4 col-lg-3">
+                                                <select class="selectpicker" name="Team[]" data-size="5" data-width="275px">
+                                                    <?php
+                                                        $SelectTeam = "SELECT team_name FROM tb_team";
+                                                        $ResultTeam = mysqli_query($conn,$SelectTeam);
+                                                        while($RowTeam = mysqli_fetch_assoc($ResultTeam)){
+                                                            echo"<option value='".$RowTeam['team_name']."'>" .$RowTeam['team_name']. "</option>"; }                                                    
+                                                            ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -403,7 +482,7 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Passport
                                                 Number</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" name="PassportNumber" class="form-control">
+                                                <input type="text" name="PassportNumber" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Issue</label>
@@ -413,7 +492,7 @@
                                                     data-target="#datetimepicker44" name="DOIpp"/>
                                                 <div class="input-group-append" data-target="#datetimepicker44"
                                                     data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="far fa-calendar-alt"></i>
+                                                    <div class="input-group-text"><i class="far fa-calendar-alt" ></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -422,14 +501,14 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
                                                 Issue</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" name="POIpp" class="form-control">
+                                                <input type="text"  name="POIpp" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Expiry</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker45"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker45" name="DOEpp"/>
+                                                    data-target="#datetimepicker45" name="DOEpp" />
                                                 <div class="input-group-append" data-target="#datetimepicker45"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -450,7 +529,7 @@
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker46"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker46" name="DOIcicn"/>
+                                                    data-target="#datetimepicker46" name="DOIcicn" required=""/>
                                                 <div class="input-group-append" data-target="#datetimepicker46"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -463,18 +542,6 @@
                                                 Issue</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
                                                 <input type="text" required="" name="POIcicn" class="form-control">
-                                            </div>
-                                            <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
-                                                Expiry</label>
-                                            <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker47"
-                                                data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker47" name="DOEcicn"/>
-                                                <div class="input-group-append" data-target="#datetimepicker47"
-                                                    data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="far fa-calendar-alt"></i>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
 
@@ -498,7 +565,7 @@
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker48"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker48" name="StartDate"/>
+                                                    data-target="#datetimepicker48" name="StartDate" required=""/>
                                                 <div class="input-group-append" data-target="#datetimepicker48"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -524,7 +591,7 @@
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker49"
                                                 data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker49" name="EndDate"/>
+                                                    data-target="#datetimepicker49" name="EndDate" required=""/>
                                                 <div class="input-group-append" data-target="#datetimepicker49"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
@@ -539,12 +606,12 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Personal
                                                 Profile</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="file" name="PersonalProfile" class="form-control">
+                                                <input type="file" name="PersonalProfile[]" class="form-control" multiple>
                                             </div>
                                             <label
                                                 class="col-12 col-sm-1 col-form-label text-sm-right">Certificate</label>
                                             <div class="col-sm-1 col-lg-2">
-                                                <input type="file" name="Certificate" class="form-control">
+                                                <input type="file" name="Certificate[]" class="form-control" multiple>
                                             </div>
                                         </div>
                                     </div>
@@ -554,7 +621,7 @@
                                             <button type="submit" class="btn btn-space btn-primary" name="add">Add</button>
                                             <button class="btn btn-space btn-secondary">Cancel</button>
                                         </div>
-                                    </div>
+                                    </div>                                    
                                 </form>
                             </div>
                         </div>
@@ -626,6 +693,30 @@
             }, false);
         })();
     </script>
+    <script>
+        var selectElement = document.getElementById("countrySelect");
+
+        // Gọi API để lấy danh sách các quốc gia
+        fetch("https://restcountries.com/v3.1/all")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(country => {
+                    var option = document.createElement("option");
+                    option.value = country.name.common;
+                    option.text = country.name.common;
+                    selectElement.appendChild(option);
+                });
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    </script>
 </body>
 
 </html>
+
+
+<?php
+        // if(isset($_SESSION["notify-add"]) && $_SESSION["notify-add"] == "1"){
+        //     echo "<script type='text/javascript'>toastr.success('Add Employee Successfully')</script>";
+        //     unset($_SESSION["notify-add"]);
+        // }
+?>
