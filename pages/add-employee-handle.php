@@ -12,7 +12,9 @@
         $MilitaryService = $_POST["MilitaryService"];
         $PhoneNumber = $_POST["PhoneNumber"];
         $Email = $_POST["Email"];
-        $DayOfBirth = $_POST["DayOfBirth"];
+        $DayOfBirth_ = $_POST["DayOfBirth"];
+        $timestamp = strtotime($date);
+        $DayOfBirth = date("Y-m-d", $timestamp); // Định dạng lại theo Y-m-d
         $PlaceOfResidence = $_POST["PlaceOfResidence"];
         $PermanentAddress = $_POST["PermanentAddress"];
         $Level = $_POST["Level"];//
