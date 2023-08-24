@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
+<<<<<<< HEAD
+-- Generation Time: Aug 22, 2023 at 02:05 AM
+=======
 -- Generation Time: Aug 21, 2023 at 09:31 AM
+>>>>>>> 1d8a5de949cbfa85e721a6b9fc71d4199d73697d
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -213,16 +217,28 @@ CREATE TABLE IF NOT EXISTS `tb_employee` (
   KEY `fk_employee_address` (`address_id`),
   KEY `fk_employee_country` (`country_id`),
   KEY `fk_employee_job_category` (`job_category_id`),
+<<<<<<< HEAD
+  KEY `fk_employee_team` (`team_id`),
+  KEY `fk_employee_location` (`location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+=======
   KEY `fk_employee_team` (`team_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+>>>>>>> 1d8a5de949cbfa85e721a6b9fc71d4199d73697d
 
 --
 -- Dumping data for table `tb_employee`
 --
 
 INSERT INTO `tb_employee` (`employee_id`, `employee_code`, `photo`, `employee_name`, `english_name`, `gender`, `marital_status`, `date_of_birth`, `national_name`, `military_service`, `team_id`, `health_checkup_date`, `job_title_id`, `job_category_id`, `position_id`, `level_id`, `pass_id`, `cccd_id`, `address_id`, `country_id`, `location_id`) VALUES
+<<<<<<< HEAD
+(13, 'NS01', '', 'Trần Hoàng Lam', 'Mr Lam', 1, 0, '2002-09-18', 'Viet Nam', 1, 4, '2023-08-01', 9, 1, 3, 2, 1, 1, 1, 1, 1),
+(14, 'NS02', '', 'Nguyễn Lê Trường Chinh', 'Mr Chin', 0, 1, '2002-11-25', 'Maylaysia', 1, 6, '2023-08-08', 6, 1, 2, 4, 2, 2, 2, 5, 5),
+(15, 'NS03', '', 'Nguyễn Nhật Linh', 'Mr Linh', 1, 1, '2002-08-02', 'Singapore', 1, 5, '2023-08-04', 7, 2, 8, 6, 3, 3, 3, 6, 6);
+=======
 (11, 'NS01', '', 'Trần Hoàng Lam', 'Lam', 1, 1, '2002-09-18', 'Viet Nam', 1, 4, '2023-08-01', 6, 1, 2, 2, 1, 1, 1, 1, 0),
 (12, 'NS02', '', 'Trần Thanh Đạt', 'Đạt', 1, 1, '2002-09-18', 'Viet Nam', 1, 4, '2023-08-01', 6, 1, 2, 2, 1, 1, 1, 1, 0);
+>>>>>>> 1d8a5de949cbfa85e721a6b9fc71d4199d73697d
 
 -- --------------------------------------------------------
 
@@ -314,7 +330,23 @@ CREATE TABLE IF NOT EXISTS `tb_location` (
   `country_id` int(11) NOT NULL,
   PRIMARY KEY (`location_id`),
   KEY `fk_location_country` (`country_id`)
+<<<<<<< HEAD
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `tb_location`
+--
+
+INSERT INTO `tb_location` (`location_id`, `location_name`, `country_id`) VALUES
+(1, 'HỒ CHÍ MINH', 1),
+(2, 'HÀ NỘI', 2),
+(3, 'YANGON', 3),
+(4, 'PHNOM PENH', 4),
+(5, 'MALAYSIA', 5),
+(6, 'SINGAPORE', 6);
+=======
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+>>>>>>> 1d8a5de949cbfa85e721a6b9fc71d4199d73697d
 
 -- --------------------------------------------------------
 
@@ -474,6 +506,10 @@ ALTER TABLE `tb_employee`
   ADD CONSTRAINT `fk_employee_job_category` FOREIGN KEY (`job_category_id`) REFERENCES `tb_job_category` (`job_category_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_employee_job_title` FOREIGN KEY (`job_title_id`) REFERENCES `tb_job_title` (`job_title_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_employee_level` FOREIGN KEY (`level_id`) REFERENCES `tb_level` (`level_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+<<<<<<< HEAD
+  ADD CONSTRAINT `fk_employee_location` FOREIGN KEY (`location_id`) REFERENCES `tb_location` (`location_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+=======
+>>>>>>> 1d8a5de949cbfa85e721a6b9fc71d4199d73697d
   ADD CONSTRAINT `fk_employee_pass` FOREIGN KEY (`pass_id`) REFERENCES `tb_passport` (`pass_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_employee_position` FOREIGN KEY (`position_id`) REFERENCES `tb_position` (`position_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_employee_team` FOREIGN KEY (`team_id`) REFERENCES `tb_team` (`team_id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,6 +1,8 @@
 <?php
 //    $conn = new mysqli("localhost","root","new_password","HRM");
+
    $conn = new mysqli("localhost","root","","qlns");
+//    $conn = new mysqli("localhost","root","","qlns");
    
 // Kiểm tra kết nối
     if ($conn->connect_error) {

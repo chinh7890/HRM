@@ -111,10 +111,6 @@ jQuery(document).ready(function($) {
 
 // $(function() {
 //     "use strict";
-
-
-    
-
    // var monkeyList = new List('test-list', {
     //    valueNames: ['name']
 
@@ -123,10 +119,5 @@ jQuery(document).ready(function($) {
     //    valueNames: ['name']
 
    // });
-
-
-
-   
-   
 
 // });
