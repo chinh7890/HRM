@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
             }
             session_start();
             $_SESSION['username'] = $username;
-            header('location:' . SITEURL . 'index.php');
+            header('location: ./index.php');
         }
         else {
             setcookie("user", "", -1);
@@ -34,7 +34,7 @@ if (isset($_POST['submit'])) {
             $_SESSION["username"] = $_POST["username"];
             $_SESSION["notify"] = "Sai tên đăng nhập hoặc mật khẩu!";
             $_SESSION["login"] = "2";
-            header('location:' . SITEURL . 'login.php');
+            header('location: ./login.php');
         }
         
     } 

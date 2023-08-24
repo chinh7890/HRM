@@ -9,5 +9,6 @@ if (isset($_POST['employee_id'])) {
     header("location: ./list-employee.php");
 } else {
     header("location: pages/list-employee.php");
+    header("location: ./pages/list-employee.php");
 }
 ?>
