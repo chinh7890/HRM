@@ -201,7 +201,7 @@ button#togglePassword {
     background-color: white;
     color: black;
 }
- html,
+ /* html,
         body {
             background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
             height: 100%;
@@ -222,4 +222,4 @@ button#togglePassword {
         button#togglePassword {
             background-color: white;
             color: black;
-        }
+        } */

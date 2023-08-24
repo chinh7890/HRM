@@ -16,7 +16,7 @@
             return $dateObj->format('m/d/Y');
         } else {
             return "Invalid date format";
-        }
+        } 
     }
 ?>
 <!doctype html>
