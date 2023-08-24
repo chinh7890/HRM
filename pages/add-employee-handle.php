@@ -34,11 +34,49 @@
         $StartDate = $_POST["StartDate"];
         $ContractDuration = $_POST["ContractDuration"];//
         $EndDate = $_POST["EndDate"];
-        
-        $SelectEmployee = "SELECT * FROM tb_employee WHERE employee_code = '".$EmployeeCode."'";
-        $ResultEmployee = mysqli_query($conn,$SelectEmployee);
-        if(mysqli_num_rows($ResultEmployee) > 0){
+
+
+        foreach ($_POST as $field => $value) {
+            // Lưu dữ liệu từ POST vào session
+            $_SESSION[$field] = $value;
+        }
+
+
+        $SelectEmployee1 = "SELECT * FROM tb_employee WHERE employee_code = '".$EmployeeCode."'";
+        $ResultEmployee1 = mysqli_query($conn,$SelectEmployee1);
+        if(mysqli_num_rows($ResultEmployee1) > 0){
             $_SESSION["Error-EmployeeCode"] = "1";
+        }
+
+        $SelectEmployee2 = "SELECT * FROM tb_address WHERE email = '".$Email."'";
+        $ResultEmployee2 = mysqli_query($conn,$SelectEmployee2);
+        if(mysqli_num_rows($ResultEmployee2) > 0){
+            $_SESSION["Error-Email"] = "1";
+        }
+
+        $SelectEmployee3 = "SELECT * FROM tb_address WHERE phone_number = '".$PhoneNumber."'";
+        $ResultEmployee3 = mysqli_query($conn,$SelectEmployee3);
+        if(mysqli_num_rows($ResultEmployee3) > 0){
+            $_SESSION["Error-PhoneNumber"] = "1";
+        }
+                        
+        $SelectEmployee4 = "SELECT * FROM tb_passport WHERE pass_number = '".$PassportNumber."' AND pass_number != '' ";    
+        $ResultEmployee4 = mysqli_query($conn,$SelectEmployee4);
+        if(mysqli_num_rows($ResultEmployee4) > 0){
+            $_SESSION["Error-PPNumber"] = "1";
+        }
+
+        $SelectEmployee5 = "SELECT * FROM tb_citizen_identity WHERE cccd_number = '".$CICN."'";
+        $ResultEmployee5 = mysqli_query($conn,$SelectEmployee5);
+        if(mysqli_num_rows($ResultEmployee5) > 0){
+            $_SESSION["Error-CICN"] = "1";
+        }
+
+        if(isset($_SESSION["Error-EmployeeCode"]) || 
+        isset($_SESSION["Error-Email"]) || 
+        isset($_SESSION["Error-PhoneNumber"]) || 
+        isset($_SESSION["Error-PPNumber"]) || 
+        isset($_SESSION["Error-CICN"])){
             header("Location: add-employee.php");
         }else{
             //National
@@ -185,7 +223,7 @@
             '".$Gender."','".$MaritalStatus."','".$DayOfBirth."','".$NationalTemp."','".$MilitaryService."',
             '".$TeamId."','".$HealthCheckUpDate."','".$JobTitleId."','".$JobCategoryId."','".$PositionId."',
             '".$LevelId."','".$PassportId."','".$CICNId."','".$AddressId."','".$CountryId."','".$LocationId."')";
-            
+
             if(mysqli_query ($conn, $InsertEmployee)){
                 echo "insert thành công";
             }
@@ -207,7 +245,7 @@
             //Personal Profile
             $FolderName = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/".$EmployeeCode."/Personal-Profile/";
             if (!file_exists($FolderName)) {
-                mkdir($FolderName);
+                mkdir($FolderName,0777,true);
                 echo "Thư mục đã được tạo: $FolderName";
             } else {
                 echo "Thư mục đã tồn tại: $FolderName";
@@ -228,7 +266,7 @@
             //Certificate
             $FolderName = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/".$EmployeeCode."/Certificate/";
             if (!file_exists($FolderName)) {
-                mkdir($FolderName);
+                mkdir($FolderName,0777,true);
                 echo "Thư mục đã được tạo: $FolderName";
             } else {
                 echo "Thư mục đã tồn tại: $FolderName";
@@ -249,6 +287,7 @@
             $_SESSION["notify-add"] = "1";
             header("Location: list-employee.php");
         }
-    }
 
+    }
+            
 ?>
