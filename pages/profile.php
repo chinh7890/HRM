@@ -57,6 +57,7 @@ if(isset($_GET['id'])){
         tb_employee.country_id=tb_country.country_id AND
         tb_employee.level_id=tb_level.level_id AND
         tb_employee.location_id=tb_location.location_id AND
+        tb_employee.position_id=tb_position.position_id AND
         tb_contract.type_contract_id=tb_type_contract.type_contract_id AND
         tb_employee.employee_id= $id";
 }
@@ -93,6 +94,7 @@ while ($row = $result->fetch_assoc()) {
     $country_name=$row["country_name"];
     $location_name=$row["location_name"];
     $level_name=$row["level_name"];
+    $position_name=$row["position_name"];
 }
 function formatDate($inputDate) {
     $dateObj = DateTime::createFromFormat('Y-m-d', $inputDate);
@@ -123,6 +125,7 @@ function formatDate($inputDate) {
     <link rel="stylesheet" href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
     <link rel="stylesheet" href="../assets/vendor/bootstrap-select/css/bootstrap-select.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 </head>
 <style>
     .frame-info {
@@ -191,6 +194,8 @@ function formatDate($inputDate) {
                 </nav>
             </div>
         </div>
+       
+
         <!-- ============================================================== -->
         <!-- end left sidebar -->
         <!-- ============================================================== -->
@@ -220,7 +225,7 @@ function formatDate($inputDate) {
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form id="validationform" data-parsley-validate="" novalidate="">
+                                <form id="validationform" action="./update-handle.php?id=<?php echo $id?>" method="post" data-parsley-validate="" novalidate="">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div class="tab-outline">
                                             <ul class="nav nav-tabs" id="myTab2" role="tablist">
@@ -260,7 +265,7 @@ function formatDate($inputDate) {
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Employee
                                                             Code</label>
                                                         <div class="col-12 col-sm-8 col-lg-6">
-                                                            <input type="text" required="" value="<?php echo $employee_code?>" name="EmployeeCode" class="form-control">
+                                                            <input disabled type="text" required="" value="<?php echo $employee_code?>" name="EmployeeCode" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -269,7 +274,7 @@ function formatDate($inputDate) {
                                                         <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
                                                             <input type="text" value="<?php echo $employee_name?>" required="" name="FullName" class="form-control">
                                                         </div>
-                                                        <label class="col-2 col-sm-1 col-form-label text-sm-left">English
+                                                        <label class="col-3 col-sm-1 col-form-label text-sm-left">English
                                                             Name</label>
                                                         <div class="col-sm-1 col-lg-2">
                                                             <input type="text" required="" value="<?php echo $english_name ?>" name="EngLishName" class="form-control">
@@ -278,11 +283,11 @@ function formatDate($inputDate) {
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Gender</label>
                                                         <div class="custom-control  custom-radio " style="padding-left:40px; padding-top:5px;">
-                                                            <input type="radio" id="customRadio1" <?php if($gender==1){echo "checked";}?> name="customRadio" class="custom-control-input">
+                                                            <input type="radio" id="customRadio1" value="1" <?php if($gender==1){echo "checked";}?> name="Gender" class="custom-control-input">
                                                             <label class="custom-control-label" for="customRadio1">Male</label>
                                                         </div>
                                                         <div class="custom-control custom-radio "  style="padding-left:70px ;padding-top:5px;">
-                                                            <input type="radio" id="customRadio2" <?php if($gender==0){echo "checked";}?> name="customRadio" class="custom-control-input">
+                                                            <input type="radio" id="customRadio2" value="0" <?php if($gender==0){echo "checked";}?> name="Gender" class="custom-control-input">
                                                             <label class="custom-control-label" for="customRadio2">Female</label>
                                                         </div>
                                                     </div>
@@ -290,22 +295,22 @@ function formatDate($inputDate) {
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Marital Status</label>
                                                         <div class="custom-control  custom-radio" style="padding-left:40px; padding-top:5px;">
-                                                            <input type="radio" id="customRadio3" <?php if($marital_status==0){echo "checked";}?> name="customRadio1" class="custom-control-input">
+                                                            <input type="radio" id="customRadio3" value="0" <?php if($marital_status==0){echo "checked";}?> name="MaritalStatus" class="custom-control-input">
                                                             <label class="custom-control-label" for="customRadio3">Single</label>
                                                         </div>
                                                         <div class="custom-control custom-radio " style="padding-left:70px ;padding-top:5px;">
-                                                            <input type="radio" id="customRadio4" <?php if($marital_status==1){echo "checked";}?> name="customRadio1" class="custom-control-input">
+                                                            <input type="radio" id="customRadio4" value="1" <?php if($marital_status==1){echo "checked";}?> name="MaritalStatus" class="custom-control-input">
                                                             <label class="custom-control-label" for="customRadio4">Married</label>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Military Service</label>
-                                                        <div class="custom-control  custom-radio" <?php if($military_service==1){echo "checked";}?> style="padding-left:40px; padding-top:5px;">
-                                                            <input type="radio" id="customRadio5" name="customRadio3" class="custom-control-input">
+                                                        <div class="custom-control  custom-radio" style="padding-left:40px; padding-top:5px;">
+                                                            <input type="radio" id="customRadio5" <?php if($military_service==1){echo "checked";}?>  value="1" name="MilitaryService" class="custom-control-input">
                                                             <label class="custom-control-label" for="customRadio5">Done</label>
                                                         </div>
                                                         <div class="custom-control custom-radio " style="padding-left:70px ;padding-top:5px;">
-                                                            <input type="radio" id="customRadio6" <?php if($military_service==1){echo "checked";}?> name="customRadio3" class="custom-control-input">
+                                                            <input type="radio" id="customRadio6" value="0" <?php if($military_service==0){echo "checked";}?> name="MilitaryService" class="custom-control-input">
                                                             <label class="custom-control-label" for="customRadio6">No yet</label>
                                                         </div>
                                                     </div>
@@ -323,7 +328,7 @@ function formatDate($inputDate) {
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">National</label>
                                                         <div class="col-sm-4 col-lg-3">
-                                                            <select id="countrySelect" class="selectpicker" name="National[]" data-size="5" data-width="275px">
+                                                            <select id="countrySelect" class="selectpicker" name="National" data-size="5" data-width="275px">
                                                             </select>
                                                         </div>
                                                     </div>
@@ -347,7 +352,7 @@ function formatDate($inputDate) {
 
                                                     <div class="form-group row text-right">
                                                         <div class="col col-sm-10 col-lg-9 offset-sm-2 offset-lg-0">
-                                                            <button type="submit" class="btn btn-space btn-primary">Save</button>
+                                                            <button type="button" name="update" class="btn btn-space btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Save</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -421,14 +426,16 @@ function formatDate($inputDate) {
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
                                                             Residence</label>
                                                         <div class="col-12 col-sm-8 col-lg-6">
-                                                            <input type="email" required="" name="PlaceofResidence" value="<?php echo $place_of_residence?>" data-parsley-type="email" class="form-control">
+                                                            <input type="text" required="" name="PlaceofResidence" value="<?php echo $place_of_residence?>" 
+                                                             class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Permanent
                                                             Address</label>
                                                         <div class="col-12 col-sm-8 col-lg-6">
-                                                            <input type="email" required="" name="PermanentAddress" value="<?php echo $permanent_address?>" data-parsley-type="email" class="form-control">
+                                                            <input type="text" required="" name="PermanentAddress" value="<?php echo $permanent_address?>" 
+                                                             class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -447,13 +454,13 @@ function formatDate($inputDate) {
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Job Title</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" data-size="7" name="JobTitle[]" data-width="549px">
+                                                            <select class="selectpicker" data-size="7" name="JobTitle" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $job_title_name . "</option>";
                                                                 $sql = "SELECT job_title_name FROM tb_job_title WHERE NOT job_title_name='$job_title_name'";
                                                                 $result = $conn->query($sql);
                                                                 while ($row = $result->fetch_assoc()) {
-                                                                    echo "<option>" . $row['job_title_name'] . "</option>";
+                                                                    echo "<option value='".$row["job_title_name"]."'>" . $row['job_title_name'] . "</option>";
                                                                 }
                                                                 ?>
                                                             </select>
@@ -462,7 +469,7 @@ function formatDate($inputDate) {
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Job Category</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" data-size="7" name="JobCategory[]" data-width="549px">
+                                                            <select class="selectpicker" data-size="7" name="JobCategory" data-width="549px">
                                                                 <?php
                                                                  echo "<option>" . $job_category_name . "</option>";
                                                                 $sql = "SELECT job_category_name FROM tb_job_category WHERE NOT job_category_name='$job_category_name'";
@@ -475,9 +482,24 @@ function formatDate($inputDate) {
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
+                                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Position</label>
+                                                        <div class="col-sm-4 col-lg-1">
+                                                            <select class="selectpicker" data-size="7" name="Position" data-width="549px">
+                                                                <?php
+                                                                 echo "<option>" . $position_name . "</option>";
+                                                                $sql = "SELECT position_name FROM tb_position WHERE NOT position_name='$position_name'";
+                                                                $result = $conn->query($sql);
+                                                                while ($row = $result->fetch_assoc()) {
+                                                                    echo "<option>" . $row['position_name'] . "</option>";
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Team</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" name="Team[]" data-size="7" data-width="549px">
+                                                            <select class="selectpicker" name="Team" data-size="7" data-width="549px">
                                                                 <?php
                                                                  echo "<option>" . $team_name. "</option>";
                                                                 $sql = "SELECT team_name FROM tb_team WHERE NOT team_name='$team_name'";
@@ -493,7 +515,7 @@ function formatDate($inputDate) {
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Level</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" data-size="7" name="Level[]" data-width="549px">
+                                                            <select class="selectpicker" data-size="7" name="Level" data-width="549px">
                                                                 <?php
                                                                  echo "<option>" . $level_name . "</option>";
                                                                 $sql = "SELECT level_name FROM tb_level WHERE NOT level_name='$level_name'";
@@ -519,7 +541,7 @@ function formatDate($inputDate) {
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Type of Contract</label>
                                                         <div class="col-sm-4 col-lg-3">
-                                                            <select class="selectpicker" name="TypeofContract[]" data-size="7" data-width="549px">
+                                                            <select class="selectpicker" name="TypeofContract" data-size="7" data-width="549px">
                                                                 <?php
                                                                  echo "<option>" . $type_contract_name . "</option>";
                                                                 $sql = "SELECT type_contract_name FROM tb_type_contract WHERE NOT type_contract_name ='$type_contract_name'";
@@ -535,7 +557,7 @@ function formatDate($inputDate) {
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Contract
                                                             Duration</label>
                                                         <div class="col-sm-4 col-lg-3">
-                                                            <select class="selectpicker" name="ContractDuration[]" data-size="5" data-width="275px">
+                                                            <select class="selectpicker" name="ContractDuration" data-size="5" data-width="275px">
                                                                 <?php
                                                                     
                                                                     $year=["6 Month","1 Year","2 Year","3 Year","4 Year","5 Year"];
@@ -570,7 +592,7 @@ function formatDate($inputDate) {
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Country</label>
                                                         <div class="col-sm-4 col-lg-3">
-                                                            <select class="selectpicker" data-size="7" name="Country[]" data-width="549px">
+                                                            <select class="selectpicker" data-size="7" name="Country" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" .$country_name. "</option>";
                                                                 $sql = "SELECT country_name FROM tb_country WHERE NOT country_name = '$country_name'";
@@ -601,13 +623,33 @@ function formatDate($inputDate) {
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Personal
                                                             Profile</label>
                                                         <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                            <input type="file" required="" class="form-control">
+                                                            <input type="file" class="form-control">
                                                         </div>
                                                         <label class="col-12 col-sm-1 col-form-label text-sm-right">Certificate</label>
                                                         <div class="col-sm-1 col-lg-2">
-                                                            <input type="file" required="" class="form-control">
+                                                            <input type="file"  class="form-control">
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <!-- Modal -->
+                                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -620,6 +662,7 @@ function formatDate($inputDate) {
                     <!-- end valifation types -->
                     <!-- ============================================================== -->
                 </div>
+                <!-- Button trigger modal -->
 
 
             </div>

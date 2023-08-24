@@ -1118,7 +1118,7 @@
                 option.text = country.name.common;
                 selectElement.appendChild(option);
             });
-            $(selectElement).selectpicker('refresh');
+                $(selectElement).selectpicker('refresh');
         })
         .catch(error => console.error("Error fetching data:", error));
 </script>

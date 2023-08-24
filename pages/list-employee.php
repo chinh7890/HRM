@@ -1,5 +1,6 @@
 <?php
     session_start();
+    require_once '../login-handle.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -42,10 +43,10 @@
     td:nth-child(27),th:nth-child(27) {
         display: none;
     }
-    .dataTables_wrapper .dt-buttons .buttons-pdf,
+    /* .dataTables_wrapper .dt-buttons .buttons-pdf,
     .dataTables_wrapper .dt-buttons .buttons-print {
     display: none;
-}
+} */
 
     </style>
 
@@ -67,7 +68,7 @@
         <!-- ============================================================== -->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="../index.html">Ventech</a>
+                <a class="navbar-brand" href="../index.php">Ventech</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -150,8 +151,11 @@
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                                 aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <h5 class="mb-0 text-white nav-user-name">John Abraham</h5>
-                                    <span class="status"></span><span class="ml-2">Available</span>
+                                        <?php 
+                                        if( isset($_SESSION['username'])) {
+                                            $username = $_SESSION['username'];
+                                            echo $username; }
+                                            ?>
                                 </div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
@@ -324,7 +328,7 @@
                                                         <td>
                                                             <div class="btn-group ml-auto">
                                                             <a href="./profile.php?id=<?php echo $row["employee_id"]?>" class="btn btn-sm btn-outline-light"><i class="far fa-edit"></i></a>
-                                                            <a  href="#" class="btn btn-sm btn-outline-light"><i class="far fa-trash-alt"></i></a>
+                                                            <a data-toggle="modal" data-target="#exampleModal" data-id="<?php echo $row['employee_id']; ?>" class="btn btn-sm btn-outline-light"><i class="far fa-trash-alt"></i></a>
                                                             </div>
                                                         </td>
                                                         <td><?php echo $row["employee_code"]?></td>
@@ -390,7 +394,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                            <th>Actions</th>
+                                                <th>Actions</th>
                                                 <th>Employee Code</th>
                                                 <th>Photo</th>
                                                 <th>Employee Name</th>
@@ -459,6 +463,42 @@
             <!-- end footer -->
             <!-- ============================================================== -->
         </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this employee?
+                        </div>
+                        <div class="modal-footer">
+                        <form method="POST" action="delete-employee-handle.php">
+                                <input type="hidden" name="employee_id" id="employeeIdInput">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<script>
+    var deleteButtons = document.querySelectorAll('[data-target="#exampleModal"]');
+    deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var employeeId = this.getAttribute('data-id');
+            document.getElementById('employeeIdInput').value = employeeId;
+        });
+    });
+</script>
+
+
     </div>
     <!-- ============================================================== -->
     <!-- end main wrapper -->
