@@ -714,9 +714,3 @@
 </html>
 
 
-<?php
-        // if(isset($_SESSION["notify-add"]) && $_SESSION["notify-add"] == "1"){
-        //     echo "<script type='text/javascript'>toastr.success('Add Employee Successfully')</script>";
-        //     unset($_SESSION["notify-add"]);
-        // }
-?>
