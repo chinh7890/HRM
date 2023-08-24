@@ -43,10 +43,10 @@
     td:nth-child(27),th:nth-child(27) {
         display: none;
     }
-    .dataTables_wrapper .dt-buttons .buttons-pdf,
+    /* .dataTables_wrapper .dt-buttons .buttons-pdf,
     .dataTables_wrapper .dt-buttons .buttons-print {
     display: none;
-}
+} */
 
     </style>
 
@@ -394,7 +394,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                            <th>Actions</th>
+                                                <th>Actions</th>
                                                 <th>Employee Code</th>
                                                 <th>Photo</th>
                                                 <th>Employee Name</th>
