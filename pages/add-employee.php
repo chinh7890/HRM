@@ -1,6 +1,23 @@
 <?php
     session_start();
     require_once "../connect.php";
+
+    $ErrorStatus = 0;
+    if(isset($_SESSION["Error-EmployeeCode"]) || 
+    isset($_SESSION["Error-Email"]) || 
+    isset($_SESSION["Error-PhoneNumber"]) || 
+    isset($_SESSION["Error-PPNumber"]) || 
+    isset($_SESSION["Error-CICN"])){
+        $ErrorStatus = 1;
+    }
+    function formatDate($inputDate) {
+        $dateObj = DateTime::createFromFormat('Y-m-d', $inputDate);
+        if ($dateObj) {
+            return $dateObj->format('m/d/Y');
+        } else {
+            return "Invalid date format";
+        }
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -263,7 +280,12 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Employee
                                                 Code</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="text" required="" name="EmployeeCode" class="form-control">
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["EmployeeCode"];
+                                                    unset($_SESSION["EmployeeCode"]);
+                                                }
+                                                ?>" type="text" required="" name="EmployeeCode" class="form-control">
                                                 <?php
                                                     if(isset($_SESSION["Error-EmployeeCode"])){
                                                         echo '
@@ -282,22 +304,56 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Full
                                                 Name</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" name="FullName" class="form-control">
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["FullName"];
+                                                    unset($_SESSION["FullName"]);
+                                                }
+                                                ?>" type="text" required="" name="FullName" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">English
                                                 Name</label>
                                             <div class="col-sm-1 col-lg-2">
-                                                <input type="text" name="EngLishName" class="form-control">
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["EngLishName"];
+                                                    unset($_SESSION["EngLishName"]);
+                                                }
+                                                ?>" type="text" name="EngLishName" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Gender</label>
                                             <div class="custom-control  custom-radio " style="margin-left: 15px;padding-left:25px; padding-top:3px;">
-                                                <input required type="radio" id="customRadio1" name="Gender" class="custom-control-input">
+                                                <input <?php
+                                                if($ErrorStatus == 1){
+                                                    if(isset($_SESSION["Gender"])){
+                                                        if($_SESSION["Gender"] == 1){
+                                                            echo "Checked";
+                                                            unset($_SESSION["Gender"]);
+                                                        }
+                                                        else{
+                                                            echo "";
+                                                        }
+                                                    }
+                                                }
+                                                ?> value="1" required type="radio" id="customRadio1" name="Gender" class="custom-control-input">
                                                 <label class="custom-control-label" for="customRadio1" >Male</label>
                                             </div>
                                             <div class="custom-control custom-radio " style="margin-left: 70px;padding-left:25px ;padding-top:3px;">
-                                                <input type="radio" id="customRadio2" name="Gender" class="custom-control-input">
+                                                <input <?php
+                                                if($ErrorStatus == 1){
+                                                    if(isset($_SESSION["Gender"])){
+                                                        if($_SESSION["Gender"] == 0){
+                                                            echo "Checked";
+                                                            unset($_SESSION["Gender"]);
+                                                        }
+                                                        else{
+                                                            echo "";
+                                                        }
+                                                    }
+                                                }
+                                                ?> value="0" type="radio" id="customRadio2" name="Gender" class="custom-control-input">
                                                 <label class="custom-control-label" for="customRadio2">Female</label>
                                             </div>
                                         </div>
@@ -306,7 +362,12 @@
                                                 Birth</label>
                                             <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker4"
                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["DayOfBirth"];
+                                                    unset($_SESSION["DayOfBirth"]);
+                                                }
+                                                ?>" type="text" class="form-control datetimepicker-input"
                                                     data-target="#datetimepicker4" name="DayOfBirth" required=""/>
                                                 <div class="input-group-append" data-target="#datetimepicker4"
                                                     data-toggle="datetimepicker">
@@ -325,22 +386,70 @@
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Marital Status</label>
                                             <div class="custom-control  custom-radio " style="margin-left: 15px;padding-left:25px; padding-top:3px;">
-                                                <input type="radio" id="customRadio3" name="MaritalStatus" class="custom-control-input">
+                                                <input <?php
+                                                if($ErrorStatus == 1){
+                                                    if(isset($_SESSION["MaritalStatus"])){
+                                                        if($_SESSION["MaritalStatus"] == 0){
+                                                            echo "Checked";
+                                                            unset($_SESSION["MaritalStatus"]);
+                                                        }
+                                                        else{
+                                                            echo "";
+                                                        }
+                                                    }
+                                                }
+                                                ?> value="0" required  type="radio" id="customRadio3" name="MaritalStatus" class="custom-control-input">
                                                 <label class="custom-control-label" for="customRadio3" >Single</label>
                                             </div>
                                             <div class="custom-control custom-radio " style="margin-left: 66px;padding-left:25px ;padding-top:3px;">
-                                                <input type="radio" id="customRadio4" name="MaritalStatus" class="custom-control-input">
+                                                <input <?php
+                                                if($ErrorStatus == 1){
+                                                    if(isset($_SESSION["MaritalStatus"])){
+                                                        if($_SESSION["MaritalStatus"] == 1){
+                                                            echo "Checked";
+                                                            unset($_SESSION["MaritalStatus"]);
+                                                        }
+                                                        else{
+                                                            echo "";
+                                                        }
+                                                    }
+                                                }
+                                                ?> value="1" type="radio" id="customRadio4" name="MaritalStatus" class="custom-control-input">
                                                 <label class="custom-control-label" for="customRadio4">Married</label>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Military Service</label>
                                             <div class="custom-control  custom-radio " style="margin-left: 15px;padding-left:25px; padding-top:3px;">
-                                                <input type="radio" id="customRadio5" name="MilitaryService" class="custom-control-input">
+                                                <input <?php
+                                                if($ErrorStatus == 1){
+                                                    if(isset($_SESSION["MilitaryService"])){
+                                                        if($_SESSION["MilitaryService"] == 0){
+                                                            echo "Checked";
+                                                            unset($_SESSION["MilitaryService"]);
+                                                        }
+                                                        else{
+                                                            echo "";
+                                                        }
+                                                    }
+                                                }
+                                                ?> value="0" required type="radio" id="customRadio5" name="MilitaryService" class="custom-control-input">
                                                 <label class="custom-control-label" for="customRadio5" >Not yet</label>
                                             </div>
                                             <div class="custom-control custom-radio " style="margin-left: 59px;padding-left:25px ;padding-top:3px;">
-                                                <input type="radio" id="customRadio6" name="MilitaryService" class="custom-control-input">
+                                                <input <?php
+                                                if($ErrorStatus == 1){
+                                                    if(isset($_SESSION["MilitaryService"])){
+                                                        if($_SESSION["MilitaryService"] == 1){
+                                                            echo "Checked";
+                                                            unset($_SESSION["MilitaryService"]);
+                                                        }
+                                                        else{
+                                                            echo "";
+                                                        }
+                                                    }
+                                                }
+                                                ?> value="1" type="radio" id="customRadio6" name="MilitaryService" class="custom-control-input">
                                                 <label class="custom-control-label" for="customRadio6">Done</label>
                                             </div>
                                         </div>
@@ -348,7 +457,12 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
                                                 Residence</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="text" name="PlaceOfResidence" required=""
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["PlaceOfResidence"];
+                                                    unset($_SESSION["PlaceOfResidence"]);
+                                                }
+                                                ?>" type="text" name="PlaceOfResidence" required=""
                                                     class="form-control">
                                             </div>
                                         </div>
@@ -356,24 +470,61 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Permanent
                                                 Address</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="text" name="PermanentAddress" required=""
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["PermanentAddress"];
+                                                    unset($_SESSION["PermanentAddress"]);
+                                                }
+                                                ?>" type="text" name="PermanentAddress" required=""
                                                     class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">E-Mail</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input type="email" required="" name="Email" data-parsley-type="email"
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["Email"];
+                                                    unset($_SESSION["Email"]);
+                                                }
+                                                ?>" type="email" required="" name="Email" data-parsley-type="email"
                                                     class="form-control">
+                                                <?php
+                                                    if(isset($_SESSION["Error-Email"])){
+                                                        echo '
+                                                        <div class ="error-notify">
+                                                            <span class="error-notify--doc">.</span>
+                                                            <span class="error-notify--content">Email already exists.</span>
+                                                        </div>
+                                                        ';
+                                                        unset($_SESSION["Error-Email"]);
+                                                    }
+                                                ?>
                                             </div>
                                         </div>                                    
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Phone
                                                 Number</label>
                                             <div class="col-12 col-sm-8 col-lg-6">
-                                                <input data-parsley-type="number" type="tel" required=""
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["PhoneNumber"];
+                                                    unset($_SESSION["PhoneNumber"]);
+                                                }
+                                                ?>" data-parsley-type="number" type="tel" required=""
                                                     data-parsley-minlength="10" name="PhoneNumber" data-parsley-maxlength="10"
                                                     class="form-control">
+                                                <?php
+                                                    if(isset($_SESSION["Error-PhoneNumber"])){
+                                                        echo '
+                                                        <div class ="error-notify">
+                                                            <span class="error-notify--doc">.</span>
+                                                            <span class="error-notify--content">Phone number already exists.</span>
+                                                        </div>
+                                                        ';
+                                                        unset($_SESSION["Error-PhoneNumber"]);
+                                                    }
+                                                ?>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -384,7 +535,26 @@
                                                         $SelectCountry = "SELECT country_name FROM tb_country";
                                                         $ResultCountry = mysqli_query($conn,$SelectCountry);
                                                         while($RowCountry = mysqli_fetch_assoc($ResultCountry)){
-                                                            echo"<option value='".$RowCountry['country_name']."'>" .$RowCountry['country_name']. "</option>"; }                                                    
+                                                            if($ErrorStatus == 1){
+                                                                if(isset($_SESSION["Country"])){
+                                                                    foreach($_SESSION["Country"] as $ct){
+                                                                        $Country = $ct;
+                                                                    }
+                                                                }   
+                                                            }
+                                                            if(isset($Country)){
+                                                                if($Country == $RowCountry['country_name']){
+                                                                    echo"<option Selected value='".$RowCountry['country_name']."'>" .$RowCountry['country_name']. "</option>"; 
+                                                                }
+                                                                else{
+                                                                    echo "<option value='".$RowCountry['country_name']."'>" .$RowCountry['country_name']. "</option>";    
+                                                                }
+                                                            }
+                                                            else{
+                                                                echo"<option value='".$RowCountry['country_name']."'>" .$RowCountry['country_name']. "</option>";                                                    
+                                                            }
+                                                        }
+                                                        unset($_SESSION["Country"]);
                                                     ?>
                                                 </select>
                                             </div>
@@ -396,7 +566,26 @@
                                                         $SelectLocation = "SELECT location_name FROM tb_location";
                                                         $ResultLocation = mysqli_query($conn,$SelectLocation);
                                                         while($RowLocation = mysqli_fetch_assoc($ResultLocation)){
-                                                            echo"<option value='".$RowLocation['location_name']."'>" .$RowLocation['location_name']. "</option>"; }                                                    
+                                                            if($ErrorStatus == 1){
+                                                                if(isset($_SESSION["Location"])){
+                                                                    foreach($_SESSION["Location"] as $lct){
+                                                                        $Location = $lct;
+                                                                    }
+                                                                }   
+                                                            }
+                                                            if(isset($Location)){
+                                                                if($Location == $RowLocation['location_name']){
+                                                                    echo"<option Selected value='".$RowLocation['location_name']."'>" .$RowLocation['location_name']. "</option>";                                                    
+                                                                }
+                                                                else{
+                                                                    echo"<option value='".$RowLocation['location_name']."'>" .$RowLocation['location_name']. "</option>";                                                    
+                                                                }
+                                                            }
+                                                            else{
+                                                                echo"<option value='".$RowLocation['location_name']."'>" .$RowLocation['location_name']. "</option>";                                                    
+                                                            }
+                                                        }
+                                                        unset($_SESSION["Location"]);
                                                     ?>
                                                 </select>
                                             </div>
@@ -409,18 +598,54 @@
                                                         $SelectPosition = "SELECT position_name FROM tb_position";
                                                         $ResultPosition = mysqli_query($conn,$SelectPosition);
                                                         while($RowPosition = mysqli_fetch_assoc($ResultPosition)){
-                                                            echo"<option value='".$RowPosition['position_name']."'>" .$RowPosition['position_name']. "</option>"; }                                                    
+                                                            if($ErrorStatus == 1){
+                                                                if(isset($_SESSION["Position"])){
+                                                                    foreach($_SESSION["Position"] as $pst){
+                                                                        $Position = $pst;
+                                                                    }
+                                                                }   
+                                                            }
+                                                            if(isset($Position)){
+                                                                if($Position == $RowPosition['position_name']){
+                                                                    echo"<option Selected value='".$RowPosition['position_name']."'>" .$RowPosition['position_name']. "</option>";                                                                 }
+                                                                else{
+                                                                    echo"<option value='".$RowPosition['position_name']."'>" .$RowPosition['position_name']. "</option>";                                                                 }
+                                                            }
+                                                            else{
+                                                                echo"<option value='".$RowPosition['position_name']."'>" .$RowPosition['position_name']. "</option>";
+                                                            }
+                                                        }     
+                                                        unset($_SESSION["Position"]);                                               
                                                     ?>
                                                 </select>
                                             </div>
-                                            <label  style="padding-right: 6px;" class="col-sm-0 col-form-label text-sm-right" >Level</label>
+                                            <label  style="padding-right: 24px;" class="col-sm-0 col-form-label text-sm-right" >Level</label>
                                             <div class="col-sm-4 col-lg-3" >
                                                 <select class="selectpicker" name="Level[]" data-size="5" >
                                                     <?php
                                                         $SelectLevel = "SELECT level_name FROM tb_level";
                                                         $ResultLevel = mysqli_query($conn,$SelectLevel);
                                                         while($RowLevel = mysqli_fetch_assoc($ResultLevel)){
-                                                            echo"<option value='".$RowLevel['level_name']."'>" .$RowLevel['level_name']. "</option>"; }                                                    
+                                                            if($ErrorStatus == 1){
+                                                                if(isset($_SESSION["Level"])){
+                                                                    foreach($_SESSION["Level"] as $pst){
+                                                                        $Level = $pst;
+                                                                    }
+                                                                }   
+                                                            }
+                                                            if(isset($Level)){
+                                                                if($Level == $RowLevel['level_name']){
+                                                                    echo"<option Selected value='".$RowLevel['level_name']."'>" .$RowLevel['level_name']. "</option>";                                                             
+                                                                }
+                                                                else{
+                                                                    echo"<option value='".$RowLevel['level_name']."'>" .$RowLevel['level_name']. "</option>";                                                             
+                                                                }                                                         
+                                                            }
+                                                            else{
+                                                                echo"<option value='".$RowLevel['level_name']."'>" .$RowLevel['level_name']. "</option>";                                                             
+                                                            }
+                                                        }    
+                                                        unset($_SESSION["Level"]);                                                
                                                     ?>
                                                 </select>
                                             </div>
@@ -433,8 +658,27 @@
                                                         $SelectJobCategory = "SELECT job_category_name FROM tb_job_category";
                                                         $ResultJobCategory = mysqli_query($conn,$SelectJobCategory);
                                                         while($RowJobCategory = mysqli_fetch_assoc($ResultJobCategory)){
-                                                            echo"<option value='".$RowJobCategory['job_category_name']."'>" .$RowJobCategory['job_category_name']. "</option>"; }                                                    
-                                                            ?>
+                                                            if($ErrorStatus == 1){
+                                                                if(isset($_SESSION["JobCategory"])){
+                                                                    foreach($_SESSION["JobCategory"] as $pst){
+                                                                        $JobCategory = $pst;
+                                                                    }
+                                                                }   
+                                                            }
+                                                            if(isset($JobCategory)){
+                                                                if($JobCategory == $RowJobCategory['job_category_name']){
+                                                                    echo"<option Selected value='".$RowJobCategory['job_category_name']."'>" .$RowJobCategory['job_category_name']. "</option>"; 
+                                                                }
+                                                                else{
+                                                                    echo"<option value='".$RowJobCategory['job_category_name']."'>" .$RowJobCategory['job_category_name']. "</option>"; 
+                                                                }                                                         
+                                                            }
+                                                            else{
+                                                                echo"<option value='".$RowJobCategory['job_category_name']."'>" .$RowJobCategory['job_category_name']. "</option>"; 
+                                                            }
+                                                        }
+                                                        unset($_SESSION["JobCategory"]);                                                        
+                                                    ?>
                                                 </select>
                                             </div>
                                             <label class="col-sm-0 col-form-label text-sm-right"  >Job Title</label>
@@ -444,7 +688,24 @@
                                                         $SelectJobTitle = "SELECT job_title_name FROM tb_job_title";
                                                         $ResultJobTitle = mysqli_query($conn,$SelectJobTitle);
                                                         while($RowJobTitle = mysqli_fetch_assoc($ResultJobTitle)){
-                                                            echo"<option value='".$RowJobTitle['job_title_name']."'>" .$RowJobTitle['job_title_name']. "</option>"; }                                                    
+                                                            if($ErrorStatus == 1){
+                                                                if(isset($_SESSION["JobTitle"])){
+                                                                    foreach($_SESSION["JobTitle"] as $pst){
+                                                                        $JobTitle = $pst;
+                                                                    }
+                                                                }   
+                                                            }
+                                                            if(isset($JobTitle)){
+                                                                if($JobTitle == $RowJobTitle['job_title_name']){
+                                                                    echo"<option Selected value='".$RowJobTitle['job_title_name']."'>" .$RowJobTitle['job_title_name']. "</option>";                                                                 }
+                                                                else{
+                                                                    echo"<option value='".$RowJobTitle['job_title_name']."'>" .$RowJobTitle['job_title_name']. "</option>";                                                                 }                                                         
+                                                            }
+                                                            else{
+                                                                echo"<option value='".$RowJobTitle['job_title_name']."'>" .$RowJobTitle['job_title_name']. "</option>";     
+                                                            }
+                                                        }   
+                                                        unset($_SESSION["JobTitle"]);                                                 
                                                     ?>
                                                 </select>
                                             </div>
@@ -457,8 +718,25 @@
                                                         $SelectTeam = "SELECT team_name FROM tb_team";
                                                         $ResultTeam = mysqli_query($conn,$SelectTeam);
                                                         while($RowTeam = mysqli_fetch_assoc($ResultTeam)){
-                                                            echo"<option value='".$RowTeam['team_name']."'>" .$RowTeam['team_name']. "</option>"; }                                                    
-                                                            ?>
+                                                            if($ErrorStatus == 1){
+                                                                if(isset($_SESSION["Team"])){
+                                                                    foreach($_SESSION["Team"] as $pst){
+                                                                        $Team = $pst;
+                                                                    }
+                                                                }   
+                                                            }
+                                                            if(isset($Team)){
+                                                                if($Team == $RowTeam['team_name']){
+                                                                    echo"<option Selected value='".$RowTeam['team_name']."'>" .$RowTeam['team_name']. "</option>"; 
+                                                                }else{
+                                                                    echo"<option value='".$RowTeam['team_name']."'>" .$RowTeam['team_name']. "</option>"; 
+                                                                }
+                                                            }else{
+                                                                echo"<option value='".$RowTeam['team_name']."'>" .$RowTeam['team_name']. "</option>"; 
+                                                            }
+                                                        }
+                                                        unset($_SESSION["Team"]);                                                 
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -467,7 +745,12 @@
                                                 Date</label>
                                             <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker43"
                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["HealthCheckUpDate"];
+                                                    unset($_SESSION["HealthCheckUpDate"]);
+                                                }
+                                                ?>" type="text" class="form-control datetimepicker-input"
                                                     data-target="#datetimepicker43" name="HealthCheckUpDate"/>
                                                 <div class="input-group-append" data-target="#datetimepicker43"
                                                     data-toggle="datetimepicker">
@@ -482,13 +765,34 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Passport
                                                 Number</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" name="PassportNumber" class="form-control">
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["PassportNumber"];
+                                                    unset($_SESSION["PassportNumber"]);
+                                                }
+                                                ?>" type="text" name="PassportNumber" class="form-control">
+                                                <?php
+                                                    if(isset($_SESSION["Error-PPNumber"])){
+                                                        echo '
+                                                        <div class ="error-notify">
+                                                            <span class="error-notify--doc">.</span>
+                                                            <span class="error-notify--content">Passport already exists.</span>
+                                                        </div>
+                                                        ';
+                                                        unset($_SESSION["Error-PPNumber"]);
+                                                    }
+                                                ?>
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Issue</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker44"
                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["DOIpp"];
+                                                    unset($_SESSION["DOIpp"]);
+                                                }
+                                                ?>" type="text" class="form-control datetimepicker-input"
                                                     data-target="#datetimepicker44" name="DOIpp"/>
                                                 <div class="input-group-append" data-target="#datetimepicker44"
                                                     data-toggle="datetimepicker">
@@ -501,13 +805,23 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
                                                 Issue</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text"  name="POIpp" class="form-control">
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["POIpp"];
+                                                    unset($_SESSION["POIpp"]);
+                                                }
+                                                ?>" type="text"  name="POIpp" class="form-control">
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Expiry</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker45"
                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["DOEpp"];
+                                                    unset($_SESSION["DOEpp"]);
+                                                }
+                                                ?>" type="text" class="form-control datetimepicker-input"
                                                     data-target="#datetimepicker45" name="DOEpp" />
                                                 <div class="input-group-append" data-target="#datetimepicker45"
                                                     data-toggle="datetimepicker">
@@ -522,13 +836,34 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Citizen identity
                                                 Card Number</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" name="CICN" class="form-control">
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["CICN"];
+                                                    unset($_SESSION["CICN"]);
+                                                }
+                                                ?>" type="text" required="" name="CICN" class="form-control">
+                                                <?php
+                                                    if(isset($_SESSION["Error-CICN"])){
+                                                        echo '
+                                                        <div class ="error-notify">
+                                                            <span class="error-notify--doc">.</span>
+                                                            <span class="error-notify--content">CICN already exists.</span>
+                                                        </div>
+                                                        ';
+                                                        unset($_SESSION["Error-CICN"]);
+                                                    }
+                                                ?>
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date of
                                                 Issue</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker46"
                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["DOIcicn"];
+                                                    unset($_SESSION["DOIcicn"]);
+                                                }
+                                                ?>" type="text" class="form-control datetimepicker-input"
                                                     data-target="#datetimepicker46" name="DOIcicn" required=""/>
                                                 <div class="input-group-append" data-target="#datetimepicker46"
                                                     data-toggle="datetimepicker">
@@ -541,7 +876,12 @@
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Place of
                                                 Issue</label>
                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                <input type="text" required="" name="POIcicn" class="form-control">
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["POIcicn"];
+                                                    unset($_SESSION["POIcicn"]);
+                                                }
+                                                ?>" type="text" required="" name="POIcicn" class="form-control">
                                             </div>
                                         </div>
 
@@ -556,7 +896,24 @@
                                                         $SelectTypeContract = "SELECT type_contract_name FROM tb_type_contract";
                                                         $ResultTypeContract = mysqli_query($conn,$SelectTypeContract);
                                                         while($RowTypeContract = mysqli_fetch_assoc($ResultTypeContract)){
-                                                            echo"<option value='".$RowTypeContract['type_contract_name']."'>" .$RowTypeContract['type_contract_name']. "</option>"; }                                                    
+                                                            if($ErrorStatus == 1){
+                                                                if(isset($_SESSION["TypeOfContract"])){
+                                                                    foreach($_SESSION["TypeOfContract"] as $pst){
+                                                                        $TypeContract = $pst;
+                                                                    }
+                                                                }   
+                                                            }
+                                                            if(isset($TypeContract)){
+                                                                if($TypeContract == $RowTypeContract['type_contract_name']){
+                                                                    echo"<option Selected value='".$RowTypeContract['type_contract_name']."'>" .$RowTypeContract['type_contract_name']. "</option>"; 
+                                                                }else{
+                                                                    echo"<option value='".$RowTypeContract['type_contract_name']."'>" .$RowTypeContract['type_contract_name']. "</option>"; 
+                                                                }
+                                                            }else{
+                                                                echo"<option value='".$RowTypeContract['type_contract_name']."'>" .$RowTypeContract['type_contract_name']. "</option>"; 
+                                                            }
+                                                        }
+                                                        unset($_SESSION["TypeOfContract"]);                                                  
                                                     ?>
                                                 </select>
                                             </div>
@@ -564,7 +921,12 @@
                                                 Date</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker48"
                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["StartDate"];
+                                                    unset($_SESSION["StartDate"]);
+                                                }
+                                                ?>" type="text" class="form-control datetimepicker-input"
                                                     data-target="#datetimepicker48" name="StartDate" required=""/>
                                                 <div class="input-group-append" data-target="#datetimepicker48"
                                                     data-toggle="datetimepicker">
@@ -578,19 +940,43 @@
                                                 Duration</label>
                                             <div class="col-sm-4 col-lg-3">
                                                 <select class="selectpicker" name="ContractDuration[]" data-size="5" data-width="275px">
-                                                    <option value = "6">6 Month</option>
-                                                    <option value = "1">1 Year</option>
-                                                    <option value = "2">2 Year</option>
-                                                    <option value = "3">3 Year</option>
-                                                    <option value = "4">4 Year</option>
-                                                    <option value = "5">5 Year</option>
+                                                <?php 
+                                                    if($ErrorStatus == 1){
+                                                        if(isset($_SESSION["ContractDuration"])){
+                                                            foreach($_SESSION["ContractDuration"] as $cd){
+                                                                $ContractDuration = $cd;
+                                                            }
+                                                        }   
+                                                    }
+                                                    $year=["6 Month","1 Year","2 Year","3 Year","4 Year","5 Year"];
+                                                    if(isset($ContractDuration)){
+                                                        foreach($year as $x){
+                                                            if($x!=$ContractDuration){
+                                                                echo "<option>$x</option>";
+                                                            }
+                                                            else{
+                                                                echo "<option selected>$x</option>";
+                                                            }
+                                                        }
+                                                    }else{
+                                                        foreach($year as $x){
+                                                            echo "<option>$x</option>";
+                                                        }
+                                                    }
+                                                    unset($_SESSION["ContractDuration"]);
+                                                ?>
                                                 </select>
                                             </div>
                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">End
                                                 Date</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker49"
                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
+                                                <input value="<?php
+                                                if($ErrorStatus == 1){
+                                                    echo $_SESSION["EndDate"];
+                                                    unset($_SESSION["EndDate"]);
+                                                }
+                                                ?>" type="text" class="form-control datetimepicker-input"
                                                     data-target="#datetimepicker49" name="EndDate" required=""/>
                                                 <div class="input-group-append" data-target="#datetimepicker49"
                                                     data-toggle="datetimepicker">
@@ -693,7 +1079,7 @@
             }, false);
         })();
     </script>
-    <script>
+    <!-- <script>
         var selectElement = document.getElementById("countrySelect");
 
         // Gọi API để lấy danh sách các quốc gia
@@ -708,7 +1094,38 @@
                 });
             })
             .catch(error => console.error("Error fetching data:", error));
-    </script>
+    </script> -->
+    <script>
+    var selectElement = document.getElementById("countrySelect");
+
+    // Gọi API để lấy danh sách các quốc gia
+    fetch("https://restcountries.com/v3.1/all")
+        .then(response => response.json())
+        .then(data => {
+            // Tìm index của quốc gia "VietNam"
+            var inputNation =document.getElementById("National").value;
+            var CountryIndex = data.findIndex(country => country.name.common === inputNation);
+            
+            // Nếu tìm thấy "Country", đưa nó lên đầu danh sách
+            if (CountryIndex !== -1) {
+                var Country_ = data.splice(CountryIndex, 1)[0]; // Xóa "Country" khỏi danh sách và lưu nó vào biến
+                data.unshift(Country_); // Đưa "country" lên đầu danh sách
+            }
+
+            data.forEach(country => {
+                var option = document.createElement("option");
+                option.value = country.name.common;
+                option.text = country.name.common;
+                selectElement.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error fetching data:", error));
+</script>
+        <input id="National" value="<?php
+            foreach($_SESSION["National"] as $nation) 
+                echo $nation;
+            unset($_SESSION["National"]);
+            ?>" type="hidden" name="">
 </body>
 
 </html>
