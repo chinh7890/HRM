@@ -1,4 +1,5 @@
 <?php
+       session_start();
        require_once("../connect.php");
        if(isset($_GET["id"])){
               $id=$_GET["id"];
@@ -111,7 +112,7 @@
                             `english_name` = '$EngLishName',
                             `gender` = '$Gender',
                             `marital_status` = '$MaritalStatus',
-                            `date_of_birth` = '$DayOfBirth',
+                            `date_of_birth` = '".formatDateToMySQL($DayOfBirth)."',
                             `national_name` = '$National',
                             `military_service` = '$MilitaryService',
                             `team_id` = '$Team',
@@ -140,8 +141,8 @@
                             `tb_passport`
                      SET
                             `pass_number` = '$PassportNumber',
-                            `date_of_issue` = '$DOIpp',
-                            `date_of_expiry` = '$DOEpp',
+                            `date_of_issue` = '".formatDateToMySQL($DOIpp)."',
+                            `date_of_expiry` = '". formatDateToMySQL($DOEpp)."',
                             `place_of_issue` = '$POIpp'
                      WHERE
                             pass_id='$PassportID'";
@@ -149,23 +150,36 @@
                             `tb_citizen_identity`
                      SET
                             `cccd_number` = '$CICN',
-                            `date_of_issue_cccd` = '$DOIcicn',
+                            `date_of_issue_cccd` = '". formatDateToMySQL($DOIcicn)."',
                             `place_of_issue_cccd` = '$POIcicn'
                      WHERE
                             cccd_id='$CICNID'";
               $sql_up5="UPDATE
                      `tb_contract`
               SET
-                     `start_date` = '$StartDate',
+                     `start_date` = '".formatDateToMySQL($StartDate)."',
                      `contract_duration` = '$ContractDuration',
-                     `end_date` = '$EndDate',
+                     `end_date` = '". formatDateToMySQL($EndDate)."',
                      `type_contract_id` = '$TypeOfContract'
                      
               WHERE
                      `employee_id` = '$id'";
               
-              $result = $conn->query($sql_up2);
-              echo $result;
-              // header("location: ./profile.php?id=$id");
+              $conn->query($sql_up1);
+              $conn->query($sql_up2);
+              $conn->query($sql_up3);
+              $conn->query($sql_up4);
+              $conn->query($sql_up5);
+              header("location: ./profile.php?id=$id");
+              $_SESSION['update']="1";
+
+       }
+       function formatDateToMySQL($inputDate) {
+              $dateObj = DateTime::createFromFormat('m/d/Y', $inputDate);
+              if ($dateObj) {
+                  return $dateObj->format('Y/m/d');
+              } else {
+                  return "Invalid date format";
+              }
        }
 ?>
