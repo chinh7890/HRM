@@ -481,7 +481,7 @@
                         <form method="POST" action="delete-employee-handle.php">
                                 <input type="hidden" name="employee_id" id="employeeIdInput">
                                 <button type="submit" class="btn btn-danger">Delete</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
                             </form>
                         </div>
                     </div>

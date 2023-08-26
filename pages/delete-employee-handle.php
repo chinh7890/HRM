@@ -8,6 +8,6 @@ if (isset($_POST['employee_id'])) {
     $res = mysqli_query($conn, $sql);
     header("location: ./list-employee.php");
 } else {
-    header("location:" . SITEURL . 'pages/list-employee.php');
+    header("location: ./pages/list-employee.php");
 }
 ?>
