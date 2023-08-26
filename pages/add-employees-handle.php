@@ -18,7 +18,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $targetDirectory = "uploads/"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
+    $targetDirectory = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/phpspreadsheet/files/"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
     $targetFile = $targetDirectory . basename($_FILES["excel_file"]["name"]);
     $uploadOk = 1;
     $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -36,14 +36,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (move_uploaded_file($_FILES["excel_file"]["tmp_name"], $targetFile)) {
             echo "Tệp " . htmlspecialchars(basename($_FILES["excel_file"]["name"])) . " đã được tải lên thành công.";
         } else {
-            echo "Lỗi khi upload tệp.";
+            echo "Lỗi khi upload tệp.";exit;
         }
     }
+        // Đọc tệp Excel
+        $spreadsheet = IOFactory::load($targetFile);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $TitleRow = $worksheet->getRowIterator(1, 1)->current();
+
+        // Lặp qua các ô trong dòng đầu tiên
+        $cellIterator = $TitleRow->getCellIterator();
+        $cellIterator->setIterateOnlyExistingCells(FALSE);
+        // Lưu trữ tên trường vào mảng
+        $fieldNames = array();
+        foreach ($cellIterator as $cell) {
+            $fieldNames[] = $cell->getValue();
+        }
+        
+        // In tên trường ra màn hình
+        foreach ($fieldNames as $fieldName) {
+            echo $fieldName . " ";
+        }
 }
 
-
-
-// Lặp qua từng dòng trong worksheet
 
 
 // Đóng kết nối CSDL

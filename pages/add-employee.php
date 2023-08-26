@@ -16,7 +16,7 @@
             return $dateObj->format('m/d/Y');
         } else {
             return "Invalid date format";
-        }
+        } 
     }
 ?>
 <!doctype html>
@@ -360,16 +360,16 @@
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Date of
                                                 Birth</label>
-                                            <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker4"
+                                            <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker42"
                                                 data-target-input="nearest">
-                                                <input value="<?php
-                                                if($ErrorStatus == 1){
+                                                <input placeholder="mm/dd/yyyy" value="<?php
+                                                   if($ErrorStatus == 1){
                                                     echo $_SESSION["DayOfBirth"];
                                                     unset($_SESSION["DayOfBirth"]);
-                                                }
+                                                    }
                                                 ?>" type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker4" name="DayOfBirth" required=""/>
-                                                <div class="input-group-append" data-target="#datetimepicker4"
+                                                    data-target="#datetimepicker42" name="DayOfBirth" required=""/>
+                                                <div class="input-group-append" data-target="#datetimepicker42"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                     </div>
@@ -745,7 +745,7 @@
                                                 Date</label>
                                             <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker43"
                                                 data-target-input="nearest">
-                                                <input value="<?php
+                                                <input placeholder="mm/dd/yyyy" value="<?php
                                                 if($ErrorStatus == 1){
                                                     echo $_SESSION["HealthCheckUpDate"];
                                                     unset($_SESSION["HealthCheckUpDate"]);
@@ -787,7 +787,7 @@
                                                 Issue</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker44"
                                                 data-target-input="nearest">
-                                                <input value="<?php
+                                                <input placeholder="mm/dd/yyyy" value="<?php
                                                 if($ErrorStatus == 1){
                                                     echo $_SESSION["DOIpp"];
                                                     unset($_SESSION["DOIpp"]);
@@ -816,7 +816,7 @@
                                                 Expiry</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker45"
                                                 data-target-input="nearest">
-                                                <input value="<?php
+                                                <input placeholder="mm/dd/yyyy" value="<?php
                                                 if($ErrorStatus == 1){
                                                     echo $_SESSION["DOEpp"];
                                                     unset($_SESSION["DOEpp"]);
@@ -858,7 +858,7 @@
                                                 Issue</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker46"
                                                 data-target-input="nearest">
-                                                <input value="<?php
+                                                <input placeholder="mm/dd/yyyy" value="<?php
                                                 if($ErrorStatus == 1){
                                                     echo $_SESSION["DOIcicn"];
                                                     unset($_SESSION["DOIcicn"]);
@@ -921,7 +921,7 @@
                                                 Date</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker48"
                                                 data-target-input="nearest">
-                                                <input value="<?php
+                                                <input placeholder="mm/dd/yyyy" value="<?php
                                                 if($ErrorStatus == 1){
                                                     echo $_SESSION["StartDate"];
                                                     unset($_SESSION["StartDate"]);
@@ -971,7 +971,7 @@
                                                 Date</label>
                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker49"
                                                 data-target-input="nearest">
-                                                <input value="<?php
+                                                <input placeholder="mm/dd/yyyy" value="<?php
                                                 if($ErrorStatus == 1){
                                                     echo $_SESSION["EndDate"];
                                                     unset($_SESSION["EndDate"]);
@@ -1118,6 +1118,7 @@
                 option.text = country.name.common;
                 selectElement.appendChild(option);
             });
+                $(selectElement).selectpicker('refresh');
         })
         .catch(error => console.error("Error fetching data:", error));
 </script>

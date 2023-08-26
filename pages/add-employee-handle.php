@@ -1,7 +1,11 @@
 <?php
     session_start();
     require "../connect.php";
-
+    function formatDateTime($Datetime){
+        $timestamp = strtotime($Datetime);
+        $dateTimeFormat = date("Y-m-d", $timestamp); // Định dạng lại theo Y-m-d
+        return $dateTimeFormat;
+    }
     if(isset($_POST['add'])){
         $EmployeeCode = $_POST["EmployeeCode"];
         $FullName = $_POST["FullName"];
@@ -12,7 +16,7 @@
         $MilitaryService = $_POST["MilitaryService"];
         $PhoneNumber = $_POST["PhoneNumber"];
         $Email = $_POST["Email"];
-        $DayOfBirth = $_POST["DayOfBirth"];
+        $DayOfBirth = formatDateTime($_POST["DayOfBirth"]);
         $PlaceOfResidence = $_POST["PlaceOfResidence"];
         $PermanentAddress = $_POST["PermanentAddress"];
         $Level = $_POST["Level"];//
@@ -22,18 +26,18 @@
         $JobCategory = $_POST["JobCategory"];//
         $JobTitle = $_POST["JobTitle"];//
         $Team = $_POST["Team"];//
-        $HealthCheckUpDate = $_POST["HealthCheckUpDate"];
+        $HealthCheckUpDate = formatDateTime($_POST["HealthCheckUpDate"]) ;
         $PassportNumber = $_POST["PassportNumber"];
-        $DOIpp = $_POST["DOIpp"];
+        $DOIpp = formatDateTime($_POST["DOIpp"]) ;
         $POIpp = $_POST["POIpp"];
-        $DOEpp = $_POST["DOEpp"];
+        $DOEpp = formatDateTime($_POST["DOEpp"]) ;
         $CICN = $_POST["CICN"];
-        $DOIcicn = $_POST["DOIcicn"];
+        $DOIcicn = formatDateTime($_POST["DOIcicn"]) ;
         $POIcicn = $_POST["POIcicn"];
         $TypeOfContract = $_POST["TypeOfContract"];//
-        $StartDate = $_POST["StartDate"];
+        $StartDate = formatDateTime($_POST["StartDate"]) ;
         $ContractDuration = $_POST["ContractDuration"];//
-        $EndDate = $_POST["EndDate"];
+        $EndDate = formatDateTime($_POST["EndDate"]) ;
 
 
         foreach ($_POST as $field => $value) {

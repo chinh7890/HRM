@@ -225,6 +225,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <a href="./add-employee.php" class="btn btn-outline-primary" id="btn">+ Add</a>
+                                <a data-toggle="modal" data-target="#exampleModal1" class="btn btn-outline-primary" id="btn">+ Import</a>
                                 <div class="table-responsive ">
                                     <table id="example" class="table table-striped table-bordered second"
                                         style="width:100%">
@@ -394,7 +395,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                            <th>Actions</th>
+                                                <th>Actions</th>
                                                 <th>Employee Code</th>
                                                 <th>Photo</th>
                                                 <th>Employee Name</th>
@@ -482,6 +483,27 @@
                                 <input type="hidden" name="employee_id" id="employeeIdInput">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Import</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <input type="file"  class="form-control">
+                        </div>
+                        <div class="modal-footer">
+                            <form method="POST" action="">
+                                <button type="submit" class="btn btn-danger">Upload</button>
+                                <button type="button" class="btn btn-dark " data-dismiss="modal">Cancel</button>
                             </form>
                         </div>
                     </div>

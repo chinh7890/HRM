@@ -86,7 +86,9 @@ jQuery(document).ready(function($) {
     }
     if ($("#datetimepicker4").length) {
         $('#datetimepicker4').datetimepicker({
-            format: 'L'
+            viewMode: 'years',
+            format: 'MM/YYYY'
+            
         });
 
     }
