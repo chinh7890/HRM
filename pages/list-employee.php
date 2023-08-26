@@ -225,7 +225,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <a href="./add-employee.php" class="btn btn-outline-primary" id="btn">+ Add</a>
-                                <a data-toggle="modal" data-target="#exampleModal1" class="btn btn-outline-primary" id="btn">+ Import</a>
+                                <a data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary" id="btn">+ Import</a>
                                 <div class="table-responsive ">
                                     <table id="example" class="table table-striped table-bordered second"
                                         style="width:100%">
@@ -277,23 +277,18 @@
                                                  tb_employee.national_name,
                                                  tb_employee.military_service,
                                                  tb_employee.health_checkup_date,
-                                                 
                                                  tb_address.phone_number,
                                                  tb_address.place_of_residence,
                                                  tb_address.permanent_address,
                                                  tb_address.email,
-                                                 
                                                  tb_citizen_identity.cccd_number,
                                                  tb_citizen_identity.date_of_issue_cccd,
                                                  tb_citizen_identity.place_of_issue_cccd,
-                                                 
                                                  tb_passport.pass_number,
                                                  tb_passport.date_of_issue,
                                                  tb_passport.date_of_expiry,
                                                  tb_passport.place_of_issue,
-                                                 
                                                  tb_type_contract.type_contract_name,
-                                                 
                                                  tb_job_title.job_title_name,
                                                  tb_job_category.job_category_name,
                                                  tb_team.team_name,
@@ -301,27 +296,25 @@
                                                  tb_level.level_name,
                                                  tb_country.country_name,
                                                  tb_location.location_name,
-                                                 
                                                  tb_contract.start_date,
                                                  tb_contract.contract_duration,
                                                  tb_contract.end_date
                                              FROM
-                                                 tb_employee, tb_address, tb_citizen_identity, tb_passport, tb_type_contract, tb_job_title, tb_job_category,
-                                                 tb_team, tb_position, tb_level, tb_country, tb_location, tb_contract
+                                                 tb_employee,
+                                                 tb_address,
+                                                 tb_citizen_identity,
+                                                 tb_passport,
+                                                 tb_type_contract,
+                                                 tb_job_title,
+                                                 tb_job_category,
+                                                 tb_team,
+                                                 tb_position,
+                                                 tb_level,
+                                                 tb_country,
+                                                 tb_location,
+                                                 tb_contract
                                              WHERE
-                                                 tb_employee.address_id=tb_address.address_id AND
-                                                 tb_employee.cccd_id=tb_citizen_identity.cccd_id AND
-                                                 tb_employee.pass_id=tb_passport.pass_id AND
-                                                 tb_employee.employee_id=tb_contract.employee_id AND
-                                                 tb_employee.job_title_id=tb_job_title.job_title_id AND
-                                                 tb_employee.job_category_id=tb_job_category.job_category_id AND
-                                                 tb_employee.team_id=tb_team.team_id AND
-                                                 tb_employee.position_id=tb_position.position_id AND
-                                                 tb_employee.country_id=tb_country.country_id AND
-                                                 tb_employee.level_id=tb_level.level_id AND
-                                                 tb_employee.location_id=tb_location.location_id AND
-                                                 tb_contract.type_contract_id=tb_type_contract.type_contract_id                                             
-                                                 ";
+                                                 tb_employee.employee_id = tb_address.employee_id AND tb_employee.employee_id = tb_citizen_identity.employee_id AND tb_employee.employee_id = tb_passport.employee_id AND tb_employee.employee_id = tb_contract.employee_id AND tb_employee.job_title_id = tb_job_title.job_title_id AND tb_employee.job_category_id = tb_job_category.job_category_id AND tb_employee.team_id = tb_team.team_id AND tb_employee.position_id = tb_position.position_id AND tb_employee.country_id = tb_country.country_id AND tb_employee.level_id = tb_level.level_id AND tb_employee.location_id = tb_location.location_id AND tb_contract.type_contract_id = tb_type_contract.type_contract_id;";
                                                  $result = $conn->query($sql);
                                                  while ($row = $result->fetch_assoc()) {
                                                  ?>  
@@ -488,11 +481,11 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Import</h5>
+                            <h5 class="modal-title" id="importModalLabel">Import</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
