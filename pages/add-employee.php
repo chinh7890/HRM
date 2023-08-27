@@ -751,7 +751,7 @@
                                                     unset($_SESSION["HealthCheckUpDate"]);
                                                 }
                                                 ?>" type="text" class="form-control datetimepicker-input"
-                                                    data-target="#datetimepicker43" name="HealthCheckUpDate"/>
+                                                    data-target="#datetimepicker43" name="HealthCheckUpDate" required=""/>
                                                 <div class="input-group-append" data-target="#datetimepicker43"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>

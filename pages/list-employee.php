@@ -1,9 +1,10 @@
 <?php
-    session_start();
-    require_once '../login-handle.php';
+session_start();
+require_once '../login-handle.php';
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -19,45 +20,65 @@
     <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/select.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 </head>
 <style>
-    #btn {
-        margin-bottom: 10px;
-        border: #e6e6f2 solid 0.1px;
-    }
-    th{
-        text-align: center;
-    }
-    /* Hide the second column */
-    td:nth-child(3),th:nth-child(3),
-    td:nth-child(5),th:nth-child(5),
-    td:nth-child(12),th:nth-child(12),
-    td:nth-child(13),th:nth-child(13),
-    td:nth-child(14),th:nth-child(14),
-    td:nth-child(16),th:nth-child(16),
-    td:nth-child(17),th:nth-child(17),
-    td:nth-child(25),th:nth-child(25),
-    td:nth-child(26),th:nth-child(26),
-    td:nth-child(27),th:nth-child(27) {
-        display: none;
-    }
-    .dataTables_wrapper .dt-buttons .buttons-pdf,
-    .dataTables_wrapper .dt-buttons .buttons-print {
+#btn {
+    margin-bottom: 10px;
+    border: #e6e6f2 solid 0.1px;
+}
+
+th {
+    text-align: center;
+}
+
+/* Hide the second column */
+td:nth-child(3),
+th:nth-child(3),
+td:nth-child(5),
+th:nth-child(5),
+td:nth-child(12),
+th:nth-child(12),
+td:nth-child(13),
+th:nth-child(13),
+td:nth-child(14),
+th:nth-child(14),
+td:nth-child(16),
+th:nth-child(16),
+td:nth-child(17),
+th:nth-child(17),
+td:nth-child(25),
+th:nth-child(25),
+td:nth-child(26),
+th:nth-child(26),
+td:nth-child(27),
+th:nth-child(27) {
     display: none;
 }
 
-    </style>
+.dataTables_wrapper .dt-buttons .buttons-pdf,
+.dataTables_wrapper .dt-buttons .buttons-print {
+    display: none;
+}
+</style>
 
 </head>
 
 <body>
     <?php
-        if(isset($_SESSION["notify-add"]) && $_SESSION["notify-add"] == "1"){
-            echo "<script type='text/javascript'>toastr.success('Add Employee Successfully')</script>";
-            unset($_SESSION["notify-add"]);
-        }
+    if (isset($_SESSION["notify-add"]) && $_SESSION["notify-add"] == "1") {
+        echo "<script type='text/javascript'>toastr.success('Add Employee Successfully')</script>";
+        unset($_SESSION["notify-add"]);
+    }
+    if (isset($_SESSION["success-import"]) && $_SESSION["success-import"] == "1") {
+        echo "<script type='text/javascript'>toastr.success('Import Employees Successfully')</script>";
+        unset($_SESSION["success-import"]);
+    }
+    if (isset($_SESSION["error-import"]) && $_SESSION["error-import"] = "1") {
+        echo "<script type='text/javascript'>toastr.error('The file is not in the correct format or the data already exists')</script>";
+        unset($_SESSION["error-import"]);
+    }
     ?>
     <!-- ============================================================== -->
     <!-- main wrapper -->
@@ -151,11 +172,12 @@
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                                 aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                        <?php 
-                                        if( isset($_SESSION['username'])) {
-                                            $username = $_SESSION['username'];
-                                            echo $username; }
-                                            ?>
+                                    <?php
+                                    if (isset($_SESSION['username'])) {
+                                        $username = $_SESSION['username'];
+                                        echo $username;
+                                    }
+                                    ?>
                                 </div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
@@ -225,47 +247,48 @@
                         <div class="card">
                             <div class="card-body">
                                 <a href="./add-employee.php" class="btn btn-outline-primary" id="btn">+ Add</a>
-                                <a data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary" id="btn">+ Import</a>
+                                <a data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary"
+                                    id="btn">+ Import</a>
                                 <div class="table-responsive ">
                                     <table id="example" class="table table-striped table-bordered second"
                                         style="width:100%">
                                         <thead>
-                                                <th>Actions</th>
-                                                <th>Employee Code</th>
-                                                <th>Photo</th>
-                                                <th>Employee Name</th>
-                                                <th>English Name</th>
-                                                <th>Gender</th>
-                                                <th>Marital Status</th>
-                                                <th>Date of Birth</th>
-                                                <th>National</th>
-                                                <th>Military Service</th>
-                                                <th>Passport Number</th>
-                                                <th>Date of Issue</th>
-                                                <th>Date of Expiry</th>
-                                                <th>Place of Issue</th>
-                                                <th>CICN</th>
-                                                <th>Date of Issue</th>
-                                                <th>Place of Issue</th>
-                                                <th>Place of Residence</th>
-                                                <th>Permanent Address</th>
-                                                <th>Health Checkup Date</th>
-                                                <th>Type Contract</th>
-                                                <th>Job Tilte</th>
-                                                <th>Job Category</th>
-                                                <th>Team</th>
-                                                <th>Start Date</th>
-                                                <th>Contract Duration</th>
-                                                <th>End Date</th>
-                                                <th>E-mail</th>
-                                                <th>Country</th>
-                                                <th>Location</th>   
+                                            <th>Actions</th>
+                                            <th>Employee Code</th>
+                                            <th>Photo</th>
+                                            <th>Employee Name</th>
+                                            <th>English Name</th>
+                                            <th>Gender</th>
+                                            <th>Marital Status</th>
+                                            <th>Date of Birth</th>
+                                            <th>National</th>
+                                            <th>Military Service</th>
+                                            <th>Passport Number</th>
+                                            <th>Date of Issue</th>
+                                            <th>Date of Expiry</th>
+                                            <th>Place of Issue</th>
+                                            <th>CICN</th>
+                                            <th>Date of Issue</th>
+                                            <th>Place of Issue</th>
+                                            <th>Place of Residence</th>
+                                            <th>Permanent Address</th>
+                                            <th>Health Checkup Date</th>
+                                            <th>Type Contract</th>
+                                            <th>Job Tilte</th>
+                                            <th>Job Category</th>
+                                            <th>Team</th>
+                                            <th>Start Date</th>
+                                            <th>Contract Duration</th>
+                                            <th>End Date</th>
+                                            <th>E-mail</th>
+                                            <th>Country</th>
+                                            <th>Location</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php 
-                                                require_once("../connect.php");
-                                                 $sql = "SELECT
+                                            <?php
+                                            require_once("../connect.php");
+                                            $sql = "SELECT
                                                  tb_employee.employee_id,
                                                  tb_employee.employee_code,
                                                  tb_employee.photo,
@@ -315,76 +338,81 @@
                                                  tb_contract
                                              WHERE
                                                  tb_employee.employee_id = tb_address.employee_id AND tb_employee.employee_id = tb_citizen_identity.employee_id AND tb_employee.employee_id = tb_passport.employee_id AND tb_employee.employee_id = tb_contract.employee_id AND tb_employee.job_title_id = tb_job_title.job_title_id AND tb_employee.job_category_id = tb_job_category.job_category_id AND tb_employee.team_id = tb_team.team_id AND tb_employee.position_id = tb_position.position_id AND tb_employee.country_id = tb_country.country_id AND tb_employee.level_id = tb_level.level_id AND tb_employee.location_id = tb_location.location_id AND tb_contract.type_contract_id = tb_type_contract.type_contract_id;";
-                                                 $result = $conn->query($sql);
-                                                 while ($row = $result->fetch_assoc()) {
-                                                 ?>  
-                                                    <tr>
-                                                        <td>
-                                                            <div class="btn-group ml-auto">
-                                                            <a href="./profile.php?id=<?php echo $row["employee_id"]?>" class="btn btn-sm btn-outline-light"><i class="far fa-edit"></i></a>
-                                                            <a data-toggle="modal" data-target="#exampleModal" data-id="<?php echo $row['employee_id']; ?>" class="btn btn-sm btn-outline-light"><i class="far fa-trash-alt"></i></a>
-                                                            </div>
-                                                        </td>
-                                                        <td><?php echo $row["employee_code"]?></td>
-                                                        <td><?php echo $row["photo"]?></td>
-                                                        <td><?php echo $row["employee_name"]?></td>
-                                                        <td><?php echo $row["english_name"]?></td>
-                                                        <td><?php 
-                                                            if($row["gender"]==1){
-                                                                echo "Male";
-                                                            }else{
-                                                                echo "Female";
-                                                            }
-                                                            ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php 
-                                                                if($row["marital_status"]==1){
-                                                                    echo "Married";
-                                                                }else{
-                                                                    echo "Single";
-                                                                }
-                                                            ?>
-                                                        </td>
-                                                        <td><?php echo $row["date_of_birth"]?></td>
-                                                        <td><?php echo $row["national_name"]?></td>
-                                                        <td>
-                                                            <?php
-                                                                if($row["military_service"]==1){
-                                                                    echo "Done";
-                                                                }else{
-                                                                    echo "No yet";
-                                                                }
-                                                             ?>
-                                                        </td>
-                                                        <td><?php echo $row["pass_number"]?></td>
-                                                        <td><?php echo $row["date_of_issue"]?></td>
-                                                        <td><?php echo $row["date_of_expiry"]?></td>
-                                                        <td><?php echo $row["place_of_issue"]?></td>
-                                                        <td><?php echo $row["cccd_number"]?></td>
-                                                        <td><?php echo $row["date_of_issue_cccd"]?></td>
-                                                        <td><?php echo $row["place_of_issue_cccd"]?></td>
-                                                        <td><?php echo $row["place_of_residence"]?></td>
-                                                        <td><?php echo $row["permanent_address"]?></td>
-                                                        <td><?php echo $row["health_checkup_date"]?></td>                                                        
-                                                        <td><?php echo $row["type_contract_name"]?></td>
+                                            $result = $conn->query($sql);
+                                            while ($row = $result->fetch_assoc()) {
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <div class="btn-group ml-auto">
+                                                        <a href="./profile.php?id=<?php echo $row["employee_id"] ?>"
+                                                            class="btn btn-sm btn-outline-light"><i
+                                                                class="far fa-edit"></i></a>
+                                                        <a data-toggle="modal" data-target="#exampleModal"
+                                                            data-id="<?php echo $row['employee_id']; ?>"
+                                                            class="btn btn-sm btn-outline-light"><i
+                                                                class="far fa-trash-alt"></i></a>
+                                                    </div>
+                                                </td>
+                                                <td><?php echo $row["employee_code"] ?></td>
+                                                <td><?php echo $row["photo"] ?></td>
+                                                <td><?php echo $row["employee_name"] ?></td>
+                                                <td><?php echo $row["english_name"] ?></td>
+                                                <td><?php
+                                                        if ($row["gender"] == 1) {
+                                                            echo "Male";
+                                                        } else {
+                                                            echo "Female";
+                                                        }
+                                                        ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                        if ($row["marital_status"] == 1) {
+                                                            echo "Married";
+                                                        } else {
+                                                            echo "Single";
+                                                        }
+                                                        ?>
+                                                </td>
+                                                <td><?php echo $row["date_of_birth"] ?></td>
+                                                <td><?php echo $row["national_name"] ?></td>
+                                                <td>
+                                                    <?php
+                                                        if ($row["military_service"] == 1) {
+                                                            echo "Done";
+                                                        } else {
+                                                            echo "No yet";
+                                                        }
+                                                        ?>
+                                                </td>
+                                                <td><?php echo $row["pass_number"] ?></td>
+                                                <td><?php echo $row["date_of_issue"] ?></td>
+                                                <td><?php echo $row["date_of_expiry"] ?></td>
+                                                <td><?php echo $row["place_of_issue"] ?></td>
+                                                <td><?php echo $row["cccd_number"] ?></td>
+                                                <td><?php echo $row["date_of_issue_cccd"] ?></td>
+                                                <td><?php echo $row["place_of_issue_cccd"] ?></td>
+                                                <td><?php echo $row["place_of_residence"] ?></td>
+                                                <td><?php echo $row["permanent_address"] ?></td>
+                                                <td><?php echo $row["health_checkup_date"] ?></td>
+                                                <td><?php echo $row["type_contract_name"] ?></td>
 
-                                                        <td><?php echo $row["job_title_name"]?></td>
-                                                        <td><?php echo $row["job_category_name"]?></td>
-                                                        <td><?php echo $row["team_name"]?></td>                                                        
-                                                        <td><?php echo $row["start_date"]?></td>
+                                                <td><?php echo $row["job_title_name"] ?></td>
+                                                <td><?php echo $row["job_category_name"] ?></td>
+                                                <td><?php echo $row["team_name"] ?></td>
+                                                <td><?php echo $row["start_date"] ?></td>
 
-                                                        <td><?php echo $row["contract_duration"]?></td>
-                                                        <td><?php echo $row["end_date"]?></td>
-                                                        <td><?php echo $row["email"]?></td>                                                        
-                                                        <td><?php echo $row["country_name"]?></td>
-                                                        <td><?php echo $row["location_name"]?></td>
+                                                <td><?php echo $row["contract_duration"] ?></td>
+                                                <td><?php echo $row["end_date"] ?></td>
+                                                <td><?php echo $row["email"] ?></td>
+                                                <td><?php echo $row["country_name"] ?></td>
+                                                <td><?php echo $row["location_name"] ?></td>
 
 
 
-                                                    </tr>
-                                                    <?php }?>
-                                                    
+                                            </tr>
+                                            <?php } ?>
+
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -458,60 +486,63 @@
             <!-- ============================================================== -->
         </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this employee?
-                        </div>
-                        <div class="modal-footer">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this employee?
+                    </div>
+                    <div class="modal-footer">
                         <form method="POST" action="delete-employee-handle.php">
-                                <input type="hidden" name="employee_id" id="employeeIdInput">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            </form>
-                        </div>
+                            <input type="hidden" name="employee_id" id="employeeIdInput">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="importModalLabel">Import</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+        </div>
+        <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importModalLabel">Import</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="add-employees-handle.php" enctype="multipart/form-data">
                         <div class="modal-body">
-                                <input type="file"  class="form-control">
+                            <input type="file" name="excel_file" id="excel-file" accept=".xlsx, .xls">
                         </div>
                         <div class="modal-footer">
-                            <form method="POST" action="">
-                                <button type="submit" class="btn btn-danger">Upload</button>
-                                <button type="button" class="btn btn-dark " data-dismiss="modal">Cancel</button>
-                            </form>
+
+                            <button type="submit" class="btn btn-danger">Upload</button>
+                            <button type="button" class="btn btn-dark " data-dismiss="modal">Cancel</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-<script>
-    var deleteButtons = document.querySelectorAll('[data-target="#exampleModal"]');
-    deleteButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            var employeeId = this.getAttribute('data-id');
-            document.getElementById('employeeIdInput').value = employeeId;
+        <script>
+        var deleteButtons = document.querySelectorAll('[data-target="#exampleModal"]');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var employeeId = this.getAttribute('data-id');
+                document.getElementById('employeeIdInput').value = employeeId;
+            });
         });
-    });
-</script>
+        </script>
 
 
     </div>
@@ -539,11 +570,11 @@
     <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
-   
+
 </body>
 
 </html>
 
 <?php
-    session_destroy();
+session_destroy();
 ?>

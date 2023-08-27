@@ -26,7 +26,7 @@
         $JobCategory = $_POST["JobCategory"];//
         $JobTitle = $_POST["JobTitle"];//
         $Team = $_POST["Team"];//
-        $HealthCheckUpDate = formatDateTime($_POST["HealthCheckUpDate"]) ;
+        $HealthCheckUpDate = formatDateTime($_POST["HealthCheckUpDate"]);
         $PassportNumber = $_POST["PassportNumber"];
         $DOIpp = formatDateTime($_POST["DOIpp"]) ;
         $POIpp = $_POST["POIpp"];
@@ -185,66 +185,54 @@
                 $ContractDurationTemp = $cd;
             }
 
-            //Passport
-                $InsertPassport = "INSERT INTO tb_passport(pass_number, date_of_issue, date_of_expiry, place_of_issue) 
-                VALUES ('".$PassportNumber."','".$DOIpp."','".$DOEpp."','".$POIpp."')";
-                mysqli_query ($conn, $InsertPassport);
-            
-            $SelectPassportId = "SELECT pass_id FROM tb_passport WHERE pass_number = '".$PassportNumber."'";
-                $ResultPassportId  = mysqli_query($conn,$SelectPassportId );
-                $RowPassportId  = mysqli_fetch_assoc($ResultPassportId );
-                $PassportId  = $RowPassportId ["pass_id"];
-
-
-            //CICN
-            $InsertCICN = "INSERT INTO tb_citizen_identity(cccd_number, date_of_issue_cccd, place_of_issue_cccd) 
-            VALUES ('".$CICN."','".$DOIcicn."','".$POIcicn."')";
-            mysqli_query ($conn, $InsertCICN);
-
-            $SelectCICNId = "SELECT cccd_id FROM tb_citizen_identity WHERE cccd_number = '".$CICN."'";
-            $ResultCICNId  = mysqli_query($conn,$SelectCICNId );
-            $RowCICNId  = mysqli_fetch_assoc($ResultCICNId );
-            $CICNId  = $RowCICNId ["cccd_id"];
-
-            //Address
-            $InsertAddress = "INSERT INTO tb_address(phone_number, place_of_residence, permanent_address, email) 
-            VALUES ('".$PhoneNumber."','".$PlaceOfResidence."','".$PermanentAddress."','".$Email."')";
-            mysqli_query ($conn, $InsertAddress);
-
-            $SelectAddressId = "SELECT address_id FROM tb_address WHERE phone_number = '".$PhoneNumber."'";
-            $ResultAddressId  = mysqli_query($conn,$SelectAddressId );
-            $RowAddressId  = mysqli_fetch_assoc($ResultAddressId );
-            $AddressId  = $RowAddressId ["address_id"];
             
             //Employee
 
             $InsertEmployee = "INSERT INTO tb_employee(employee_code, photo,
             employee_name, english_name, gender, marital_status, date_of_birth,
             national_name, military_service, team_id, health_checkup_date,
-            job_title_id, job_category_id, position_id, level_id, pass_id,
-            cccd_id, address_id, country_id, location_id) 
+            job_title_id, job_category_id, position_id, level_id, country_id, location_id) 
             VALUES ('".$EmployeeCode."','','".$FullName."','".$EngLishName."',
             '".$Gender."','".$MaritalStatus."','".$DayOfBirth."','".$NationalTemp."','".$MilitaryService."',
             '".$TeamId."','".$HealthCheckUpDate."','".$JobTitleId."','".$JobCategoryId."','".$PositionId."',
-            '".$LevelId."','".$PassportId."','".$CICNId."','".$AddressId."','".$CountryId."','".$LocationId."')";
+            '".$LevelId."','".$CountryId."','".$LocationId."')";
 
-            if(mysqli_query ($conn, $InsertEmployee)){
+            if(mysqli_query ($conn, $InsertEmployee)){  
                 echo "insert thành công";
             }
             else{
                 echo "insert thất vọng";
             }
             echo $InsertEmployee;
-
-            //Contract
             $SelectEmployeeId = "SELECT employee_id  FROM tb_employee WHERE  employee_code = '".$EmployeeCode."'";
             $ResultEmployeeId  = mysqli_query($conn,$SelectEmployeeId );
             $RowEmployeeId  = mysqli_fetch_assoc($ResultEmployeeId );
             $EmployeeId  = $RowEmployeeId ['employee_id'];
 
+            //Passport
+            $InsertPassport = "INSERT INTO tb_passport(pass_number, date_of_issue, date_of_expiry, place_of_issue, employee_id) 
+            VALUES ('".$PassportNumber."','".$DOIpp."','".$DOEpp."','".$POIpp."','".$EmployeeId."')";
+            mysqli_query ($conn, $InsertPassport);
+        
+
+
+            //CICN
+            $InsertCICN = "INSERT INTO tb_citizen_identity(cccd_number, date_of_issue_cccd, place_of_issue_cccd, employee_id) 
+            VALUES ('".$CICN."','".$DOIcicn."','".$POIcicn."','".$EmployeeId."')";
+            mysqli_query ($conn, $InsertCICN);
+
+
+            //Address
+            $InsertAddress = "INSERT INTO tb_address(phone_number, place_of_residence, permanent_address, email, employee_id) 
+            VALUES ('".$PhoneNumber."','".$PlaceOfResidence."','".$PermanentAddress."','".$Email."','".$EmployeeId."')";
+            mysqli_query ($conn, $InsertAddress);
+
+
+            //Contract
             $InsertContract = "INSERT INTO tb_contract(start_date, contract_duration, end_date, type_contract_id, employee_id) 
             VALUES ('".$StartDate."','".$ContractDurationTemp."','".$EndDate."','".$TypeOfContractId."','".$EmployeeId."')";
             mysqli_query ($conn, $InsertContract);
+
 
             //Personal Profile
             $FolderName = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/".$EmployeeCode."/Personal-Profile/";
@@ -293,5 +281,3 @@
         }
 
     }
-            
-?>
