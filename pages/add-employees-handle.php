@@ -39,6 +39,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $spreadsheet = IOFactory::load($targetFile);
     $worksheet = $spreadsheet->getActiveSheet();
     $data = $worksheet->toArray();
+    // $drawing = $worksheet->getDrawingCollection()[$key];
+
+    // $zipReader = fopen($drawing->getPath(), 'r');
+    // $imageContents = '';
+    // while (!feof($zipReader)) {
+    //     $imageContents .= fread($zipReader, 1024);
+    // }
+    // fclose($zipReader);
+    // $extension = $drawing->getExtension();
+
+    // echo '<tr align="center">';
+    // echo '<td>' . $value[0] . '</td>';
+    // echo '<td>' . $value[1] . '</td>';
+    // echo '<td><img  height="150px" width="150px"   src="data:image/jpeg;base64,' . base64_encode($imageContents) . '"/></td>';
+    // echo '</tr>';
+    // exit;
+
+
+
     $firstRow = $data[0]; // Lấy hàng đầu tiên
     $columnCount = count($firstRow); // Số cột là số phần tử trong hàng đầu tiên
     if ($columnCount != 32) {
@@ -223,18 +242,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     <script>
-    document.getElementById("excel-file").addEventListener("change", function(event) {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            const allowedExtensions = ["xlsx", "xls"];
-            const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+        document.getElementById("excel-file").addEventListener("change", function(event) {
+            const selectedFile = event.target.files[0];
+            if (selectedFile) {
+                const allowedExtensions = ["xlsx", "xls"];
+                const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
 
-            if (!allowedExtensions.includes(fileExtension)) {
-                alert("Chỉ chấp nhận file Excel (.xlsx, .xls)");
-                document.getElementById("excel-file").value = "";
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert("Chỉ chấp nhận file Excel (.xlsx, .xls)");
+                    document.getElementById("excel-file").value = "";
+                }
             }
-        }
-    });
+        });
     </script>
 
 </body>
