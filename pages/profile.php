@@ -370,7 +370,7 @@ function formatDate($inputDate)
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right" style="padding-left:70px ;">Date of Birth</label>
                                                         <div class="input-group date col-sm-0 col-lg-3" id="datetimepicker46" data-target-input="nearest">
-                                                            <input type="text" style="  width:150px" value="<?php echo $date_of_birth; ?>" name="DateofBirth" class="form-control datetimepicker-input" data-target="#datetimepicker46" />
+                                                            <input placeholder="mm/dd/yyyy" type="text" style="  width:150px" value="<?php echo $date_of_birth; ?>" name="DateofBirth" class="form-control datetimepicker-input" data-target="#datetimepicker46" placeholder="mm/dd/yyyy" />
                                                             <div class="input-group-append" data-target="#datetimepicker46" data-toggle="datetimepicker">
                                                                 <div class="input-group-text">
                                                                     <i class="far fa-calendar-alt"></i>
@@ -429,7 +429,7 @@ function formatDate($inputDate)
                                                                 of
                                                                 Issue</label>
                                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker44" data-target-input="nearest">
-                                                                <input type="text" class="form-control datetimepicker-input" value="<?php echo $date_of_issue ?>" name="DateofIssue_pass" data-target="#datetimepicker44" />
+                                                                <input placeholder="mm/dd/yyyy" type="text" class="form-control datetimepicker-input" value="<?php echo $date_of_issue ?>" name="DateofIssue_pass" data-target="#datetimepicker44" />
                                                                 <div class="input-group-append" data-target="#datetimepicker44" data-toggle="datetimepicker">
                                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                     </div>
@@ -447,7 +447,7 @@ function formatDate($inputDate)
                                                                 of
                                                                 Expiry</label>
                                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker45" data-target-input="nearest">
-                                                                <input type="text" name="DateofExpiry_pass" value="<?php echo $date_of_expiry ?>" class="form-control datetimepicker-input" data-target="#datetimepicker45" />
+                                                                <input placeholder="mm/dd/yyyy" type="text" name="DateofExpiry_pass" value="<?php echo $date_of_expiry ?>" class="form-control datetimepicker-input" data-target="#datetimepicker45" />
                                                                 <div class="input-group-append" data-target="#datetimepicker45" data-toggle="datetimepicker">
                                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                     </div>
@@ -467,7 +467,7 @@ function formatDate($inputDate)
                                                                 of
                                                                 Issue</label>
                                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker47" data-target-input="nearest">
-                                                                <input type="text" value="<?php echo $date_of_issue_cccd ?>" name="DateofIssue_cicn" class="form-control datetimepicker-input" data-target="#datetimepicker47" />
+                                                                <input placeholder="mm/dd/yyyy" type="text" value="<?php echo $date_of_issue_cccd ?>" name="DateofIssue_cicn" class="form-control datetimepicker-input" data-target="#datetimepicker47" />
                                                                 <div class="input-group-append" data-target="#datetimepicker47" data-toggle="datetimepicker">
                                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                     </div>
@@ -503,7 +503,7 @@ function formatDate($inputDate)
                                                             Check-up
                                                             Date</label>
                                                         <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker43" data-target-input="nearest">
-                                                            <input type="text" name="Health" value="<?php echo $health_checkup_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker43" />
+                                                            <input placeholder="mm/dd/yyyy" type="text" name="Health" value="<?php echo $health_checkup_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker43" />
                                                             <div class="input-group-append" data-target="#datetimepicker43" data-toggle="datetimepicker">
                                                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                 </div>
@@ -594,7 +594,7 @@ function formatDate($inputDate)
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Start
                                                             Date</label>
                                                         <div class="input-group date col-sm-1 col-lg-5" id="datetimepicker48" data-target-input="nearest">
-                                                            <input type="text" name="Startdate" value="<?php echo $start_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker48" />
+                                                            <input placeholder="mm/dd/yyyy" type="text" name="Startdate" value="<?php echo $start_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker48" />
                                                             <div class="input-group-append" data-target="#datetimepicker48" data-toggle="datetimepicker">
                                                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                 </div>
@@ -638,7 +638,7 @@ function formatDate($inputDate)
                                                         <label class="col-12 col-sm-1 col-form-label text-sm-left">End
                                                             Date</label>
                                                         <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker49" data-target-input="nearest">
-                                                            <input type="text" name="EndDate" value="<?php echo $end_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker49" />
+                                                            <input placeholder="mm/dd/yyyy" type="text" name="EndDate" value="<?php echo $end_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker49" />
                                                             <div class="input-group-append" data-target="#datetimepicker49" data-toggle="datetimepicker">
                                                                 <div class="input-group-text">
                                                                     <i class="far fa-calendar-alt"></i>

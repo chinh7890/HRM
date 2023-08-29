@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../login-handle.php';
+require_once './404.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -182,7 +183,7 @@ require_once '../login-handle.php';
                                 </div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                <a class="dropdown-item" href="./logout.php"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -495,10 +496,16 @@ require_once '../login-handle.php';
                     </div>
                     <div class="modal-footer">
                         <form method="POST" action="delete-employee-handle.php">
+                                <input type="hidden" name="employee_id" id="employeeIdInput">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                            </form>
+                        <!-- </div>
                             <input type="hidden" name="employee_id" id="employeeIdInput">
                             <button type="submit" class="btn btn-danger">Delete</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        </form>
+                        </form> -->
+
                     </div>
                 </div>
             </div>
@@ -568,5 +575,5 @@ require_once '../login-handle.php';
 </html>
 
 <?php
-session_destroy();
+    // session_destroy();
 ?>

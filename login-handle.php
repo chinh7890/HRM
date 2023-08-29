@@ -1,14 +1,9 @@
 <?php
 require_once 'connect.php';
-// $conn = mysqli_connect("localhost", "root", "", "hrm_database");
 
-// if (!$conn) 
-//     {
-//     die("Không thể kết nối đến cơ sở dữ liệu: " . mysqli_connect_error());
-//     }
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
-    $password = $_POST['password']; // Mã hoá mật khẩu thành MD5
+    $password = $_POST['password']; 
     $sql = "SELECT * FROM tb_admin WHERE username='" . $username . "' AND password='" . $password . "'";
     // echo $sql;
     // exit();
@@ -25,6 +20,7 @@ if (isset($_POST['submit'])) {
             }
             session_start();
             $_SESSION['username'] = $username;
+            $_SESSION['loggedin'] = true;
             header('location: ./index.php');
         }
         else {
@@ -38,7 +34,8 @@ if (isset($_POST['submit'])) {
         }
         
     } 
-    else {      
+    else { 
+             
     }
 }
 ?>

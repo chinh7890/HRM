@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once "../connect.php";
-
 require '../phpspreadsheet/vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -56,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $firstRow = $data[0]; // Lấy hàng đầu tiên
     $columnCount = count($firstRow); // Số cột là số phần tử trong hàng đầu tiên
-    if ($columnCount != 32) {
+    if ($columnCount != 31) {
         $_SESSION["error-import"] = "1";
         header("Location: list-employee.php");
     } else {
@@ -127,7 +126,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Thư mục đã tồn tại: $FolderNamePersonalProfile";
             }
-
             //Level
             $SelectLevelId = "SELECT level_id FROM tb_level WHERE level_name = '" . $Level . "'";
             $ResultLevelId = mysqli_query($conn, $SelectLevelId);
@@ -152,11 +150,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $ResultPositionId  = mysqli_query($conn, $SelectPositionId);
             $RowPositionId  = mysqli_fetch_assoc($ResultPositionId);
             $PositionId  = $RowPositionId["position_id"];
-
-            // $SelectPositionId = "SELECT position_id FROM tb_position WHERE position_name = '".$PositionTemp."'";
-            // $ResultPositionId  = mysqli_query($conn,$SelectPositionId );
-            // $RowPositionId  = mysqli_fetch_assoc($ResultPositionId );
-            // $PositionId  = $RowPositionId ["position_id"];
 
             //Job Category
             $SelectJobCategoryId = "SELECT job_category_id FROM tb_job_category WHERE job_category_name = '" . $JobCategory . "'";
