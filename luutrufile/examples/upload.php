@@ -1,5 +1,5 @@
 <?php
-require_once "./connect.php";
+require_once "../../connect.php";
 session_start();
 if (isset($_GET['id']) && isset($_GET['action']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_GET['id'];
@@ -120,4 +120,3 @@ if (isset($_GET['id']) && isset($_GET['action']) && $_SERVER["REQUEST_METHOD"] =
     }
 }
 header("location: ../../pages/upload-file.php?id=$id");
-?>

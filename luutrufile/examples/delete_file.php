@@ -1,6 +1,6 @@
 <?php
 // Kết nối tới cơ sở dữ liệu hoặc bất kỳ thao tác cần thiết khác
-require_once "./connect.php";
+require_once "../../connect.php";
 if (isset($_POST["filename"]) && isset($_POST["employee_code"])&& isset($_POST["id"]) && isset($_GET['action'])) {
     if($_GET['action']=='PersonalProfile'){
         $filename = $_POST["filename"];
