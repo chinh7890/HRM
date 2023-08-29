@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $targetDirectory = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/phpspreadsheet/files/"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
+    $targetDirectory = "../phpspreadsheet/files/"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
     $targetFile = $targetDirectory . basename($_FILES["excel_file"]["name"]);
     $uploadOk = 1;
     $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
