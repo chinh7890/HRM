@@ -1,35 +1,41 @@
 <?php
 // Kết nối cơ sở dữ liệu MySQL
 require_once "../connect.php";
-// Sử dụng thư viện PhpSpreadsheet để đọc tệp Excel
-// Sử dụng thư viện PhpSpreadsheet để đọc tệp Excel
-require 'vendor/autoload.php';
+
+require 'vendor/autoload.php'; // Đường dẫn đến file autoload.php của PhpSpreadsheet
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-$excelFile = './test.xlsx';
+$spreadsheet = IOFactory::load('E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/phpspreadsheet/files/Employee List.xlsx'); // Đường dẫn tới file Excel của bạn
 
-$spreadsheet = IOFactory::load($excelFile);
-$worksheet = $spreadsheet->getActiveSheet();
-$data = $worksheet->toArray();
-print_r($data);
-$skipFirstRow = true; // Bỏ qua dòng đầu
-foreach ($data as $row) {
-    if ($skipFirstRow) {
-        $skipFirstRow = false;
-        continue; // Bỏ qua dòng đầu và chuyển sang dòng tiếp theo
-    }
-    
-    $column0 = $row[0];
-    $column1 = $row[1];
-    $column2 = $row[2];
-    $column3 = $row[3];
+// Lấy danh sách các hình ảnh có trong file Excel
+$images = $spreadsheet->getSheet(0)->getDrawingCollection();
+foreach ($images as $image) {
+    if ($image instanceof PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing) {
+        ob_start();
+        call_user_func($image->getRenderingFunction(), $image->getImageResource());
+        $imageData = ob_get_contents();
+        ob_end_clean();
+        $base64 = 'data:' . $image->getMimeType() . ';base64,' . base64_encode($imageData);
 
-    $sql = "INSERT INTO `tb_address`( `phone_number`, `place_of_residence`, `permanent_address`, `email`) 
-              VALUES ('$column0',' $column1 ',' $column2 ',' $column3')";
-    if ($conn->query($sql) !== TRUE) {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        // $base64 chứa dữ liệu ảnh dưới định dạng base64, bạn có thể sử dụng nó theo nhu cầu
+
     }
+?>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <?php echo '<img src="' . $base64 . '" alt="Excel Image">'; ?>
+    </body>
+
+    </html>
+<?php
 }
-
-
 ?>
