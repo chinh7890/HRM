@@ -423,7 +423,7 @@ function formatDate($inputDate)
                                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Passport
                                                                 Number</label>
                                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                                <input type="text" name="PassportNumber" value="<?php echo $pass_number ?>" required="" class="form-control">
+                                                                <input type="text" name="PassportNumber" value="<?php echo $pass_number ?>" class="form-control">
                                                             </div>
                                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date
                                                                 of
@@ -441,7 +441,7 @@ function formatDate($inputDate)
                                                                 of
                                                                 Issue</label>
                                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                                <input type="text" required="" name="PlaceofIssue_pass" value="<?php echo $place_of_issue ?>" class="form-control">
+                                                                <input type="text" name="PlaceofIssue_pass" value="<?php echo $place_of_issue ?>" class="form-control">
                                                             </div>
                                                             <label class="col-12 col-sm-1 col-form-label text-sm-left">Date
                                                                 of
@@ -686,7 +686,7 @@ function formatDate($inputDate)
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Personal
                                                             Profile, Certificate</label>
                                                         <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                            <a href="./upload-file.php?id=<?php echo $id?>" class="btn btn-outline-primary">See more</a>
+                                                            <a href="./upload-file.php?id=<?php echo $id ?>" class="btn btn-outline-primary">See more</a>
                                                         </div>
                                                     </div>
                                                 </div>
