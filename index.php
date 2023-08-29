@@ -1,6 +1,6 @@
 <?php require_once 'connect.php';
 require_once 'login-handle.php';
-include ('./pages/404.php');
+// include ('./pages/404.php');
 session_start();
 
 ?>
