@@ -104,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $Email = $row[28];
             $Country = $row[29];
             $Location = $row[30];
+
             $FolderNamePhoto = "../assets/files/" . $EmployeeCode . "/Photo/";
             if (!file_exists($FolderNamePhoto)) {
                 mkdir($FolderNamePhoto, 0777, true);
@@ -207,6 +208,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
                     '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
                     '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
+            echo $InsertEmployee;
+            exit;
             if (mysqli_query($conn, $InsertEmployee)) {
                 echo "insert thành công";
 
