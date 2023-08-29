@@ -112,9 +112,6 @@ function formatDate($inputDate)
         return "Invalid date format";
     }
 }
-
-session_start();
-
 ?>
 <!doctype html>
 <html lang="en">

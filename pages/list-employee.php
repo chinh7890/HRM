@@ -56,10 +56,15 @@ td:nth-child(27),
 th:nth-child(27) {
     display: none;
 }
-
+/* Ẩn các nút Copy, Print, Excel và ColVis */
 .dataTables_wrapper .dt-buttons .buttons-pdf,
-.dataTables_wrapper .dt-buttons .buttons-print {
+.dataTables_wrapper .dt-buttons .buttons-print,
+.dataTables_wrapper .dt-buttons .buttons-excel,
+.dataTables_wrapper .dt-buttons .buttons-colvis {
     display: none;
+}
+.import:hover{
+    color: #e6e6f2;
 }
 </style>
 
@@ -246,9 +251,9 @@ th:nth-child(27) {
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-body">
-                                <a href="./add-employee.php" class="btn btn-outline-primary" id="btn">+ Add</a>
-                                <a data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary"
-                                    id="btn">+ Import</a>
+                                <a href="./add-employee.php" class="btn btn-outline-primary" >+ Add</a>
+                                <a href="" data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary "  ><i class="fas fa-file"></i> Import</a>
+                                <a href="./export-excel.php" class="btn btn-outline-primary" ><i class=" fas fa-arrow-down"></i> Export</a>
                                 <div class="table-responsive ">
                                     <table id="example" class="table table-striped table-bordered second"
                                         style="width:100%">

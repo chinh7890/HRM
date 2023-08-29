@@ -42,7 +42,7 @@ if (isset($_POST['add'])) {
 
 
     //Photo
-    $FolderName = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Photo/";
+    $FolderName = "../assets/files/" . $EmployeeCode . "/Photo/";
     if (!file_exists($FolderName)) {
         mkdir($FolderName, 0777, true);
         echo "Thư mục đã được tạo: $FolderName";
@@ -243,7 +243,7 @@ if (isset($_POST['add'])) {
 
 
         //Personal Profile
-        $FolderName = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Personal-Profile/";
+        $FolderName = "../assets/files/" . $EmployeeCode . "/Personal-Profile/";
         if (!file_exists($FolderName)) {
             mkdir($FolderName, 0777, true);
             echo "Thư mục đã được tạo: $FolderName";
@@ -264,7 +264,7 @@ if (isset($_POST['add'])) {
         }
 
         //Certificate
-        $FolderName = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Certificate/";
+        $FolderName = "../assets/files/" . $EmployeeCode . "/Certificate/";
         if (!file_exists($FolderName)) {
             mkdir($FolderName, 0777, true);
             echo "Thư mục đã được tạo: $FolderName";

@@ -2,10 +2,6 @@
 session_start();
 require_once "../connect.php";
 
-
-
-
-
 require '../phpspreadsheet/vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -13,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $targetDirectory = "../phpspreadsheet/files"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
+    $targetDirectory = "C:/wamp/www/hrm/phpspreadsheet/files"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
     $targetFile = $targetDirectory . basename($_FILES["excel_file"]["name"]);
     $uploadOk = 1;
     $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -108,8 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $Email = $row[28];
             $Country = $row[29];
             $Location = $row[30];
-
-            $FolderNamePhoto = "../assets/files/" . $EmployeeCode . "/Photo/";
+            $FolderNamePhoto = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Photo/";
             if (!file_exists($FolderNamePhoto)) {
                 mkdir($FolderNamePhoto, 0777, true);
                 echo "Thư mục đã được tạo: $FolderNamePhoto";
@@ -203,15 +198,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $MilitaryService = 0;
             }
 
-            $InsertEmployee = "INSERT INTO tb_employee(employee_code,
+            $InsertEmployee = "INSERT INTO tb_employee(employee_code, photo,
                 employee_name, english_name, gender, marital_status, date_of_birth,
                 national_name, military_service, team_id, health_checkup_date,
                 job_title_id, job_category_id, position_id, level_id, country_id, location_id) 
-            VALUES ('" . $EmployeeCode . "','" . $EmployeeName . "','" . $EnglishName . "',
+            VALUES ('" . $EmployeeCode . "','','" . $EmployeeName . "','" . $EnglishName . "',
                     '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
                     '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
                     '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
-                    echo $InsertEmployee;exit;
+                    
             if (mysqli_query($conn, $InsertEmployee)) {
                 echo "insert thành công";
 
