@@ -28,7 +28,8 @@ if (isset($_POST['employee_id'])) {
     header("location: list-employee.php");
 }
 
-function deleteDirectory($dir) {
+function deleteDirectory($dir)
+{
     if (!is_dir($dir)) {
         return false;
     }
@@ -44,4 +45,3 @@ function deleteDirectory($dir) {
 
     return rmdir($dir);
 }
-?>
