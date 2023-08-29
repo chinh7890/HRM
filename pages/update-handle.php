@@ -43,7 +43,7 @@ if (isset($_GET["id"])) {
        $Country = $_POST["Country"]; //
        $Location = $_POST["location"]; //
 
-       $FolderName = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Photo/";
+       $FolderName = "../assets/files/" . $EmployeeCode . "/Photo/";
        $oldImageFilePath = $FolderName . $_SESSION["old_photo"];
 
        //Photo

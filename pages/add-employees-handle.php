@@ -2,10 +2,6 @@
 session_start();
 require_once "../connect.php";
 
-
-
-
-
 require '../phpspreadsheet/vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -108,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $Email = $row[28];
             $Country = $row[29];
             $Location = $row[30];
-            $FolderNamePhoto = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Photo/";
+            $FolderNamePhoto = "../assets/files/" . $EmployeeCode . "/Photo/";
             if (!file_exists($FolderNamePhoto)) {
                 mkdir($FolderNamePhoto, 0777, true);
                 echo "Thư mục đã được tạo: $FolderNamePhoto";
@@ -116,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Thư mục đã tồn tại: $FolderNamePhoto";
             }
 
-            $FolderNameCertificate = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Certificate/";
+            $FolderNameCertificate = "../assets/files/" . $EmployeeCode . "/Certificate/";
             if (!file_exists($FolderNameCertificate)) {
                 mkdir($FolderNameCertificate, 0777, true);
                 echo "Thư mục đã được tạo: $FolderNameCertificate";
@@ -124,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Thư mục đã tồn tại: $FolderNameCertificate";
             }
 
-            $FolderNamePersonalProfile = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/PersonalProfile/";
+            $FolderNamePersonalProfile = "../assets/files/" . $EmployeeCode . "/PersonalProfile/";
             if (!file_exists($FolderNamePersonalProfile)) {
                 mkdir($FolderNamePersonalProfile, 0777, true);
                 echo "Thư mục đã được tạo: $FolderNamePersonalProfile";
@@ -203,11 +199,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $MilitaryService = 0;
             }
 
-            $InsertEmployee = "INSERT INTO tb_employee(employee_code,
+            $InsertEmployee = "INSERT INTO tb_employee(employee_code, photo,
                 employee_name, english_name, gender, marital_status, date_of_birth,
                 national_name, military_service, team_id, health_checkup_date,
                 job_title_id, job_category_id, position_id, level_id, country_id, location_id) 
-            VALUES ('" . $EmployeeCode . "','" . $EmployeeName . "','" . $EnglishName . "',
+            VALUES ('" . $EmployeeCode . "','','" . $EmployeeName . "','" . $EnglishName . "',
                     '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
                     '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
                     '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";

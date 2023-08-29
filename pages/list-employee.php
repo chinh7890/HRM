@@ -252,8 +252,8 @@ th:nth-child(27) {
                         <div class="card">
                             <div class="card-body">
                                 <a href="./add-employee.php" class="btn btn-outline-primary" >+ Add</a>
-                                <a href="" data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary " >+ Import</a>
-                                <a href="./export-excel.php" class="btn btn-outline-primary" >Export</a>
+                                <a href="" data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary "  ><i class="fas fa-file"></i> Import</a>
+                                <a href="./export-excel.php" class="btn btn-outline-primary" ><i class=" fas fa-arrow-down"></i> Export</a>
                                 <div class="table-responsive ">
                                     <table id="example" class="table table-striped table-bordered second"
                                         style="width:100%">
