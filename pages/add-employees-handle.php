@@ -257,8 +257,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-
-
     <script>
         document.getElementById("excel-file").addEventListener("change", function(event) {
             const selectedFile = event.target.files[0];
