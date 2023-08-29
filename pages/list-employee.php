@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../login-handle.php';
+require_once './404.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,48 +25,50 @@ require_once '../login-handle.php';
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 </head>
 <style>
-#btn {
-    margin-bottom: 10px;
-    border: #e6e6f2 solid 0.1px;
-}
+    #btn {
+        margin-bottom: 10px;
+        border: #e6e6f2 solid 0.1px;
+    }
 
-th {
-    text-align: center;
-}
+    th {
+        text-align: center;
+    }
 
-/* Hide the second column */
-td:nth-child(3),
-th:nth-child(3),
-td:nth-child(5),
-th:nth-child(5),
-td:nth-child(12),
-th:nth-child(12),
-td:nth-child(13),
-th:nth-child(13),
-td:nth-child(14),
-th:nth-child(14),
-td:nth-child(16),
-th:nth-child(16),
-td:nth-child(17),
-th:nth-child(17),
-td:nth-child(25),
-th:nth-child(25),
-td:nth-child(26),
-th:nth-child(26),
-td:nth-child(27),
-th:nth-child(27) {
-    display: none;
-}
-/* Ẩn các nút Copy, Print, Excel và ColVis */
-.dataTables_wrapper .dt-buttons .buttons-pdf,
-.dataTables_wrapper .dt-buttons .buttons-print,
-.dataTables_wrapper .dt-buttons .buttons-excel,
-.dataTables_wrapper .dt-buttons .buttons-colvis {
-    display: none;
-}
-.import:hover{
-    color: #e6e6f2;
-}
+    /* Hide the second column */
+    td:nth-child(3),
+    th:nth-child(3),
+    td:nth-child(5),
+    th:nth-child(5),
+    td:nth-child(12),
+    th:nth-child(12),
+    td:nth-child(13),
+    th:nth-child(13),
+    td:nth-child(14),
+    th:nth-child(14),
+    td:nth-child(16),
+    th:nth-child(16),
+    td:nth-child(17),
+    th:nth-child(17),
+    td:nth-child(25),
+    th:nth-child(25),
+    td:nth-child(26),
+    th:nth-child(26),
+    td:nth-child(27),
+    th:nth-child(27) {
+        display: none;
+    }
+
+    /* Ẩn các nút Copy, Print, Excel và ColVis */
+    .dataTables_wrapper .dt-buttons .buttons-pdf,
+    .dataTables_wrapper .dt-buttons .buttons-print,
+    .dataTables_wrapper .dt-buttons .buttons-excel,
+    .dataTables_wrapper .dt-buttons .buttons-colvis {
+        display: none;
+    }
+
+    .import:hover {
+        color: #e6e6f2;
+    }
 </style>
 
 </head>
@@ -95,9 +98,7 @@ th:nth-child(27) {
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
                 <a class="navbar-brand" href="../index.php">Ventech</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
@@ -170,12 +171,8 @@ th:nth-child(27) {
                         </li> -->
 
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="../assets/images/avatar-1.jpg" alt=""
-                                    class="user-avatar-md rounded-circle"></a>
-                            <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
-                                aria-labelledby="navbarDropdownMenuLink2">
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
+                            <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
                                     <?php
                                     if (isset($_SESSION['username'])) {
@@ -204,8 +201,7 @@ th:nth-child(27) {
                 <nav class="navbar navbar-expand-lg navbar-light">
 
                     <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
@@ -251,12 +247,11 @@ th:nth-child(27) {
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-body">
-                                <a href="./add-employee.php" class="btn btn-outline-primary" >+ Add</a>
-                                <a href="" data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary "  ><i class="fas fa-file"></i> Import</a>
-                                <a href="./export-excel.php" class="btn btn-outline-primary" ><i class=" fas fa-arrow-down"></i> Export</a>
+                                <a href="./add-employee.php" class="btn btn-outline-primary">+ Add</a>
+                                <a href="" data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary "><i class="fas fa-file"></i> Import</a>
+                                <a href="./export-excel.php" class="btn btn-outline-primary"><i class=" fas fa-arrow-down"></i> Export</a>
                                 <div class="table-responsive ">
-                                    <table id="example" class="table table-striped table-bordered second"
-                                        style="width:100%">
+                                    <table id="example" class="table table-striped table-bordered second" style="width:100%">
                                         <thead>
                                             <th>Actions</th>
                                             <th>Employee Code</th>
@@ -346,76 +341,71 @@ th:nth-child(27) {
                                             $result = $conn->query($sql);
                                             while ($row = $result->fetch_assoc()) {
                                             ?>
-                                            <tr>
-                                                <td>
-                                                    <div class="btn-group ml-auto">
-                                                        <a href="./profile.php?id=<?php echo $row["employee_id"] ?>"
-                                                            class="btn btn-sm btn-outline-light"><i
-                                                                class="far fa-edit"></i></a>
-                                                        <a data-toggle="modal" data-target="#exampleModal"
-                                                            data-id="<?php echo $row['employee_id']; ?>"
-                                                            class="btn btn-sm btn-outline-light"><i
-                                                                class="far fa-trash-alt"></i></a>
-                                                    </div>
-                                                </td>
-                                                <td><?php echo $row["employee_code"] ?></td>
-                                                <td><?php echo $row["photo"] ?></td>
-                                                <td><?php echo $row["employee_name"] ?></td>
-                                                <td><?php echo $row["english_name"] ?></td>
-                                                <td><?php
+                                                <tr>
+                                                    <td>
+                                                        <div class="btn-group ml-auto">
+                                                            <a href="./profile.php?id=<?php echo $row["employee_id"] ?>" class="btn btn-sm btn-outline-light"><i class="far fa-edit"></i></a>
+                                                            <a data-toggle="modal" data-target="#exampleModal" data-id="<?php echo $row['employee_id']; ?>" class="btn btn-sm btn-outline-light"><i class="far fa-trash-alt"></i></a>
+                                                        </div>
+                                                    </td>
+                                                    <td><?php echo $row["employee_code"] ?></td>
+                                                    <td><?php echo $row["photo"] ?></td>
+                                                    <td><?php echo $row["employee_name"] ?></td>
+                                                    <td><?php echo $row["english_name"] ?></td>
+                                                    <td><?php
                                                         if ($row["gender"] == 1) {
                                                             echo "Male";
                                                         } else {
                                                             echo "Female";
                                                         }
                                                         ?>
-                                                </td>
-                                                <td>
-                                                    <?php
+                                                    </td>
+                                                    <td>
+                                                        <?php
                                                         if ($row["marital_status"] == 1) {
                                                             echo "Married";
                                                         } else {
                                                             echo "Single";
                                                         }
                                                         ?>
-                                                </td>
-                                                <td><?php echo $row["date_of_birth"] ?></td>
-                                                <td><?php echo $row["national_name"] ?></td>
-                                                <td>
-                                                    <?php
+                                                    </td>
+                                                    <td><?php echo $row["date_of_birth"] ?></td>
+                                                    <td><?php echo $row["national_name"] ?></td>
+                                                    <td>
+                                                        <?php
                                                         if ($row["military_service"] == 1) {
                                                             echo "Done";
                                                         } else {
                                                             echo "No yet";
                                                         }
                                                         ?>
-                                                </td>
-                                                <td><?php echo $row["pass_number"] ?></td>
-                                                <td><?php echo $row["date_of_issue"] ?></td>
-                                                <td><?php echo $row["date_of_expiry"] ?></td>
-                                                <td><?php echo $row["place_of_issue"] ?></td>
-                                                <td><?php echo $row["cccd_number"] ?></td>
-                                                <td><?php echo $row["date_of_issue_cccd"] ?></td>
-                                                <td><?php echo $row["place_of_issue_cccd"] ?></td>
-                                                <td><?php echo $row["place_of_residence"] ?></td>
-                                                <td><?php echo $row["permanent_address"] ?></td>
-                                                <td><?php echo $row["health_checkup_date"] ?></td>
-                                                <td><?php echo $row["type_contract_name"] ?></td>
+                                                    </td>
+                                                    <td><?php echo $row["pass_number"] ?></td>
+                                                    <td><?php echo $row["date_of_issue"] ?></td>
+                                                    <td><?php echo $row["date_of_expiry"] ?></td>
+                                                    <td><?php echo $row["place_of_issue"] ?></td>
+                                                    <td><?php echo $row["cccd_number"] ?></td>
+                                                    <td><?php echo $row["date_of_issue_cccd"] ?></td>
+                                                    <td><?php echo $row["place_of_issue_cccd"] ?></td>
+                                                    <td><?php echo $row["place_of_residence"] ?></td>
+                                                    <td><?php echo $row["permanent_address"] ?></td>
+                                                    <td><?php echo $row["health_checkup_date"] ?></td>
+                                                    <td><?php echo $row["type_contract_name"] ?></td>
 
-                                                <td><?php echo $row["job_title_name"] ?></td>
-                                                <td><?php echo $row["job_category_name"] ?></td>
-                                                <td><?php echo $row["team_name"] ?></td>
-                                                <td><?php echo $row["start_date"] ?></td>
+                                                    <td><?php echo $row["job_title_name"] ?></td>
+                                                    <td><?php echo $row["job_category_name"] ?></td>
+                                                    <td><?php echo $row["team_name"] ?></td>
+                                                    <td><?php echo $row["start_date"] ?></td>
 
-                                                <td><?php echo $row["contract_duration"] ?></td>
-                                                <td><?php echo $row["end_date"] ?></td>
-                                                <td><?php echo $row["email"] ?></td>
-                                                <td><?php echo $row["country_name"] ?></td>
-                                                <td><?php echo $row["location_name"] ?></td>
+                                                    <td><?php echo $row["contract_duration"] ?></td>
+                                                    <td><?php echo $row["end_date"] ?></td>
+                                                    <td><?php echo $row["email"] ?></td>
+                                                    <td><?php echo $row["country_name"] ?></td>
+                                                    <td><?php echo $row["location_name"] ?></td>
 
 
 
-                                            </tr>
+                                                </tr>
                                             <?php } ?>
 
                                         </tbody>
@@ -492,8 +482,7 @@ th:nth-child(27) {
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -511,18 +500,17 @@ th:nth-child(27) {
                                 <button type="submit" class="btn btn-danger">Delete</button>
                                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
                             </form>
-                        </div>
+                        <!-- </div>
                             <input type="hidden" name="employee_id" id="employeeIdInput">
                             <button type="submit" class="btn btn-danger">Delete</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        </form>
+                        </form> -->
 
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -546,13 +534,13 @@ th:nth-child(27) {
         </div>
 
         <script>
-        var deleteButtons = document.querySelectorAll('[data-target="#exampleModal"]');
-        deleteButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var employeeId = this.getAttribute('data-id');
-                document.getElementById('employeeIdInput').value = employeeId;
+            var deleteButtons = document.querySelectorAll('[data-target="#exampleModal"]');
+            deleteButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var employeeId = this.getAttribute('data-id');
+                    document.getElementById('employeeIdInput').value = employeeId;
+                });
             });
-        });
         </script>
 
 

@@ -1,8 +1,10 @@
 <?php require_once 'connect.php';
 require_once 'login-handle.php';
-// include ('./pages/404.php');
 session_start();
-
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('location: ./login.php');
+    exit;
+}
 ?>
 
 <!doctype html>

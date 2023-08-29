@@ -10,4 +10,3 @@
         die("Kết nối thất vọng: " . $conn->connect_error);
     }
     // echo "Kết nối thành công";
-?>

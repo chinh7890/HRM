@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once "../connect.php";
-
+require_once './404.php';
 $ErrorStatus = 0;
 if (
     isset($_SESSION["Error-EmployeeCode"]) ||

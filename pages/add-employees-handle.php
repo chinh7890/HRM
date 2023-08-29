@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once "../connect.php";
-
 require '../phpspreadsheet/vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -9,7 +8,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $targetDirectory = "C:/wamp/www/hrm/phpspreadsheet/files"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
+    $targetDirectory = "../phpspreadsheet/files"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
     $targetFile = $targetDirectory . basename($_FILES["excel_file"]["name"]);
     $uploadOk = 1;
     $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -57,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstRow = $data[0]; // Lấy hàng đầu tiên
     $columnCount = count($firstRow); // Số cột là số phần tử trong hàng đầu tiên
     if ($columnCount != 31) {
-        $_SESSION["error-import"] = "1";exit;
+        $_SESSION["error-import"] = "1";
         header("Location: list-employee.php");
     } else {
         $skipFirstRow = true; // Bỏ qua dòng đầu
@@ -66,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $skipFirstRow = false;
                 continue; // Bỏ qua dòng đầu và chuyển sang dòng tiếp theo
             }
-            "Employee Code	Employee Name	English Name	Gender	Marital Status	Date of Birth	
+            "Employee Code	Photo	Employee Name	English Name	Gender	Marital Status	Date of Birth	
             National	Military Service	Passport Number	Date of Issue	Date of Expiry	Place of Issue	
             CICN	Date of Issue	Place of Issue	Place of Residence	Permanent Address	Health Checkup Date	
             Type Contract	Job Tilte	Job Category	Team Position Level	Start Date	Contract Duration	End Date	
@@ -257,8 +256,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-
-
     <script>
         document.getElementById("excel-file").addEventListener("change", function(event) {
             const selectedFile = event.target.files[0];

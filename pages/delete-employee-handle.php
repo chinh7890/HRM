@@ -15,7 +15,7 @@ if (isset($_POST['employee_id'])) {
         $res = mysqli_query($conn, $sql);
 
 
-        $folderPath = "C:/wamp/www/hrm/assets/files/" . $employeeCode; // Đường dẫn tới thư mục
+        $folderPath = "../assets/files/" . $employeeCode; // Đường dẫn tới thư mục
         if (is_dir($folderPath)) {
             deleteDirectory($folderPath); // Gọi hàm xoá thư mục và thư mục con
         }

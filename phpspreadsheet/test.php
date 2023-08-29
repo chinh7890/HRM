@@ -6,7 +6,7 @@ require 'vendor/autoload.php'; // Đường dẫn đến file autoload.php của
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-$spreadsheet = IOFactory::load('E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/phpspreadsheet/files/Employee List.xlsx'); // Đường dẫn tới file Excel của bạn
+$spreadsheet = IOFactory::load('../phpspreadsheet/files/Employee List.xlsx'); // Đường dẫn tới file Excel của bạn
 
 // Lấy danh sách các hình ảnh có trong file Excel
 $images = $spreadsheet->getSheet(0)->getDrawingCollection();
