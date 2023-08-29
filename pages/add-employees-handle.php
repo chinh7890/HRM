@@ -8,7 +8,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $targetDirectory = "../phpspreadsheet/files"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
+    $targetDirectory = "../phpspreadsheet/files/"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
     $targetFile = $targetDirectory . basename($_FILES["excel_file"]["name"]);
     $uploadOk = 1;
     $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $Email = $row[28];
             $Country = $row[29];
             $Location = $row[30];
-            $FolderNamePhoto = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Photo/";
+            $FolderNamePhoto = "../assets/files/" . $EmployeeCode . "/Photo/";
             if (!file_exists($FolderNamePhoto)) {
                 mkdir($FolderNamePhoto, 0777, true);
                 echo "Thư mục đã được tạo: $FolderNamePhoto";
@@ -150,11 +150,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $ResultPositionId  = mysqli_query($conn, $SelectPositionId);
             $RowPositionId  = mysqli_fetch_assoc($ResultPositionId);
             $PositionId  = $RowPositionId["position_id"];
-
-            // $SelectPositionId = "SELECT position_id FROM tb_position WHERE position_name = '".$PositionTemp."'";
-            // $ResultPositionId  = mysqli_query($conn,$SelectPositionId );
-            // $RowPositionId  = mysqli_fetch_assoc($ResultPositionId );
-            // $PositionId  = $RowPositionId ["position_id"];
 
             //Job Category
             $SelectJobCategoryId = "SELECT job_category_id FROM tb_job_category WHERE job_category_name = '" . $JobCategory . "'";
@@ -205,7 +200,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
                     '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
                     '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
-                    
             if (mysqli_query($conn, $InsertEmployee)) {
                 echo "insert thành công";
 
