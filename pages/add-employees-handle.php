@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $firstRow = $data[0]; // Lấy hàng đầu tiên
     $columnCount = count($firstRow); // Số cột là số phần tử trong hàng đầu tiên
-    if ($columnCount != 31) {
+    if ($columnCount != 32) {
         $_SESSION["error-import"] = "1";
         header("Location: list-employee.php");
     } else {
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $skipFirstRow = false;
                 continue; // Bỏ qua dòng đầu và chuyển sang dòng tiếp theo
             }
-            "Employee Code	Employee Name	English Name	Gender	Marital Status	Date of Birth	
+            "Employee Code	Photo	Employee Name	English Name	Gender	Marital Status	Date of Birth	
             National	Military Service	Passport Number	Date of Issue	Date of Expiry	Place of Issue	
             CICN	Date of Issue	Place of Issue	Place of Residence	Permanent Address	Health Checkup Date	
             Type Contract	Job Tilte	Job Category	Team Position Level	Start Date	Contract Duration	End Date	
@@ -104,8 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $Email = $row[28];
             $Country = $row[29];
             $Location = $row[30];
-
-            $FolderNamePhoto = "../assets/files/" . $EmployeeCode . "/Photo/";
+            $FolderNamePhoto = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Photo/";
             if (!file_exists($FolderNamePhoto)) {
                 mkdir($FolderNamePhoto, 0777, true);
                 echo "Thư mục đã được tạo: $FolderNamePhoto";
@@ -113,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Thư mục đã tồn tại: $FolderNamePhoto";
             }
 
-            $FolderNameCertificate = "../assets/files/" . $EmployeeCode . "/Certificate/";
+            $FolderNameCertificate = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/Certificate/";
             if (!file_exists($FolderNameCertificate)) {
                 mkdir($FolderNameCertificate, 0777, true);
                 echo "Thư mục đã được tạo: $FolderNameCertificate";
@@ -121,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Thư mục đã tồn tại: $FolderNameCertificate";
             }
 
-            $FolderNamePersonalProfile = "../assets/files/" . $EmployeeCode . "/PersonalProfile/";
+            $FolderNamePersonalProfile = "E:/THUCTAP/VENTECH/SUPERPROJECT/hrm/assets/files/" . $EmployeeCode . "/PersonalProfile/";
             if (!file_exists($FolderNamePersonalProfile)) {
                 mkdir($FolderNamePersonalProfile, 0777, true);
                 echo "Thư mục đã được tạo: $FolderNamePersonalProfile";
@@ -208,8 +207,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
                     '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
                     '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
-            echo $InsertEmployee;
-            exit;
             if (mysqli_query($conn, $InsertEmployee)) {
                 echo "insert thành công";
 
