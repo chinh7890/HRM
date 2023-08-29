@@ -684,13 +684,9 @@ function formatDate($inputDate)
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Personal
-                                                            Profile</label>
+                                                            Profile, Certificate</label>
                                                         <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                            <input type="file" class="form-control">
-                                                        </div>
-                                                        <label class="col-12 col-sm-1 col-form-label text-sm-right">Certificate</label>
-                                                        <div class="col-sm-1 col-lg-2">
-                                                            <input type="file" class="form-control">
+                                                            <a href="./upload-file.php?id=<?php echo $id?>" class="btn btn-outline-primary">See more</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -768,7 +764,6 @@ function formatDate($inputDate)
     <script src="../assets/vendor/datepicker/moment.js"></script>
     <script src="../assets/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
     <script src="../assets/vendor/bootstrap-select/js/bootstrap-select.js"></script>
-
     <script>
         $('#form').parsley();
     </script>
