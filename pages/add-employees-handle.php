@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $targetDirectory = "C:/wamp/www/hrm/phpspreadsheet/files"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
+    $targetDirectory = "../phpspreadsheet/files"; // Thay đổi đường dẫn đến thư mục lưu trữ tệp
     $targetFile = $targetDirectory . basename($_FILES["excel_file"]["name"]);
     $uploadOk = 1;
     $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -60,8 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $firstRow = $data[0]; // Lấy hàng đầu tiên
     $columnCount = count($firstRow); // Số cột là số phần tử trong hàng đầu tiên
-    if ($columnCount != 32) {
-        $_SESSION["error-import"] = "1";
+    if ($columnCount != 31) {
+        $_SESSION["error-import"] = "1";exit;
         header("Location: list-employee.php");
     } else {
         $skipFirstRow = true; // Bỏ qua dòng đầu
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $skipFirstRow = false;
                 continue; // Bỏ qua dòng đầu và chuyển sang dòng tiếp theo
             }
-            "Employee Code	Photo	Employee Name	English Name	Gender	Marital Status	Date of Birth	
+            "Employee Code	Employee Name	English Name	Gender	Marital Status	Date of Birth	
             National	Military Service	Passport Number	Date of Issue	Date of Expiry	Place of Issue	
             CICN	Date of Issue	Place of Issue	Place of Residence	Permanent Address	Health Checkup Date	
             Type Contract	Job Tilte	Job Category	Team Position Level	Start Date	Contract Duration	End Date	
@@ -78,38 +78,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ";
 
             $EmployeeCode = $row[0];
-            $Photo = $row[1];
-            $EmployeeName = $row[2];
-            $EnglishName = $row[3];
-            $EmployeeGender = $row[4];
-            $EmployeeMaritalStatus = $row[5];
-            $DateofBirth = $row[6];
-            $National = $row[7];
-            $EmployeeMilitaryService = $row[8];
-            $PassportNumber = $row[9];
-            $DateofIssuepp = $row[10];
-            $DateofExpirypp = $row[11];
-            $PlaceofIssuepp = $row[12];
-            $CICN = $row[13];
-            $DateofIssuecicn = $row[14];
-            $PlaceofIssuecicn = $row[15];
-            $PlaceofResidence = $row[16];
-            $PermanentAddress = $row[17];
-            $HealthCheckupDate = $row[18];
-            $TypeContract = $row[19];
-            $JobTitle = $row[20];
-            $JobCategory = $row[21];
-            $Team = $row[22];
-            $Position = $row[23];
-            $Level = $row[24];
-            $StartDate = $row[25];
-            $ContractDuration = $row[26];
-            $EndDate = $row[27];
-            $PhoneNumber = $row[28];
-            $Email = $row[29];
-            $Country = $row[30];
-            $Location = $row[31];
+            $EmployeeName = $row[1];
+            $EnglishName = $row[2];
+            $EmployeeGender = $row[3];
+            $EmployeeMaritalStatus = $row[4];
+            $DateofBirth = $row[5];
+            $National = $row[6];
+            $EmployeeMilitaryService = $row[7];
+            $PassportNumber = $row[8];
+            $DateofIssuepp = $row[9];
+            $DateofExpirypp = $row[10];
+            $PlaceofIssuepp = $row[11];
+            $CICN = $row[12];
+            $DateofIssuecicn = $row[13];
+            $PlaceofIssuecicn = $row[14];
+            $PlaceofResidence = $row[15];
+            $PermanentAddress = $row[16];
+            $HealthCheckupDate = $row[17];
+            $TypeContract = $row[18];
+            $JobTitle = $row[19];
+            $JobCategory = $row[20];
+            $Team = $row[21];
+            $Position = $row[22];
+            $Level = $row[23];
+            $StartDate = $row[24];
+            $ContractDuration = $row[25];
+            $EndDate = $row[26];
+            $PhoneNumber = $row[27];
+            $Email = $row[28];
+            $Country = $row[29];
+            $Location = $row[30];
 
+            $FolderNamePhoto = "../assets/files/" . $EmployeeCode . "/Photo/";
+            if (!file_exists($FolderNamePhoto)) {
+                mkdir($FolderNamePhoto, 0777, true);
+                echo "Thư mục đã được tạo: $FolderNamePhoto";
+            } else {
+                echo "Thư mục đã tồn tại: $FolderNamePhoto";
+            }
+
+            $FolderNameCertificate = "../assets/files/" . $EmployeeCode . "/Certificate/";
+            if (!file_exists($FolderNameCertificate)) {
+                mkdir($FolderNameCertificate, 0777, true);
+                echo "Thư mục đã được tạo: $FolderNameCertificate";
+            } else {
+                echo "Thư mục đã tồn tại: $FolderNameCertificate";
+            }
+
+            $FolderNamePersonalProfile = "../assets/files/" . $EmployeeCode . "/PersonalProfile/";
+            if (!file_exists($FolderNamePersonalProfile)) {
+                mkdir($FolderNamePersonalProfile, 0777, true);
+                echo "Thư mục đã được tạo: $FolderNamePersonalProfile";
+            } else {
+                echo "Thư mục đã tồn tại: $FolderNamePersonalProfile";
+            }
             //Level
             $SelectLevelId = "SELECT level_id FROM tb_level WHERE level_name = '" . $Level . "'";
             $ResultLevelId = mysqli_query($conn, $SelectLevelId);
@@ -181,14 +203,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $MilitaryService = 0;
             }
 
-            $InsertEmployee = "INSERT INTO tb_employee(employee_code, photo,
+            $InsertEmployee = "INSERT INTO tb_employee(employee_code,
                 employee_name, english_name, gender, marital_status, date_of_birth,
                 national_name, military_service, team_id, health_checkup_date,
                 job_title_id, job_category_id, position_id, level_id, country_id, location_id) 
-            VALUES ('" . $EmployeeCode . "','','" . $EmployeeName . "','" . $EnglishName . "',
+            VALUES ('" . $EmployeeCode . "','" . $EmployeeName . "','" . $EnglishName . "',
                     '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
                     '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
                     '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
+                    echo $InsertEmployee;exit;
             if (mysqli_query($conn, $InsertEmployee)) {
                 echo "insert thành công";
 
