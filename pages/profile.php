@@ -171,10 +171,6 @@ function formatDate($inputDate)
         echo "<script type='text/javascript'>toastr.success('Update Employee Successfully')</script>";
         unset($_SESSION["update"]);
     }
-    if (isset($_SESSION['loi']) && $_SESSION['loi'] == "size") {
-        echo "<script type='text/javascript'>toastr.error('Update Employee Successfully')</script>";
-        unset($_SESSION["loi"]);
-    }
     ?>
     <!-- ============================================================== -->
     <!-- main wrapper -->
@@ -691,13 +687,6 @@ function formatDate($inputDate)
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="form-group row">
-                                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Personal
-                                                            Profile, Certificate</label>
-                                                        <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                            <!-- <a href="./upload-file.php?id=<?php echo $id ?>" class="btn btn-outline-primary">See more</a> -->
-                                                        </div>
-                                                    </div> -->
                                                 </div>
                                                 <div class="tab-pane fade" id="PersonalProfile" role="tabpanel" aria-labelledby="tab-outline-four">
                                                     <div class="row">
@@ -769,7 +758,8 @@ function formatDate($inputDate)
     <script src="../assets/vendor/datepicker/moment.js"></script>
     <script src="../assets/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
     <script src="../assets/vendor/bootstrap-select/js/bootstrap-select.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet" type="text/css" />
     <script>
         $('#form').parsley();
     </script>
@@ -901,8 +891,29 @@ function formatDate($inputDate)
                         console.log('File sorted params', params);
                     }).on('fileuploaded', function(e, params) {
                         console.log('File uploaded params', params);
+                    }).on('filebeforedelete', function() {
+                        return new Promise(function(resolve, reject) {
+                            $.confirm({
+                                title: 'Notification!',
+                                content: 'Are you sure you want to delete this file?',
+                                type: 'red',
+                                buttons: {
+                                    "Yes": {
+                                        btnClass: 'btn-primary text-white',
+                                        keys: ['enter'],
+                                        action: function() {
+                                            resolve();
+                                        }
+                                    },
+                                    "No": function() {}
+                                }
+                            });
+                        });
                     }).on('filedeleted', function(event, key, jqXHR, data) {
                         console.log('File deleted', data);
+                        setTimeout(function() {
+                            $.alert('Delete file successfully!');
+                        }, 200);
                     });
                 }
             });
@@ -977,9 +988,31 @@ function formatDate($inputDate)
                     }).on('filesorted', function(e, params) {
                         console.log('File sorted params', params);
                     }).on('fileuploaded', function(e, params) {
+                        
                         console.log('File uploaded params', params);
+                    }).on('filebeforedelete', function() {
+                        return new Promise(function(resolve, reject) {
+                            $.confirm({
+                                title: 'Notification!',
+                                content: 'Are you sure you want to delete this file?',
+                                type: 'red',
+                                buttons: {
+                                    "Yes": {
+                                        btnClass: 'btn-primary text-white',
+                                        keys: ['enter'],
+                                        action: function() {
+                                            resolve();
+                                        }
+                                    },
+                                    "No": function() {}
+                                }
+                            });
+                        });
                     }).on('filedeleted', function(event, key, jqXHR, data) {
                         console.log('File deleted', data);
+                        setTimeout(function() {
+                            $.alert('Delete file successfully!');
+                        }, 200);
                     });
                 }
             });
