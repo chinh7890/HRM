@@ -20,20 +20,20 @@ session_start();
        <!-- file -->
        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous"> -->
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
-       <link href="../luutrufile/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+       <link href="../savefile/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" crossorigin="anonymous">
-       <link href="../luutrufile/themes/explorer-fa5/theme.css" media="all" rel="stylesheet" type="text/css" />
+       <link href="../savefile/themes/explorer-fa5/theme.css" media="all" rel="stylesheet" type="text/css" />
        <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-       <script src="../luutrufile/js/plugins/buffer.min.js" type="text/javascript"></script>
-       <script src="../luutrufile/js/plugins/filetype.min.js" type="text/javascript"></script>
-       <script src="../luutrufile/js/plugins/piexif.js" type="text/javascript"></script>
-       <script src="../luutrufile/js/plugins/sortable.js" type="text/javascript"></script>
-       <script src="../luutrufile/js/fileinput.js" type="text/javascript"></script>
-       <script src="../luutrufile/js/locales/fr.js" type="text/javascript"></script>
-       <script src="../luutrufile/js/locales/es.js" type="text/javascript"></script>
-       <script src="../luutrufile/themes/fa5/theme.js" type="text/javascript"></script>
-       <script src="../luutrufile/themes/explorer-fa5/theme.js" type="text/javascript"></script>
+       <script src="../savefile/js/plugins/buffer.min.js" type="text/javascript"></script>
+       <script src="../savefile/js/plugins/filetype.min.js" type="text/javascript"></script>
+       <script src="../savefile/js/plugins/piexif.js" type="text/javascript"></script>
+       <script src="../savefile/js/plugins/sortable.js" type="text/javascript"></script>
+       <script src="../savefile/js/fileinput.js" type="text/javascript"></script>
+       <script src="../savefile/js/locales/fr.js" type="text/javascript"></script>
+       <script src="../savefile/js/locales/es.js" type="text/javascript"></script>
+       <script src="../savefile/themes/fa5/theme.js" type="text/javascript"></script>
+       <script src="../savefile/themes/explorer-fa5/theme.js" type="text/javascript"></script>
        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
        <style>
@@ -50,12 +50,12 @@ session_start();
 
 <body>
        <?php
-              if (isset($_SESSION["loi"]) && $_SESSION["loi"] == "0") {
-                     echo "<script type='text/javascript'>toastr.success('Update Employee Successfully')</script>";
-              } elseif(isset($_SESSION["loi"]) && $_SESSION["loi"] == "1") {
-                     echo "<script type='text/javascript'>toastr.error('The file is not in the correct format or the data already exists')</script>";
-              }
-              unset($_SESSION["loi"]);
+       if (isset($_SESSION["loi"]) && $_SESSION["loi"] == "0") {
+              echo "<script type='text/javascript'>toastr.success('Update Employee Successfully')</script>";
+       } elseif (isset($_SESSION["loi"]) && $_SESSION["loi"] == "1") {
+              echo "<script type='text/javascript'>toastr.error('The file is not in the correct format or the data already exists')</script>";
+       }
+       unset($_SESSION["loi"]);
        ?>
 
        <!-- ============================================================== -->
@@ -135,7 +135,7 @@ session_start();
                                           </div>
                                    </div>
                                    <div class="container">
-                                          <form action="../luutrufile/examples/upload.php?action=PersonalProfile&id=<?php echo $id ?>" method="post" enctype="multipart/form-data">
+                                          <form action="../savefile/examples/upload.php?action=PersonalProfile&id=<?php echo $id ?>" method="post" enctype="multipart/form-data">
                                                  <input type="hidden" name="" id="id" value="<?php echo $id ?>">
                                                  <input id="per-pro" name="file[]" type="file" data-preview-file-type="" multiple>
                                           </form>
@@ -148,7 +148,7 @@ session_start();
                                           </div>
                                    </div>
                                    <div class="container">
-                                          <form action="../luutrufile/examples/upload.php?action=Certificate&id=<?php echo $id ?>" method="post" enctype="multipart/form-data">
+                                          <form action="../savefile/examples/upload.php?action=Certificate&id=<?php echo $id ?>" method="post" enctype="multipart/form-data">
                                                  <input id="certificate" name="file[]" type="file" data-preview-file-type="" multiple>
                                           </form>
                                    </div>
@@ -164,7 +164,7 @@ session_start();
 
        <script>
               $(document).ready(function() {
-                     var url = "../luutrufile/examples/get_files.php?action=PersonalProfile&id=" + document.getElementById("id").value;
+                     var url = "../savefile/examples/get_files.php?action=PersonalProfile&id=" + document.getElementById("id").value;
                      var id = document.getElementById("id").value;
                      $.ajax({
                             url: url,
@@ -179,7 +179,7 @@ session_start();
                                                  caption: data[i].profile,
                                                  showRemove: true,
                                                  filename: data[i].profile,
-                                                 url: '../luutrufile/examples/delete_file.php?action=PersonalProfile',
+                                                 url: '../savefile/examples/delete_file.php?action=PersonalProfile',
                                                  extra: {
                                                         id: id,
                                                         filename: data[i].profile,
@@ -236,7 +236,7 @@ session_start();
        </script>
        <script>
               $(document).ready(function() {
-                     var url = "../luutrufile/examples/get_files.php?action=Certificate&id=" + document.getElementById("id").value;
+                     var url = "../savefile/examples/get_files.php?action=Certificate&id=" + document.getElementById("id").value;
                      var id = document.getElementById("id").value;
                      $.ajax({
 
@@ -252,7 +252,7 @@ session_start();
                                                  caption: data[i].certificate,
                                                  showRemove: true,
                                                  filename: data[i].certificate,
-                                                 url: '../luutrufile/examples/delete_file.php?action=Certificate',
+                                                 url: '../savefile/examples/delete_file.php?action=Certificate',
                                                  extra: {
                                                         id: id,
                                                         filename: data[i].certificate,

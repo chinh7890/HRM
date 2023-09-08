@@ -243,7 +243,7 @@ if (isset($_POST['add'])) {
 
 
         //Personal Profile
-        $FolderName = "../assets/files/" . $EmployeeCode . "/Personal-Profile/";
+        $FolderName = "../assets/files/" . $EmployeeCode . "/PersonalProfile/";
         if (!file_exists($FolderName)) {
             mkdir($FolderName, 0777, true);
             echo "Thư mục đã được tạo: $FolderName";
