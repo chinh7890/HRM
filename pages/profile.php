@@ -134,11 +134,34 @@ function formatDate($inputDate)
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+    <link href="../luutrufile/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" crossorigin="anonymous">
+    <link href="../luutrufile/themes/explorer-fa5/theme.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="../luutrufile/js/plugins/buffer.min.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/plugins/filetype.min.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/plugins/piexif.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/fileinput.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/locales/fr.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/locales/es.js" type="text/javascript"></script>
+    <script src="../luutrufile/themes/fa5/theme.js" type="text/javascript"></script>
+    <script src="../luutrufile/themes/explorer-fa5/theme.js" type="text/javascript"></script>
+
+
 </head>
 <style>
     .frame-info {
         border: 1px solid rgb(209, 209, 209);
         margin-top: 10px;
+    }
+
+    .fileinput-remove-button,
+    .close {
+        display: none;
     }
 </style>
 
@@ -147,6 +170,10 @@ function formatDate($inputDate)
     if (isset($_SESSION["update"]) && $_SESSION["update"] == "1") {
         echo "<script type='text/javascript'>toastr.success('Update Employee Successfully')</script>";
         unset($_SESSION["update"]);
+    }
+    if (isset($_SESSION['loi']) && $_SESSION['loi'] == "size") {
+        echo "<script type='text/javascript'>toastr.error('Update Employee Successfully')</script>";
+        unset($_SESSION["loi"]);
     }
     ?>
     <!-- ============================================================== -->
@@ -239,7 +266,7 @@ function formatDate($inputDate)
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form id="validationform" action="./update-handle.php?id=<?php echo $id ?>&code=<?php echo $employee_code ?>" method="post" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
+                                <form id="validationform" action="./update-handle.php?id=<?php echo $id ?>&code=<?php echo $employee_code ?>&action=up" method="post" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div class="tab-outline">
                                             <ul class="nav nav-tabs" id="myTab2" role="tablist">
@@ -252,35 +279,17 @@ function formatDate($inputDate)
                                                 <li class="nav-item">
                                                     <a class="nav-link" id="tab-outline-three" data-toggle="tab" href="#JobDetail" role="tab" aria-controls="contact" aria-selected="false">Job Detail</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="tab-outline-four" data-toggle="tab" href="#PersonalProfile" role="tab" aria-controls="contact" aria-selected="false">Personal Profile</a>
+                                                </li>
                                             </ul>
                                             <div class="tab-content" id="myTabContent2">
                                                 <div class="tab-pane fade show active" id="PersonalDetails" role="tabpanel" aria-labelledby="tab-outline-one">
-                                                    <!-- <div class="card-body">
-                                                        <div class="col-12 col-sm-auto mb-3">
-                                                            <div class="mx-auto" style="width: 140px;">
-                                                                <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-                                                                    <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col flex-column flex-sm-row justify-content-between mb-3 justify-content-center">
-                                                            <div class="text-center text-sm-left mb-2 mb-sm-0">
-                                                                <h4 style="text-align: center;" class="pt-sm-2 pb-1 mb-0 text-nowrap">
-                                                                    <?php echo $employee_name; ?></h4>
-                                                                <div class="mt-2" style=" display:flex; justify-content: center; align-items: center; ">
-                                                                    <button class="btn btn-primary" type="button">
-                                                                        <i class="fa fa-fw fa-camera"></i>
-                                                                        <span>Change Photo</span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                     <div class="card-body">
                                                         <div class="col-12 col-sm-auto mb-3">
                                                             <div class="mx-auto" style="width: 140px;">
-                                                                <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-                                                                    <image id="image" src="../assets/files/<?php echo $employee_code . "/Photo/" . $photo; ?>" width="140" height="140"></image>
+                                                                <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239); ">
+                                                                    <image style="border:1px solid #ddd" id="image" src="../assets/files/<?php echo $employee_code . "/Photo/" . $photo; ?>" width="140" height="140"></image>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -682,13 +691,37 @@ function formatDate($inputDate)
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
+                                                    <!-- <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Personal
                                                             Profile, Certificate</label>
                                                         <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                            <a href="./upload-file.php?id=<?php echo $id ?>" class="btn btn-outline-primary">See more</a>
+                                                            <!-- <a href="./upload-file.php?id=<?php echo $id ?>" class="btn btn-outline-primary">See more</a> -->
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                                <div class="tab-pane fade" id="PersonalProfile" role="tabpanel" aria-labelledby="tab-outline-four">
+                                                    <div class="row">
+                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                            <div class="page-header">
+                                                                <h2 class="pageheader-title">Personal Profile</h2>
+                                                            </div>
+                                                        </div>
+                                                        <div class="container">
+                                                            <input type="hidden" name="" id="id" value="<?php echo $id ?>">
+                                                            <input id="per" name="file1[]" type="file" data-preview-file-type="" multiple>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                            <div class="page-header">
+                                                                <h2 class="pageheader-title">Certificate</h2>
+                                                            </div>
+                                                        </div>
+                                                        <div class="container">
+                                                            <input id="certificate" name="file[]" type="file" data-preview-file-type="" multiple>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -718,36 +751,8 @@ function formatDate($inputDate)
                             </div>
                         </div>
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- end valifation types -->
-                    <!-- ============================================================== -->
-                </div>
-                <!-- Button trigger modal -->
-
-
-            </div>
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <div class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                            Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                            <div class="text-md-right footer-links d-none d-sm-block">
-                                <a href="javascript: void(0);">About</a>
-                                <a href="javascript: void(0);">Support</a>
-                                <a href="javascript: void(0);">Contact Us</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- end footer -->
-            <!-- ============================================================== -->
         </div>
     </div>
 
@@ -755,15 +760,16 @@ function formatDate($inputDate)
     <!-- end main wrapper -->
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
-    <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <!-- <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script> -->
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-    <script src="../assets/vendor/parsley/parsley.js"></script>
+    <!-- <script src="../assets/vendor/parsley/parsley.js"></script> -->
     <script src="../assets/libs/js/main-js.js"></script>
     <script src="../assets/vendor/datepicker/datepicker.js"></script>
     <script src="../assets/vendor/datepicker/moment.js"></script>
     <script src="../assets/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
     <script src="../assets/vendor/bootstrap-select/js/bootstrap-select.js"></script>
+
     <script>
         $('#form').parsley();
     </script>
@@ -808,9 +814,13 @@ function formatDate($inputDate)
         } else if (hash == "#ContactDetail") {
             var ContactDetail = document.querySelector("#tab-outline-two");
             ContactDetail.click(); // Kích hoạt sự kiện click trên tab
+        } else if (hash == "#PersonalProfile") {
+            var PersonalProfile = document.querySelector("#tab-outline-four");
+            PersonalProfile.click(); // Kích hoạt sự kiện click trên tab
         } else {
             var PersonalDetails = document.querySelector("#tab-outline-one");
             PersonalDetails.click(); // Kích hoạt sự kiện click trên tab
+
         }
     </script>
     <script>
@@ -823,6 +833,157 @@ function formatDate($inputDate)
                 reader.readAsDataURL(fileinput.files[0]);
             }
         }
+    </script>
+    <script>
+        $(document).ready(function() {
+            var url = "../luutrufile/examples/get_files.php?action=PersonalProfile&id=" + document.getElementById("id").value;
+            var id = document.getElementById("id").value;
+            $.ajax({
+                url: url,
+                dataType: "json",
+                success: function(data) {
+                    var initialPreview = [];
+                    var initialPreviewConfig = [];
+                    for (var i = 0; i < data.length; i++) {
+                        initialPreview.push("../assets/files/" + data[0].employee_code + "/PersonalProfile/" + data[i].profile);
+                        const fileExtension = data[i].profile.split('.').pop();
+                        initialPreviewConfig.push({
+                            type: fileExtension,
+                            caption: data[i].profile,
+                            showRemove: true,
+                            filename: data[i].profile,
+                            url: '../luutrufile/examples/delete_file.php?action=PersonalProfile',
+                            extra: {
+                                id: id,
+                                filename: data[i].profile,
+                                employee_code: data[0].employee_code
+                            },
+                            key: i,
+                        });
+                        var code = data[0].employee_code
+                    }
+                    $("#per").fileinput({
+                        uploadAsync: false,
+                        uploadUrl: "./update-handle.php?action=PersonalProfile& id=" + id,
+                        initialPreviewDownloadUrl: '../assets/files/' + code + '/PersonalProfile/{filename}',
+                        uploadAsync: false,
+                        overwriteInitial: false,
+                        initialPreview: initialPreview,
+                        initialPreviewAsData: true,
+                        initialPreviewFileType: 'image',
+                        initialPreviewConfig: initialPreviewConfig,
+                        uploadExtraData: {
+                            img_key: "1000",
+                            img_keywords: "happy, nature",
+                        },
+                        preferIconicPreview: true,
+                        previewFileIconSettings: {
+                            'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+                            'xlsx': '<i class="fas fa-file-excel text-success"></i>',
+                            'doc': '<i class="fas fa-file-word text-primary"></i>',
+                            'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
+                        },
+                        previewFileExtSettings: {
+                            'doc': function(ext) {
+                                return ext.match(/(doc|docx)$/i);
+                            },
+                            'pdf': function(ext) {
+                                return ext.match(/(pdf)$/i);
+                            },
+                            'xls': function(ext) {
+                                return ext.match(/(xls|xlsx)$/i);
+                            },
+                            'ppt': function(ext) {
+                                return ext.match(/(ppt|pptx)$/i);
+                            },
+                        }
+                    }).on('filesorted', function(e, params) {
+                        console.log('File sorted params', params);
+                    }).on('fileuploaded', function(e, params) {
+                        console.log('File uploaded params', params);
+                    }).on('filedeleted', function(event, key, jqXHR, data) {
+                        console.log('File deleted', data);
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var url = "../luutrufile/examples/get_files.php?action=Certificate&id=" + document.getElementById("id").value;
+            var id = document.getElementById("id").value;
+            $.ajax({
+                url: url,
+                dataType: "json",
+                success: function(data) {
+                    var initialPreview = [];
+                    var initialPreviewConfig = [];
+                    for (var i = 0; i < data.length; i++) {
+                        initialPreview.push("../assets/files/" + data[0].employee_code + "/Certificate/" + data[i].certificate);
+                        const fileExtension = data[i].certificate.split('.').pop();
+                        initialPreviewConfig.push({
+                            type: fileExtension,
+                            caption: data[i].certificate,
+                            showRemove: true,
+                            filename: data[i].certificate,
+                            url: '../luutrufile/examples/delete_file.php?action=Certificate',
+                            extra: {
+                                id: id,
+                                filename: data[i].certificate,
+                                employee_code: data[0].employee_code
+                            },
+                            key: i,
+                        });
+                        var code = data[0].employee_code;
+                    }
+                    $("#certificate").fileinput({
+                        initialPreviewDownloadUrl: "../assets/files/" + code + "/{filename}",
+                        uploadUrl: "./update-handle.php?action=Certificate&id=" + id,
+                        allowedFileExtensions: ["pdf", "docx", "doc", "xlsx", "jpg", "png"],
+                        uploadAsync: false,
+                        overwriteInitial: false,
+                        initialPreview: initialPreview,
+                        initialPreviewAsData: true,
+                        initialPreviewFileType: 'image',
+                        initialPreviewConfig: initialPreviewConfig,
+                        uploadExtraData: {
+                            img_key: "1000",
+                            img_keywords: "happy, nature",
+                        },
+                        preferIconicPreview: true,
+                        previewFileIconSettings: {
+                            'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+                            'xlsx': '<i class="fas fa-file-excel text-success"></i>',
+                            'doc': '<i class="fas fa-file-word text-primary"></i>',
+                            'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
+                            'png': '<i class="fas fa-file-image text-primary"></i>',
+                            'jpg': '<i class="fas fa-file-image text-primary"></i>'
+                        },
+                        previewFileExtSettings: {
+                            'doc': function(ext) {
+                                return ext.match(/(doc|docx)$/i);
+                            },
+                            'pdf': function(ext) {
+                                return ext.match(/(pdf)$/i);
+                            },
+                            'xls': function(ext) {
+                                return ext.match(/(xls|xlsx)$/i);
+                            },
+                            'ppt': function(ext) {
+                                return ext.match(/(ppt|pptx)$/i);
+                            },
+                        }
+                    }).on('filesorted', function(e, params) {
+                        console.log('File sorted params', params);
+                    }).on('fileuploaded', function(e, params) {
+                        console.log('File uploaded params', params);
+                    }).on('filedeleted', function(event, key, jqXHR, data) {
+                        console.log('File deleted', data);
+                    });
+                }
+            });
+        });
     </script>
 
 </body>

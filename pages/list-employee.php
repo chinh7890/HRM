@@ -33,6 +33,13 @@ require_once './404.php';
     th {
         text-align: center;
     }
+    th,td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 10px; /* Điều chỉnh chiều rộng tùy ý */
+}
+
 
     /* Hide the second column */
     td:nth-child(3),
