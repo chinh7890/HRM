@@ -2,8 +2,9 @@
 require './vendor/autoload.php';
 
 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load("./files/test.xlsx");
-
 $worksheet = $spreadsheet->getActiveSheet();
+$highestColumn = $worksheet->getHighestColumn();
+$numberOfColumns = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 $worksheetArray = $worksheet->toArray();
 array_shift($worksheetArray);
 
@@ -26,6 +27,10 @@ foreach ($worksheetArray as $key => $value) {
     $worksheet = $spreadsheet->getActiveSheet();
     $drawing = $worksheet->getDrawingCollection()[$key];
 
+    echo '<tr align="center">';
+    echo '<td>' . $value[0] . '</td>';
+    echo '<td>' . $value[1] . '</td>';
+
     $zipReader = fopen($drawing->getPath(), 'r');
     $imageContents = '';
     while (!feof($zipReader)) {
@@ -40,10 +45,8 @@ foreach ($worksheetArray as $key => $value) {
     // Save the image to the specified directory
     file_put_contents($filename, $imageContents);
 
-    echo '<tr align="center">';
-    echo '<td>' . $value[0] . '</td>';
-    echo '<td>' . $value[1] . '</td>';
+
     echo '<td><img  height="150px" width="150px" src="' . $filename . '"/></td>';
     echo '</tr>';
 }
-?>
+echo $numberOfColumns . "agag";

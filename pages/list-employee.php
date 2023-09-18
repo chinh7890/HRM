@@ -33,12 +33,15 @@ require_once './404.php';
     th {
         text-align: center;
     }
-    th,td{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 10px; /* Điều chỉnh chiều rộng tùy ý */
-}
+
+    th,
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 10px;
+        /* Điều chỉnh chiều rộng tùy ý */
+    }
 
 
     /* Hide the second column */
@@ -344,7 +347,18 @@ require_once './404.php';
                                                  tb_location,
                                                  tb_contract
                                              WHERE
-                                                 tb_employee.employee_id = tb_address.employee_id AND tb_employee.employee_id = tb_citizen_identity.employee_id AND tb_employee.employee_id = tb_passport.employee_id AND tb_employee.employee_id = tb_contract.employee_id AND tb_employee.job_title_id = tb_job_title.job_title_id AND tb_employee.job_category_id = tb_job_category.job_category_id AND tb_employee.team_id = tb_team.team_id AND tb_employee.position_id = tb_position.position_id AND tb_employee.country_id = tb_country.country_id AND tb_employee.level_id = tb_level.level_id AND tb_employee.location_id = tb_location.location_id AND tb_contract.type_contract_id = tb_type_contract.type_contract_id;";
+                                                 tb_employee.employee_id = tb_address.employee_id AND 
+                                                 tb_employee.employee_id = tb_citizen_identity.employee_id AND 
+                                                 tb_employee.employee_id = tb_passport.employee_id AND 
+                                                 tb_employee.employee_id = tb_contract.employee_id AND 
+                                                 tb_employee.job_title_id = tb_job_title.job_title_id AND 
+                                                 tb_employee.job_category_id = tb_job_category.job_category_id AND 
+                                                 tb_employee.team_id = tb_team.team_id AND 
+                                                 tb_employee.position_id = tb_position.position_id AND 
+                                                 tb_employee.country_id = tb_country.country_id AND 
+                                                 tb_employee.level_id = tb_level.level_id AND 
+                                                 tb_employee.location_id = tb_location.location_id AND 
+                                                 tb_contract.type_contract_id = tb_type_contract.type_contract_id;";
                                             $result = $conn->query($sql);
                                             while ($row = $result->fetch_assoc()) {
                                             ?>
@@ -503,10 +517,10 @@ require_once './404.php';
                     </div>
                     <div class="modal-footer">
                         <form method="POST" action="delete-employee-handle.php">
-                                <input type="hidden" name="employee_id" id="employeeIdInput">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                            </form>
+                            <input type="hidden" name="employee_id" id="employeeIdInput">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                        </form>
                         <!-- </div>
                             <input type="hidden" name="employee_id" id="employeeIdInput">
                             <button type="submit" class="btn btn-danger">Delete</button>
@@ -582,5 +596,5 @@ require_once './404.php';
 </html>
 
 <?php
-    // session_destroy();
+// session_destroy();
 ?>

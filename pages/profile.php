@@ -988,7 +988,7 @@ function formatDate($inputDate)
                     }).on('filesorted', function(e, params) {
                         console.log('File sorted params', params);
                     }).on('fileuploaded', function(e, params) {
-                        
+
                         console.log('File uploaded params', params);
                     }).on('filebeforedelete', function() {
                         return new Promise(function(resolve, reject) {
