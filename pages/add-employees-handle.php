@@ -34,28 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $spreadsheet = IOFactory::load($targetFile);
     $worksheet = $spreadsheet->getActiveSheet();
     $data = $worksheet->toArray();
-    // $drawing = $worksheet->getDrawingCollection()[$key];
-
-    // $zipReader = fopen($drawing->getPath(), 'r');
-    // $imageContents = '';
-    // while (!feof($zipReader)) {
-    //     $imageContents .= fread($zipReader, 1024);
-    // }
-    // fclose($zipReader);
-    // $extension = $drawing->getExtension();
-
-    // echo '<tr align="center">';
-    // echo '<td>' . $value[0] . '</td>';
-    // echo '<td>' . $value[1] . '</td>';
-    // echo '<td><img  height="150px" width="150px"   src="data:image/jpeg;base64,' . base64_encode($imageContents) . '"/></td>';
-    // echo '</tr>';
-    // exit;
-
-
 
     $firstRow = $data[0]; // Lấy hàng đầu tiên
     $columnCount = count($firstRow); // Số cột là số phần tử trong hàng đầu tiên
-    if ($columnCount != 31) {
+    if ($columnCount != 32) {   // Nếu số cột khác số cột trong file import thì báo lỗi(số cột trong file import đang format là 32)
         $_SESSION["error-import"] = "1";
         header("Location: list-employee.php");
     } else {
@@ -229,11 +211,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 mysqli_query($conn, $InsertContract);
                 $_SESSION["success-import"] = "1";
                 header("Location: list-employee.php");
-            } else {
-                echo "insert thất vọng";
-                $_SESSION["error-import"] = "1";
-                header("Location: list-employee.php");
             }
+            //  else {
+            //     echo "insert thất vọng";
+            //     $_SESSION["error-import"] = "1";
+            //     header("Location: list-employee.php");
+            // }
+        }
+        // Thêm hình vào db và lưu trong source
+
+        array_shift($data);
+        foreach ($data as $key => $value) {
+            $worksheet = $spreadsheet->getActiveSheet();
+            $drawing = $worksheet->getDrawingCollection()[$key];
+
+            $zipReader = fopen($drawing->getPath(), 'r');
+            $imageContents = '';
+            while (!feof($zipReader)) {
+                $imageContents .= fread($zipReader, 1024);
+            }
+            fclose($zipReader);
+            $extension = $drawing->getExtension();
+            // Generate a unique filename for each image based on the value in the first column
+            $imageDirectory = "../assets/files/" . $value[0] . "/Photo/";
+
+            $filename = $imageDirectory . $value[1] . $value[0] . '.' . $extension;
+            echo $filename;
+            // Save the image to the specified directory
+            file_put_contents($filename, $imageContents);
         }
     }
 }
