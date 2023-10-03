@@ -6,30 +6,36 @@ require 'vendor/autoload.php'; // Đường dẫn đến file autoload.php của
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-// Đọc file Excel
-$spreadsheet = IOFactory::load('E:/THUCTAP/VENTECH/PROJECT/hrm/phpspreadsheet/test.xlsx');
+$spreadsheet = IOFactory::load('../phpspreadsheet/files/Employee List.xlsx'); // Đường dẫn tới file Excel của bạn
 
-// Lấy danh sách các hình ảnh có trong file
-$images = $spreadsheet->getSheetByName('Sheet1')->getDrawingCollection();
-
+// Lấy danh sách các hình ảnh có trong file Excel
+$images = $spreadsheet->getSheet(0)->getDrawingCollection();
 foreach ($images as $image) {
-    $imagePath = $image->getPath(); // Đây là đường dẫn đến hình ảnh
-    echo "direct: " . $imagePath . '<br>';
-}
+    if ($image instanceof PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing) {
+        ob_start();
+        call_user_func($image->getRenderingFunction(), $image->getImageResource());
+        $imageData = ob_get_contents();
+        ob_end_clean();
+        $base64 = 'data:' . $image->getMimeType() . ';base64,' . base64_encode($imageData);
 
+        // $base64 chứa dữ liệu ảnh dưới định dạng base64, bạn có thể sử dụng nó theo nhu cầu
+
+    }
 ?>
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
 
-<body>
-    <h1>hello</h1>
-    <img src="" alt="">
-</body>
+    <body>
+        <?php echo '<img src="' . $base64 . '" alt="Excel Image">'; ?>
+    </body>
 
-</html>
+    </html>
+<?php
+}
+?>

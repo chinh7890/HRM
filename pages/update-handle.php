@@ -1,11 +1,164 @@
 <?php
 session_start();
 require_once("../connect.php");
+if (!empty($_FILES['file1']) || !empty($_FILES['file'])) {
+       if ($_GET['action'] == "PersonalProfile" && isset($_GET["id"])) {
+              //PersonalProfile
+              $id = $_GET["id"];
+              $sql = "SELECT
+                     tb_employee.employee_code
+                     FROM
+                     tb_employee
+                     WHERE
+                     employee_id = $id";
+              $result = $conn->query($sql);
+              while ($row = $result->fetch_assoc()) {
+                     $employee_code = $row['employee_code'];
+              }
+              $targetDir = "../assets/files/" . $employee_code . "/PersonalProfile/";
+              $uploadOk = 1;
+              $error = "";
+              // Lặp qua danh sách tệp đã tải lên
+              foreach ($_FILES["file1"]["name"] as $index => $fileName) {
+                     $targetFile = $targetDir . basename($fileName);
+                     // echo $targetFile;exit;
+                     $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-if (isset($_GET["id"])) {
+                     // Kiểm tra xem tệp đã tồn tại hay chưa
+                     if (file_exists($targetFile)) {
+                            $error = "The file already exists.<br>";
+                            // exit;
+                            $uploadOk = 0;
+                     } else {
+                            $error = "";
+                     }
+
+                     // Kiểm tra kích thước tệp
+                     if ($_FILES["file1"]["size"][$index] > 10 * 1024 * 1024) {
+                            $error = $error . "The maximum file size permitted is 10 MB.<br>";
+                            $uploadOk = 0;
+                     } else {
+                            $error = $error . '';
+                     }
+
+                     // Cho phép tải lên chỉ các loại tệp cụ thể (vd: pdf, docx, jpg)
+                     $allowedExtensions = array("pdf", "docx", "doc", "xlsx", "jpg", "png");
+                     if (!in_array($imageFileType, $allowedExtensions)) {
+                            $error = $error . "Only pdf, docx, doc, xlsx, jpg, png files are supported.";
+                            $uploadOk = 0;
+                     } else {
+                            $error = $error . '';
+                     }
+                     if ($uploadOk == 0) {
+                     } else {
+                            if (move_uploaded_file($_FILES["file1"]["tmp_name"][$index], $targetFile)) {
+                                   // echo "Tải lên tệp $fileName thành công.<br>";
+                                   $filename = mysqli_real_escape_string($conn, $fileName);
+                                   $sqlInsert = "INSERT INTO `tb_personal_profile`(`employee_id`, `profile`) VALUES ('$id','$filename')";
+
+                                   if ($conn->query($sqlInsert) === TRUE) {
+                                   } else {
+                                          // echo "Lỗi khi thêm thông tin tệp vào cơ sở dữ liệu: " . $conn->error . "<br>";
+                                   }
+                            } else {
+
+                                   // echo "Đã xảy ra lỗi khi tải lên tệp $fileName.<br>";
+                            }
+                     }
+              }
+              $out['error'] = $error;
+              header('Content-Type: application/json');
+              echo json_encode($out);
+       }
+       if ($_GET['action'] == "Certificate" && isset($_GET["id"])) {
+              //PersonalProfile
+              $id = $_GET["id"];
+              $sql = "SELECT
+                            tb_employee.employee_code
+                            FROM
+                            tb_employee
+                            WHERE
+                            employee_id = $id";
+              $result = $conn->query($sql);
+              while ($row = $result->fetch_assoc()) {
+                     $employee_code = $row['employee_code'];
+              }
+              $targetDir = "../assets/files/" . $employee_code . "/Certificate/";
+              $uploadOk = 1;
+              $error = '';
+              // Lặp qua danh sách tệp đã tải lên
+              foreach ($_FILES["file"]["name"] as $index => $fileName) {
+                     $targetFile = $targetDir . basename($fileName);
+                     $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+                     // Kiểm tra xem tệp đã tồn tại hay chưa
+                     if (file_exists($targetFile)) {
+                            $error = "The file already exists.<br>";
+                            // exit;
+                            $uploadOk = 0;
+                     } else {
+                            $error = "";
+                     }
+
+                     // Kiểm tra kích thước tệp
+                     if ($_FILES["file"]["size"][$index] > 10 * 1024 * 1024) {
+                            //   echo "Tệp $fileName quá lớn.<br>";
+                            $error = $error . "The maximum file size permitted is 10 MB.<br>";
+                            $uploadOk = 0;
+                     } else {
+                            $error = $error . '';
+                     }
+
+                     // Cho phép tải lên chỉ các loại tệp cụ thể (vd: pdf, docx, jpg)
+                     $allowedExtensions = array("pdf", "docx", "doc", "xlsx", "jpg", "png");
+                     if (!in_array($imageFileType, $allowedExtensions)) {
+                            $error = $error . "Only pdf, docx, doc, xlsx, jpg, png files are supported.";
+                            $uploadOk = 0;
+                     } else {
+                            $error = $error . '';
+                     }
+                     if ($uploadOk == 0) {
+                            //   echo "Tải lên tệp $fileName không thành công.<br>";
+
+                     } else {
+                            if (move_uploaded_file($_FILES["file"]["tmp_name"][$index], $targetFile)) {
+                                   //       echo "Tải lên tệp $fileName thành công.<br>";
+                                   $filename = mysqli_real_escape_string($conn, $fileName);
+
+                                   $sqlInsert = "INSERT INTO `tb_certificate`(`employee_id`, `certificate`) VALUES ('$id','$filename')";
+                                   if ($conn->query($sqlInsert) === TRUE) {
+                                   } else {
+
+                                          //    echo "Lỗi khi thêm thông tin tệp vào cơ sở dữ liệu: " . $conn->error . "<br>";
+                                   }
+                            } else {
+
+                                   //       echo "Đã xảy ra lỗi khi tải lên tệp $fileName.<br>";
+                            }
+                     }
+              }
+              $out['error'] = $error;
+              header('Content-Type: application/json');
+              echo json_encode($out);
+       }
+} else {
+       $out['error'] = "No new files to upload.";
+       header('Content-Type: application/json');
+       echo json_encode($out);
+}
+
+
+
+
+
+if (isset($_GET["id"]) && $_GET['action'] == "up") {
        $id = $_GET["id"];
+       $PersonalProfile = $_GET['action'];
        $EmployeeCode = $_GET["code"];
-       $FullName = $_POST["FullName"]; //
+
+       $LastName = $_POST["LastName"];
+       $FirstName = $_POST["FirstName"];
+
        $EngLishName = $_POST["EngLishName"]; //
        $Gender = $_POST["Gender"]; //
        $National = $_POST["National"]; //
@@ -47,6 +200,9 @@ if (isset($_GET["id"])) {
        $FolderName = "../assets/files/" . $EmployeeCode . "/Photo/";
        $oldImageFilePath = $FolderName . $_SESSION["old_photo"];
 
+
+
+
        //Photo
        if (isset($_FILES['Photo'])) {
               $image = $_FILES['Photo']['name'];
@@ -60,16 +216,6 @@ if (isset($_GET["id"])) {
                      $Photo = $_SESSION["old_photo"];
               }
        }
-
-       //Address, pass, cccd
-       // $sql = "SELECT address_id, pass_id, cccd_id FROM `tb_employee` WHERE employee_id='$id'";
-       // $result = $conn->query($sql);
-       // while ($row = $result->fetch_assoc()) {
-       //        $addressID = $row['address_id'];
-       //        $PassportID = $row['pass_id'];
-       //        $CICNID = $row['cccd_id'];
-       // }
-
        //Job Title
        $sql = "SELECT job_title_id FROM tb_job_title WHERE job_title_name='$JobTitle'";
        $result = $conn->query($sql);
@@ -123,7 +269,8 @@ if (isset($_GET["id"])) {
                             `tb_employee`
                      SET
                             `photo` = '$Photo',
-                            `employee_name` = '$FullName',
+                            `last_name` = '$LastName',
+                            `first_name` = '$FirstName',
                             `english_name` = '$EngLishName',
                             `gender` = '$Gender',
                             `marital_status` = '$MaritalStatus',
@@ -177,12 +324,21 @@ if (isset($_GET["id"])) {
                      
               WHERE
                      `employee_id` = '$id'";
+
        $conn->query($sql_up1);
        $conn->query($sql_up2);
        $conn->query($sql_up3);
        $conn->query($sql_up4);
        $conn->query($sql_up5);
        header("location: ./profile.php?id=$id");
+       date_default_timezone_set('Asia/Ho_Chi_Minh');
+       $id_account = $_SESSION['account_id'];
+       $name_account = $_SESSION['username'];
+       $action = "Update Employee";
+       $timestamp = date("Y-m-d H:i:s");
+       $log_sql = "INSERT INTO tb_log (id_account, name_account, action, timestap) VALUES ($id_account, '$name_account','$action', '$timestamp') ";
+       mysqli_query($conn, $log_sql);
+
        $_SESSION['update'] = "1";
 }
 function formatDateToMySQL($inputDate)

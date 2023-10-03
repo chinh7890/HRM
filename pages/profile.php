@@ -1,13 +1,15 @@
 <?php
 session_start();
 require_once("../connect.php");
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $sql = "SELECT
     tb_employee.employee_id,
     tb_employee.employee_code,
     tb_employee.photo,
-    tb_employee.employee_name,
+    tb_employee.last_name,
+    tb_employee.first_name,
     tb_employee.english_name,
     tb_employee.gender,
     tb_employee.marital_status,
@@ -71,7 +73,8 @@ $result = $conn->query($sql);
 while ($row = $result->fetch_assoc()) {
     $employee_code = $row["employee_code"];
     $photo = $row["photo"];
-    $employee_name = $row["employee_name"];
+    $employee_lastname = $row["last_name"];
+    $employee_firstname = $row["first_name"];
     $english_name = $row["english_name"];
     $gender = $row["gender"];
     $phone_number = $row["phone_number"];
@@ -113,6 +116,7 @@ function formatDate($inputDate)
     }
 }
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -134,11 +138,62 @@ function formatDate($inputDate)
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+    <link href="../luutrufile/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" crossorigin="anonymous">
+    <link href="../luutrufile/themes/explorer-fa5/theme.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="../luutrufile/js/plugins/buffer.min.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/plugins/filetype.min.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/plugins/piexif.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/fileinput.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/locales/fr.js" type="text/javascript"></script>
+    <script src="../luutrufile/js/locales/es.js" type="text/javascript"></script>
+    <script src="../luutrufile/themes/fa5/theme.js" type="text/javascript"></script>
+    <script src="../luutrufile/themes/explorer-fa5/theme.js" type="text/javascript"></script>
+
+    <!-- link đến file lock-edit -->
+    <script src="Lock-Edit-UpdateProfile.js"></script>
+
+
 </head>
 <style>
     .frame-info {
         border: 1px solid rgb(209, 209, 209);
         margin-top: 10px;
+    }
+
+    .fileinput-remove-button,
+    .close {
+        display: none;
+    }
+
+    .input-group {
+        margin: auto;
+        width: 500px;
+    }
+
+    .form-control {
+        margin-right: 20px;
+        width: 200px;
+    }
+
+    .input-group>.btn {
+        width: 100px;
+    }
+
+    #bt_save {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    #bt_edit {
+        width: 60px;
+        background-color: #33CC00;
+        border-color: #33CC00;
     }
 </style>
 
@@ -147,6 +202,11 @@ function formatDate($inputDate)
     if (isset($_SESSION["update"]) && $_SESSION["update"] == "1") {
         echo "<script type='text/javascript'>toastr.success('Update Employee Successfully')</script>";
         unset($_SESSION["update"]);
+    }
+    //THÔNG BÁO SEARCH NOT FOUND
+    if (isset($_SESSION["error_search"]) && $_SESSION['error_search'] == true) {
+        echo "<script type='text/javascript'>toastr.error('No results found')</script>";
+        unset($_SESSION["error_search"]);
     }
     ?>
     <!-- ============================================================== -->
@@ -217,7 +277,7 @@ function formatDate($inputDate)
         <!-- wrapper  -->
         <!-- ============================================================== -->
         <div class="dashboard-wrapper">
-            <div class="container-fluid  dashboard-content">
+            <div class="dashboard-content">
                 <!-- ============================================================== -->
                 <!-- pageheader -->
                 <!-- ============================================================== -->
@@ -225,6 +285,14 @@ function formatDate($inputDate)
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
                             <h2 class="pageheader-title">Update Employee</h2>
+                            <form method="POST" action="search-in-profile-handle.php?id= <?php echo $id; ?>">
+                                <!-- GIAO DIỆN SEARCH -->
+                                <div class="input-group">
+                                    <input type="search" id="profile_employee" name="search_input" class="form-control rounded" placeholder="Code/Name/English name" aria-label="Search" aria-describedby="search-addon" />
+                                    <button name="search" class="btn btn-outline-primary">Search</button>
+                                </div>
+                                <!-- GIAO DIỆN SEARCH -->
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -239,7 +307,7 @@ function formatDate($inputDate)
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form id="validationform" action="./update-handle.php?id=<?php echo $id ?>&code=<?php echo $employee_code ?>" method="post" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
+                                <form id="validationform" action="./update-handle.php?id=<?php echo $id ?>&code=<?php echo $employee_code ?>&action=up" method="post" data-parsley-validate="" novalidate="" enctype="multipart/form-data">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div class="tab-outline">
                                             <ul class="nav nav-tabs" id="myTab2" role="tablist">
@@ -252,43 +320,28 @@ function formatDate($inputDate)
                                                 <li class="nav-item">
                                                     <a class="nav-link" id="tab-outline-three" data-toggle="tab" href="#JobDetail" role="tab" aria-controls="contact" aria-selected="false">Job Detail</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="tab-outline-four" data-toggle="tab" href="#PersonalProfile" role="tab" aria-controls="contact" aria-selected="false">Personal Profile</a>
+                                                </li>
+
                                             </ul>
                                             <div class="tab-content" id="myTabContent2">
+
+                                                <!-- TAB PERSONALDETAILS -->
                                                 <div class="tab-pane fade show active" id="PersonalDetails" role="tabpanel" aria-labelledby="tab-outline-one">
-                                                    <!-- <div class="card-body">
-                                                        <div class="col-12 col-sm-auto mb-3">
-                                                            <div class="mx-auto" style="width: 140px;">
-                                                                <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-                                                                    <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col flex-column flex-sm-row justify-content-between mb-3 justify-content-center">
-                                                            <div class="text-center text-sm-left mb-2 mb-sm-0">
-                                                                <h4 style="text-align: center;" class="pt-sm-2 pb-1 mb-0 text-nowrap">
-                                                                    <?php echo $employee_name; ?></h4>
-                                                                <div class="mt-2" style=" display:flex; justify-content: center; align-items: center; ">
-                                                                    <button class="btn btn-primary" type="button">
-                                                                        <i class="fa fa-fw fa-camera"></i>
-                                                                        <span>Change Photo</span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                     <div class="card-body">
                                                         <div class="col-12 col-sm-auto mb-3">
                                                             <div class="mx-auto" style="width: 140px;">
-                                                                <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-                                                                    <image id="image" src="../assets/files/<?php echo $employee_code . "/Photo/" . $photo; ?>" width="140" height="140"></image>
+                                                                <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239); ">
+                                                                    <image style="border:1px solid #ddd" id="image" src="../assets/files/<?php echo $employee_code . "/Photo/" . $photo; ?>" width="140" height="140"></image>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col flex-column flex-sm-row justify-content-between mb-3 justify-content-center">
                                                             <div class="text-center text-sm-left mb-2 mb-sm-0">
                                                                 <h4 style="text-align: center;" class="pt-sm-2 pb-1 mb-0 text-nowrap">
-                                                                    <?php echo $employee_name; ?></h4>
-                                                                <div class="mt-2" style=" display:flex; justify-content: center; align-items: center; ">
+                                                                    <?php echo $employee_lastname . ' ' . $employee_firstname; ?></h4>
+                                                                <div id="change_photo" class="mt-2" style=" display:flex; justify-content: center; align-items: center; ">
                                                                     <input style="display: none;" class="crud-user_add-value add_file" type="file" onchange="chooseImage(this)" name="Photo" id="change-photo" accept="image/gif, image/jpeg, image/png">
 
                                                                     <label class="btn btn-primary" for="change-photo">
@@ -307,17 +360,25 @@ function formatDate($inputDate)
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Full
+                                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">First
                                                             Name</label>
                                                         <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                            <input type="text" value="<?php echo $employee_name ?>" required="" name="FullName" class="form-control">
+                                                            <input id="first_name" type="text" value="<?php echo $employee_firstname ?>" required="" name="FirstName" class="form-control">
                                                         </div>
-                                                        <label class="col-3 col-sm-1 col-form-label text-sm-left">English
+                                                        <label class="col-3 col-sm-1 col-form-label text-sm-left">Last
                                                             Name</label>
                                                         <div class="col-sm-1 col-lg-2">
-                                                            <input type="text" required="" value="<?php echo $english_name ?>" name="EngLishName" class="form-control">
+                                                            <input id="last_name" type="text" required="" value="<?php echo $employee_lastname ?>" name="LastName" class="form-control">
                                                         </div>
                                                     </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">English
+                                                            Name</label>
+                                                        <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
+                                                            <input id="english_name" type="text" required="" value="<?php echo $english_name ?>" name="EngLishName" class="form-control">
+                                                        </div>
+                                                    </div>
+
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Gender</label>
                                                         <div class="custom-control  custom-radio " style="padding-left:40px; padding-top:5px;">
@@ -370,7 +431,7 @@ function formatDate($inputDate)
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right" style="padding-left:70px ;">Date of Birth</label>
                                                         <div class="input-group date col-sm-0 col-lg-3" id="datetimepicker46" data-target-input="nearest">
-                                                            <input placeholder="mm/dd/yyyy" type="text" style="  width:150px" value="<?php echo $date_of_birth; ?>" name="DateofBirth" class="form-control datetimepicker-input" data-target="#datetimepicker46" placeholder="mm/dd/yyyy" />
+                                                            <input id="date_of_birth" placeholder="mm/dd/yyyy" type="text" style="  width:150px" value="<?php echo $date_of_birth; ?>" name="DateofBirth" class="form-control datetimepicker-input" data-target="#datetimepicker46" placeholder="mm/dd/yyyy" />
                                                             <div class="input-group-append" data-target="#datetimepicker46" data-toggle="datetimepicker">
                                                                 <div class="input-group-text">
                                                                     <i class="far fa-calendar-alt"></i>
@@ -385,37 +446,25 @@ function formatDate($inputDate)
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <script>
-                                                        var selectElement = document.getElementById("countrySelect");
-                                                        // Gọi API để lấy danh sách các quốc gia
-                                                        fetch("https://restcountries.com/v3.1/all")
-                                                            .then(response => response.json())
-                                                            .then(data => {
-                                                                data.forEach(country => {
-                                                                    var option = document.createElement(
-                                                                        "option");
-                                                                    option.value = country.name.common;
-                                                                    option.text = country.name.common;
-                                                                    selectElement.appendChild(option);
-                                                                });
-                                                                // Cập nhật lại Bootstrap SelectPicker
-                                                                $(selectElement).selectpicker('refresh');
-                                                            })
-                                                            .catch(error => console.error("Error fetching data:", error));
-                                                    </script>
 
                                                     <div class="form-group row text-right">
                                                         <div class="col col-sm-10 col-lg-9 offset-sm-2 offset-lg-0">
-                                                            <button type="button" name="update" class="btn btn-space btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Save</button>
+                                                            <button id="bt_edit" type="button" name="edit" class="btn btn-space btn-primary">Edit</button>
+
+                                                            <!-- <input id="toggle_edit" type="checkbox" checked data-toggle="toggle" data-on="Edit" data-off="Lock"  data-onstyle="success" data-offstyle="danger"> -->
+                                                            <button id="bt_save" type="button" name="update" class="btn btn-space btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Save</button>
                                                         </div>
                                                     </div>
                                                 </div>
+
+
+                                                <!-- TAB CONTACTDETAIL -->
                                                 <div class="tab-pane fade" id="ContactDetail" role="tabpanel" aria-labelledby="tab-outline-two">
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Phone
                                                             Number</label>
                                                         <div class="col-12 col-sm-8 col-lg-6">
-                                                            <input data-parsley-type="number" name="PhoneNumber" value="<?php echo $phone_number ?>" type="text" required="" data-parsley-minlength="10" data-parsley-maxlength="10" class="form-control">
+                                                            <input id="phone_number" data-parsley-type="number" name="PhoneNumber" value="<?php echo $phone_number ?>" type="text" required="" data-parsley-minlength="10" data-parsley-maxlength="10" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="">
@@ -423,13 +472,13 @@ function formatDate($inputDate)
                                                             <label class="col-12 col-sm-3 col-form-label text-sm-right">Passport
                                                                 Number</label>
                                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                                <input type="text" name="PassportNumber" value="<?php echo $pass_number ?>" class="form-control">
+                                                                <input id="pass_number" type="text" name="PassportNumber" value="<?php echo $pass_number ?>" class="form-control">
                                                             </div>
                                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date
                                                                 of
                                                                 Issue</label>
                                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker44" data-target-input="nearest">
-                                                                <input placeholder="mm/dd/yyyy" type="text" class="form-control datetimepicker-input" value="<?php echo $date_of_issue ?>" name="DateofIssue_pass" data-target="#datetimepicker44" />
+                                                                <input id="date_of_issue" placeholder="mm/dd/yyyy" type="text" class="form-control datetimepicker-input" value="<?php echo $date_of_issue ?>" name="DateofIssue_pass" data-target="#datetimepicker44" />
                                                                 <div class="input-group-append" data-target="#datetimepicker44" data-toggle="datetimepicker">
                                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                     </div>
@@ -441,13 +490,13 @@ function formatDate($inputDate)
                                                                 of
                                                                 Issue</label>
                                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                                <input type="text" name="PlaceofIssue_pass" value="<?php echo $place_of_issue ?>" class="form-control">
+                                                                <input id="place_of_issue" type="text" name="PlaceofIssue_pass" value="<?php echo $place_of_issue ?>" class="form-control">
                                                             </div>
                                                             <label class="col-12 col-sm-1 col-form-label text-sm-left">Date
                                                                 of
                                                                 Expiry</label>
                                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker45" data-target-input="nearest">
-                                                                <input placeholder="mm/dd/yyyy" type="text" name="DateofExpiry_pass" value="<?php echo $date_of_expiry ?>" class="form-control datetimepicker-input" data-target="#datetimepicker45" />
+                                                                <input id="date_of_expiry" placeholder="mm/dd/yyyy" type="text" name="DateofExpiry_pass" value="<?php echo $date_of_expiry ?>" class="form-control datetimepicker-input" data-target="#datetimepicker45" />
                                                                 <div class="input-group-append" data-target="#datetimepicker45" data-toggle="datetimepicker">
                                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                     </div>
@@ -461,13 +510,13 @@ function formatDate($inputDate)
                                                                 identity
                                                                 Card Number</label>
                                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                                <input type="text" required="" name="cicn" value="<?php echo $cccd_number ?>" class="form-control">
+                                                                <input id="cccd_number" type="text" required="" name="cicn" value="<?php echo $cccd_number ?>" class="form-control">
                                                             </div>
                                                             <label class="col-12 col-sm-1 col-form-label text-sm-right">Date
                                                                 of
                                                                 Issue</label>
                                                             <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker47" data-target-input="nearest">
-                                                                <input placeholder="mm/dd/yyyy" type="text" value="<?php echo $date_of_issue_cccd ?>" name="DateofIssue_cicn" class="form-control datetimepicker-input" data-target="#datetimepicker47" />
+                                                                <input id="date_of_issue_cccd" placeholder="mm/dd/yyyy" type="text" value="<?php echo $date_of_issue_cccd ?>" name="DateofIssue_cicn" class="form-control datetimepicker-input" data-target="#datetimepicker47" />
                                                                 <div class="input-group-append" data-target="#datetimepicker47" data-toggle="datetimepicker">
                                                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                     </div>
@@ -479,7 +528,7 @@ function formatDate($inputDate)
                                                                 of
                                                                 Issue</label>
                                                             <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                                <input type="text" name="PlaceofIssue_cicn" value="<?php echo $place_of_issue_cccd ?>" required="" class="form-control">
+                                                                <input id="place_of_issue_cccd" type="text" name="PlaceofIssue_cicn" value="<?php echo $place_of_issue_cccd ?>" required="" class="form-control">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -488,14 +537,14 @@ function formatDate($inputDate)
                                                             of
                                                             Residence</label>
                                                         <div class="col-12 col-sm-8 col-lg-6">
-                                                            <input type="text" required="" name="PlaceofResidence" value="<?php echo $place_of_residence ?>" class="form-control">
+                                                            <input id="place_of_residence" type="text" required="" name="PlaceofResidence" value="<?php echo $place_of_residence ?>" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Permanent
                                                             Address</label>
                                                         <div class="col-12 col-sm-8 col-lg-6">
-                                                            <input type="text" required="" name="PermanentAddress" value="<?php echo $permanent_address ?>" class="form-control">
+                                                            <input id="permanent_address" type="text" required="" name="PermanentAddress" value="<?php echo $permanent_address ?>" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -503,7 +552,7 @@ function formatDate($inputDate)
                                                             Check-up
                                                             Date</label>
                                                         <div class="input-group date col-12 col-sm-8 col-lg-6" id="datetimepicker43" data-target-input="nearest">
-                                                            <input placeholder="mm/dd/yyyy" type="text" name="Health" value="<?php echo $health_checkup_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker43" />
+                                                            <input id="health_checkup_date" placeholder="mm/dd/yyyy" type="text" name="Health" value="<?php echo $health_checkup_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker43" />
                                                             <div class="input-group-append" data-target="#datetimepicker43" data-toggle="datetimepicker">
                                                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                 </div>
@@ -511,12 +560,15 @@ function formatDate($inputDate)
                                                         </div>
                                                     </div>
                                                 </div>
+
+
+                                                <!-- TAB JOBDETAIL -->
                                                 <div class="tab-pane fade" id="JobDetail" role="tabpanel" aria-labelledby="tab-outline-three">
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Job
                                                             Title</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" data-size="7" name="JobTitle" data-width="549px">
+                                                            <select id="job_title" class="selectpicker" data-size="7" name="JobTitle" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $job_title_name . "</option>";
                                                                 $sql = "SELECT job_title_name FROM tb_job_title WHERE NOT job_title_name='$job_title_name'";
@@ -532,7 +584,7 @@ function formatDate($inputDate)
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Job
                                                             Category</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" data-size="7" name="JobCategory" data-width="549px">
+                                                            <select id="job_category" class="selectpicker" data-size="7" name="JobCategory" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $job_category_name . "</option>";
                                                                 $sql = "SELECT job_category_name FROM tb_job_category WHERE NOT job_category_name='$job_category_name'";
@@ -547,7 +599,7 @@ function formatDate($inputDate)
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Position</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" data-size="7" name="Position" data-width="549px">
+                                                            <select id="position" class="selectpicker" data-size="7" name="Position" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $position_name . "</option>";
                                                                 $sql = "SELECT position_name FROM tb_position WHERE NOT position_name='$position_name'";
@@ -562,7 +614,7 @@ function formatDate($inputDate)
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Team</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" name="Team" data-size="7" data-width="549px">
+                                                            <select id="team" class="selectpicker" name="Team" data-size="7" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $team_name . "</option>";
                                                                 $sql = "SELECT team_name FROM tb_team WHERE NOT team_name='$team_name'";
@@ -578,7 +630,7 @@ function formatDate($inputDate)
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Level</label>
                                                         <div class="col-sm-4 col-lg-1">
-                                                            <select class="selectpicker" data-size="7" name="Level" data-width="549px">
+                                                            <select id="level" class="selectpicker" data-size="7" name="Level" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $level_name . "</option>";
                                                                 $sql = "SELECT level_name FROM tb_level WHERE NOT level_name='$level_name'";
@@ -594,7 +646,7 @@ function formatDate($inputDate)
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Start
                                                             Date</label>
                                                         <div class="input-group date col-sm-1 col-lg-5" id="datetimepicker48" data-target-input="nearest">
-                                                            <input placeholder="mm/dd/yyyy" type="text" name="Startdate" value="<?php echo $start_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker48" />
+                                                            <input id="start_date" placeholder="mm/dd/yyyy" type="text" name="Startdate" value="<?php echo $start_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker48" />
                                                             <div class="input-group-append" data-target="#datetimepicker48" data-toggle="datetimepicker">
                                                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i>
                                                                 </div>
@@ -605,7 +657,7 @@ function formatDate($inputDate)
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Type
                                                             of Contract</label>
                                                         <div class="col-sm-4 col-lg-3">
-                                                            <select class="selectpicker" name="TypeofContract" data-size="7" data-width="549px">
+                                                            <select id="type_contract" class="selectpicker" name="TypeofContract" data-size="7" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $type_contract_name . "</option>";
                                                                 $sql = "SELECT type_contract_name FROM tb_type_contract WHERE NOT type_contract_name ='$type_contract_name'";
@@ -621,7 +673,7 @@ function formatDate($inputDate)
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Contract
                                                             Duration</label>
                                                         <div class="col-sm-4 col-lg-3">
-                                                            <select class="selectpicker" name="ContractDuration" data-size="5" data-width="275px">
+                                                            <select id="contract_duration" class="selectpicker" name="ContractDuration" data-size="5" data-width="275px">
                                                                 <?php
 
                                                                 $year = ["6 Month", "1 Year", "2 Year", "3 Year", "4 Year", "5 Year"];
@@ -638,7 +690,7 @@ function formatDate($inputDate)
                                                         <label class="col-12 col-sm-1 col-form-label text-sm-left">End
                                                             Date</label>
                                                         <div class="input-group date col-sm-1 col-lg-2" id="datetimepicker49" data-target-input="nearest">
-                                                            <input placeholder="mm/dd/yyyy" type="text" name="EndDate" value="<?php echo $end_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker49" />
+                                                            <input id="end_date" placeholder="mm/dd/yyyy" type="text" name="EndDate" value="<?php echo $end_date ?>" class="form-control datetimepicker-input" data-target="#datetimepicker49" />
                                                             <div class="input-group-append" data-target="#datetimepicker49" data-toggle="datetimepicker">
                                                                 <div class="input-group-text">
                                                                     <i class="far fa-calendar-alt"></i>
@@ -649,13 +701,13 @@ function formatDate($inputDate)
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">E-Mail</label>
                                                         <div class="col-12 col-sm-8 col-lg-6">
-                                                            <input type="email" value="<?php echo $email ?>" name="email" required="" data-parsley-type="email" class="form-control">
+                                                            <input id="email" type="email" value="<?php echo $email ?>" name="email" required="" data-parsley-type="email" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Country</label>
                                                         <div class="col-sm-4 col-lg-3">
-                                                            <select class="selectpicker" data-size="7" name="Country" data-width="549px">
+                                                            <select id="country" class="selectpicker" data-size="7" name="Country" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $country_name . "</option>";
                                                                 $sql = "SELECT country_name FROM tb_country WHERE NOT country_name = '$country_name'";
@@ -670,7 +722,7 @@ function formatDate($inputDate)
                                                     <div class="form-group row">
                                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Location</label>
                                                         <div class="col-sm-4 col-lg-3">
-                                                            <select class="selectpicker" name="location" data-size="7" data-width="549px">
+                                                            <select id="location" class="selectpicker" name="location" data-size="7" data-width="549px">
                                                                 <?php
                                                                 echo "<option>" . $location_name . "</option>";
                                                                 $sql = "SELECT location_name FROM tb_location WHERE NOT location_name= '$location_name'";
@@ -682,17 +734,37 @@ function formatDate($inputDate)
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Personal
-                                                            Profile, Certificate</label>
-                                                        <div class="col-sm-4 col-lg-3 mb-0 mb-sm-0">
-                                                            <a href="./upload-file.php?id=<?php echo $id ?>" class="btn btn-outline-primary">See more</a>
+                                                </div>
+
+                                                <!-- TAB PERSONALPROFILE -->
+                                                <div class="tab-pane fade" id="PersonalProfile" role="tabpanel" aria-labelledby="tab-outline-four">
+                                                    <div class="row">
+                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                            <div class="page-header">
+                                                                <h2 class="pageheader-title">Personal Profile</h2>
+                                                            </div>
+                                                        </div>
+                                                        <div class="container">
+                                                            <input type="hidden" name="" id="id" value="<?php echo $id ?>">
+                                                            <input id="per" name="file1[]" type="file" data-preview-file-type="" multiple>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                            <div class="page-header">
+                                                                <h2 class="pageheader-title">Certificate</h2>
+                                                            </div>
+                                                        </div>
+                                                        <div class="container">
+                                                            <input id="certificate" name="file[]" type="file" data-preview-file-type="" multiple>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <!-- Modal -->
                                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -718,36 +790,8 @@ function formatDate($inputDate)
                             </div>
                         </div>
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- end valifation types -->
-                    <!-- ============================================================== -->
-                </div>
-                <!-- Button trigger modal -->
-
-
-            </div>
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <div class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                            Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                            <div class="text-md-right footer-links d-none d-sm-block">
-                                <a href="javascript: void(0);">About</a>
-                                <a href="javascript: void(0);">Support</a>
-                                <a href="javascript: void(0);">Contact Us</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- end footer -->
-            <!-- ============================================================== -->
         </div>
     </div>
 
@@ -755,18 +799,25 @@ function formatDate($inputDate)
     <!-- end main wrapper -->
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
-    <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <!-- <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script> -->
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-    <script src="../assets/vendor/parsley/parsley.js"></script>
+    <!-- <script src="../assets/vendor/parsley/parsley.js"></script> -->
     <script src="../assets/libs/js/main-js.js"></script>
     <script src="../assets/vendor/datepicker/datepicker.js"></script>
     <script src="../assets/vendor/datepicker/moment.js"></script>
     <script src="../assets/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
     <script src="../assets/vendor/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script>
-        $('#form').parsley();
+        // $('#form').parsley();
     </script>
+    <!-- link đến file lock-edit -->
+    <!-- <script src="Lock-Edit-UpdateProfile.js"></script> -->
+
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
@@ -808,9 +859,13 @@ function formatDate($inputDate)
         } else if (hash == "#ContactDetail") {
             var ContactDetail = document.querySelector("#tab-outline-two");
             ContactDetail.click(); // Kích hoạt sự kiện click trên tab
+        } else if (hash == "#PersonalProfile") {
+            var PersonalProfile = document.querySelector("#tab-outline-four");
+            PersonalProfile.click(); // Kích hoạt sự kiện click trên tab
         } else {
             var PersonalDetails = document.querySelector("#tab-outline-one");
             PersonalDetails.click(); // Kích hoạt sự kiện click trên tab
+
         }
     </script>
     <script>
@@ -824,6 +879,387 @@ function formatDate($inputDate)
             }
         }
     </script>
+
+    <!-- PROFILE FILE HANDLE -->
+    <script>
+        $(document).ready(function() {
+            var url = "../luutrufile/examples/get_files.php?action=PersonalProfile&id=" + document.getElementById("id").value;
+            var id = document.getElementById("id").value;
+            $.ajax({
+                url: url,
+                dataType: "json",
+                success: function(data) {
+                    var initialPreview = [];
+                    var initialPreviewConfig = [];
+                    for (var i = 0; i < data.length; i++) {
+                        initialPreview.push("../assets/files/" + data[0].employee_code + "/PersonalProfile/" + data[i].profile);
+                        const fileExtension = data[i].profile.split('.').pop();
+                        initialPreviewConfig.push({
+                            type: fileExtension,
+                            caption: data[i].profile,
+                            showRemove: true,
+                            filename: data[i].profile,
+                            url: '../luutrufile/examples/delete_file.php?action=PersonalProfile',
+                            extra: {
+                                id: id,
+                                filename: data[i].profile,
+                                employee_code: data[0].employee_code
+                            },
+                            key: i,
+                        });
+                        var code = data[0].employee_code
+                    }
+                    $("#per").fileinput({
+                        uploadAsync: false,
+                        uploadUrl: "./update-handle.php?action=PersonalProfile& id=" + id,
+                        initialPreviewDownloadUrl: '../assets/files/' + code + '/PersonalProfile/{filename}',
+                        uploadAsync: false,
+                        overwriteInitial: false,
+                        initialPreview: initialPreview,
+                        initialPreviewAsData: true,
+                        initialPreviewFileType: 'image',
+                        initialPreviewConfig: initialPreviewConfig,
+                        uploadExtraData: {
+                            img_key: "1000",
+                            img_keywords: "happy, nature",
+                        },
+                        preferIconicPreview: true,
+                        previewFileIconSettings: {
+                            'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+                            'xlsx': '<i class="fas fa-file-excel text-success"></i>',
+                            'doc': '<i class="fas fa-file-word text-primary"></i>',
+                            'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
+                        },
+                        previewFileExtSettings: {
+                            'doc': function(ext) {
+                                return ext.match(/(doc|docx)$/i);
+                            },
+                            'pdf': function(ext) {
+                                return ext.match(/(pdf)$/i);
+                            },
+                            'xls': function(ext) {
+                                return ext.match(/(xls|xlsx)$/i);
+                            },
+                            'ppt': function(ext) {
+                                return ext.match(/(ppt|pptx)$/i);
+                            },
+                        }
+                    }).on('filesorted', function(e, params) {
+                        console.log('File sorted params', params);
+                    }).on('fileuploaded', function(e, params) {
+                        console.log('File uploaded params', params);
+                    }).on('filebeforedelete', function() {
+                        return new Promise(function(resolve, reject) {
+                            $.confirm({
+                                title: 'Notification!',
+                                content: 'Are you sure you want to delete this file?',
+                                type: 'red',
+                                buttons: {
+                                    "Yes": {
+                                        btnClass: 'btn-primary text-white',
+                                        keys: ['enter'],
+                                        action: function() {
+                                            resolve();
+                                        }
+                                    },
+                                    "No": function() {}
+                                }
+                            });
+                        });
+                    }).on('filedeleted', function(event, key, jqXHR, data) {
+                        console.log('File deleted', data);
+                        setTimeout(function() {
+                            $.alert('Delete file successfully!');
+                        }, 200);
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- CERTIFICATE FILE HANDLE -->
+    <script>
+        $(document).ready(function() {
+            var url = "../luutrufile/examples/get_files.php?action=Certificate&id=" + document.getElementById("id").value;
+            var id = document.getElementById("id").value;
+            $.ajax({
+                url: url,
+                dataType: "json",
+                success: function(data) {
+                    var initialPreview = [];
+                    var initialPreviewConfig = [];
+                    for (var i = 0; i < data.length; i++) {
+                        initialPreview.push("../assets/files/" + data[0].employee_code + "/Certificate/" + data[i].certificate);
+                        const fileExtension = data[i].certificate.split('.').pop();
+                        initialPreviewConfig.push({
+                            type: fileExtension,
+                            caption: data[i].certificate,
+                            showRemove: true,
+                            filename: data[i].certificate,
+                            url: '../luutrufile/examples/delete_file.php?action=Certificate',
+                            extra: {
+                                id: id,
+                                filename: data[i].certificate,
+                                employee_code: data[0].employee_code
+                            },
+                            key: i,
+                        });
+                        var code = data[0].employee_code;
+                    }
+                    $("#certificate").fileinput({
+                        initialPreviewDownloadUrl: "../assets/files/" + code + "/{filename}",
+                        uploadUrl: "./update-handle.php?action=Certificate&id=" + id,
+                        allowedFileExtensions: ["pdf", "docx", "doc", "xlsx", "jpg", "png"],
+                        uploadAsync: false,
+                        overwriteInitial: false,
+                        initialPreview: initialPreview,
+                        initialPreviewAsData: true,
+                        initialPreviewFileType: 'image',
+                        initialPreviewConfig: initialPreviewConfig,
+                        uploadExtraData: {
+                            img_key: "1000",
+                            img_keywords: "happy, nature",
+                        },
+                        preferIconicPreview: true,
+                        previewFileIconSettings: {
+                            'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+                            'xlsx': '<i class="fas fa-file-excel text-success"></i>',
+                            'doc': '<i class="fas fa-file-word text-primary"></i>',
+                            'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
+                            'png': '<i class="fas fa-file-image text-primary"></i>',
+                            'jpg': '<i class="fas fa-file-image text-primary"></i>'
+                        },
+                        previewFileExtSettings: {
+                            'doc': function(ext) {
+                                return ext.match(/(doc|docx)$/i);
+                            },
+                            'pdf': function(ext) {
+                                return ext.match(/(pdf)$/i);
+                            },
+                            'xls': function(ext) {
+                                return ext.match(/(xls|xlsx)$/i);
+                            },
+                            'ppt': function(ext) {
+                                return ext.match(/(ppt|pptx)$/i);
+                            },
+                        }
+                    }).on('filesorted', function(e, params) {
+                        console.log('File sorted params', params);
+                    }).on('fileuploaded', function(e, params) {
+
+                        console.log('File uploaded params', params);
+                    }).on('filebeforedelete', function() {
+                        return new Promise(function(resolve, reject) {
+                            $.confirm({
+                                title: 'Notification!',
+                                content: 'Are you sure you want to delete this file?',
+                                type: 'red',
+                                buttons: {
+                                    "Yes": {
+                                        btnClass: 'btn-primary text-white',
+                                        keys: ['enter'],
+                                        action: function() {
+                                            resolve();
+                                        }
+                                    },
+                                    "No": function() {}
+                                }
+                            });
+                        });
+                    }).on('filedeleted', function(event, key, jqXHR, data) {
+                        console.log('File deleted', data);
+                        setTimeout(function() {
+                            $.alert('Delete file successfully!');
+                        }, 200);
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function handleClick() {
+            var search_input = document.getElementById("profile_employee").value;
+            window.location.href = "search-in-profile-handle.php?search_input=".search_input;
+        }
+    </script>
+    <script>
+        function just_entered_site() {
+            // $("#toggle_edit").prop("checked", false); 
+
+            // var toggleEdit = document.getElementById("toggle_edit");
+            // var isChecked = toggleEdit.checked;    
+
+            var bt_edit = document.getElementById("bt_edit")
+            var change_photo = document.getElementById("change_photo")
+            var bt_save = document.getElementById("bt_save")
+            var last_name = document.getElementById("last_name")
+            var first_name = document.getElementById("first_name")
+            var english_name = document.getElementById("english_name")
+            var customRadio1 = document.getElementById("customRadio1")
+            var customRadio2 = document.getElementById("customRadio2")
+            var customRadio3 = document.getElementById("customRadio3")
+            var customRadio4 = document.getElementById("customRadio4")
+            var customRadio5 = document.getElementById("customRadio5")
+            var customRadio6 = document.getElementById("customRadio6")
+            var date_of_birth = document.getElementById("date_of_birth")
+            var countrySelect = document.getElementById("countrySelect")
+            // ------------------
+            var phone_number = document.getElementById("phone_number")
+            var pass_number = document.getElementById("pass_number")
+            var date_of_issue = document.getElementById("date_of_issue")
+            var place_of_issue = document.getElementById("place_of_issue")
+            var date_of_expiry = document.getElementById("date_of_expiry")
+            var cccd_number = document.getElementById("cccd_number")
+            var date_of_issue_cccd = document.getElementById("date_of_issue_cccd")
+            var place_of_issue_cccd = document.getElementById("place_of_issue_cccd")
+            var place_of_residence = document.getElementById("place_of_residence")
+            var permanent_address = document.getElementById("permanent_address")
+            var health_checkup_date = document.getElementById("health_checkup_date")
+            //-----------------------------
+            var job_title = document.getElementById("job_title")
+            var job_category = document.getElementById("job_category")
+            var position = document.getElementById("position")
+            var team = document.getElementById("team")
+            var level = document.getElementById("level")
+            var start_date = document.getElementById("start_date")
+            var type_contract = document.getElementById("type_contract")
+            var contract_duration = document.getElementById("contract_duration")
+            var end_date = document.getElementById("end_date")
+            var email = document.getElementById("email")
+            var country = document.getElementById("country")
+            var location = document.getElementById("location")
+            //-----------------------------
+            var per = document.getElementById("per")
+            var certificate = document.getElementById("certificate")
+
+
+            change_photo.style.visibility = 'hidden';
+            bt_save.style.visibility = 'hidden';
+
+            bt_edit.style.visibility = 'visible';
+
+            last_name.disabled = first_name.disabled = english_name.disabled =
+                customRadio1.disabled = customRadio2.disabled = customRadio3.disabled = customRadio4.disabled =
+                customRadio5.disabled = customRadio6.disabled = date_of_birth.disabled = countrySelect.disabled = true;
+            //-------------
+            phone_number.disabled = pass_number.disabled = date_of_issue.disabled = place_of_issue.disabled = date_of_expiry.disabled =
+                cccd_number.disabled = date_of_issue_cccd.disabled = place_of_issue_cccd.disabled = place_of_residence.disabled = permanent_address.disabled =
+                health_checkup_date.disabled = true;
+            //--------------------
+            job_title.disabled = job_category.disabled = position.disabled = team.disabled = level.disabled = start_date.disabled =
+                type_contract.disabled = contract_duration.disabled = end_date.disabled = email.disabled = country.disabled = location.disabled = true;
+            //------------------------
+            per.disabled = certificate.disabled = true
+            console.log("lock")
+            localStorage.setItem('edit', 'true');
+        }
+
+        //khi mới vào mọi thứ sẽ tự động lock
+        // localStorage.setItem('can_edit', 'false');
+        var edit = localStorage.getItem('edit');
+        var lock = localStorage.getItem('lock');
+
+        console.log("edit: " + edit)
+        console.log("lock: " + lock)
+
+        if (edit === null && lock === null) {
+            console.log("vô đây")
+            localStorage.setItem('lock', 'true');
+            localStorage.setItem('edit', 'false');
+
+
+        }
+        if ((edit === 'true' && lock === "true") || (edit === null && lock === null)) {
+            localStorage.setItem('lock', 'true');
+            localStorage.setItem('edit', 'false');
+
+            var edit = localStorage.getItem('edit');
+            var lock = localStorage.getItem('lock');
+
+            if (edit === 'false' && lock === "true") {
+
+                just_entered_site();
+
+            }
+        }
+        if (edit === 'true' && lock === "false") {
+            localStorage.setItem('lock', 'true');
+            localStorage.setItem('edit', 'false');
+            var bt_edit = document.getElementById("bt_edit")
+            bt_edit.style.visibility = 'hidden';
+        }
+        if (edit === 'false' && lock === "true") {
+
+            just_entered_site();
+            // localStorage.setItem('can_edit', 'true');
+        }
+
+        //Mở edit khi nhấn button edit                                     
+        var bt_edit = document.getElementById("bt_edit");
+        bt_edit.addEventListener("click", function(event) {
+            var edit = localStorage.getItem('edit');
+            // console.log(can_edit)
+
+            if (edit === 'true') {
+                console.log("vaoday")
+                localStorage.setItem('lock', 'false');
+                localStorage.setItem('edit', 'true');
+                // console.log(can_edit)
+
+                // // change_photo.style.visibility = 'visible';
+                // bt_save.style.visibility = 'visible';
+
+                // bt_edit.style.visibility = 'hidden';
+
+                // last_name.disabled=first_name.disabled= english_name.disabled=customRadio1.disabled=
+                // customRadio2.disabled= customRadio3.disabled=customRadio4.disabled= customRadio5.disabled=customRadio6.disabled=
+                // date_of_birth.disabled= countrySelect= false
+                // //-------------
+                // phone_number.disabled= pass_number.disabled=date_of_issue.disabled=place_of_issue.disabled=date_of_expiry.disabled=
+                // cccd_number.disabled=date_of_issue_cccd.disabled=place_of_issue_cccd.disabled= place_of_residence.disabled=
+                // permanent_address.disabled=health_checkup_date.disabled=false
+                // //--------------------
+                // job_title.disabled=  job_category.disabled=position.disabled= team.disabled= level.disabled=
+                // start_date.disabled= type_contract.disabled= contract_duration.disabled=end_date.disabled=
+                // email.disabled= country.disabled= location.disabled=false
+                // //------------------------
+                // per.disabled =  certificate.disabled = false
+
+                location.reload(true);
+            }
+        });
+    </script>
+    <!--Xử lý in quốc gia từ db -->
+    <input id="National" value="<?php echo $national_name ?>" type="hidden" name="">
+    <script>
+        var selectElement = document.getElementById("countrySelect");
+
+        // Gọi API để lấy danh sách các quốc gia
+        fetch("https://restcountries.com/v3.1/all")
+            .then(response => response.json())
+            .then(data => {
+                // Tìm index của quốc gia "N"
+                var inputNation = document.getElementById("National").value;
+                var CountryIndex = data.findIndex(country => country.name.common === inputNation);
+
+                // Nếu tìm thấy "Country", đưa nó lên đầu danh sách
+                if (CountryIndex !== -1) {
+                    var Country_ = data.splice(CountryIndex, 1)[0]; // Xóa "Country" khỏi danh sách và lưu nó vào biến
+                    data.unshift(Country_); // Đưa "country" lên đầu danh sách
+                }
+
+                data.forEach(country => {
+                    var option = document.createElement("option");
+                    option.value = country.name.common;
+                    option.text = country.name.common;
+                    selectElement.appendChild(option);
+                });
+                $(selectElement).selectpicker('refresh');
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    </script>
+
 
 </body>
 

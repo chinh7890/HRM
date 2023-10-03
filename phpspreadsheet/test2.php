@@ -1,17 +1,10 @@
 <?php
 require './vendor/autoload.php';
-// $fileName = "example.xxx"; // Thay đổi tên tệp tại đây
-// $pathInfo = pathinfo($fileName);
-// print_r($pathInfo);
-// $extension = $pathInfo['extension'];
 
-// echo $extension; // In ra đuôi tệp (extension)
-// exit;
-
-
-$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load("E:/THUCTAP/VENTECH/PROJECT/hrm/phpspreadsheet/files/Employee List.xlsx");
-
+$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load("./files/test.xlsx");
 $worksheet = $spreadsheet->getActiveSheet();
+$highestColumn = $worksheet->getHighestColumn();
+$numberOfColumns = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 $worksheetArray = $worksheet->toArray();
 array_shift($worksheetArray);
 
@@ -34,6 +27,10 @@ foreach ($worksheetArray as $key => $value) {
     $worksheet = $spreadsheet->getActiveSheet();
     $drawing = $worksheet->getDrawingCollection()[$key];
 
+    echo '<tr align="center">';
+    echo '<td>' . $value[0] . '</td>';
+    echo '<td>' . $value[1] . '</td>';
+
     $zipReader = fopen($drawing->getPath(), 'r');
     $imageContents = '';
     while (!feof($zipReader)) {
@@ -41,18 +38,15 @@ foreach ($worksheetArray as $key => $value) {
     }
     fclose($zipReader);
     $extension = $drawing->getExtension();
-    // Generate a unique filename for each image based on the value in the first column
-    $abc = $value[0];
-    echo $abc;
 
-    $filename = $imageDirectory . $value[0] . '.' . $extension;
-    print_r($filename);
+    // Generate a unique filename for each image based on the value in the first column
+    $filename = $imageDirectory . $value[1] . '.' . $extension;
+
     // Save the image to the specified directory
     file_put_contents($filename, $imageContents);
 
-    echo '<tr align="center">';
-    echo '<td>' . $value[0] . '</td>';
-    echo '<td>' . $value[4] . '</td>';
+
     echo '<td><img  height="150px" width="150px" src="' . $filename . '"/></td>';
     echo '</tr>';
 }
+echo $numberOfColumns . "agag";

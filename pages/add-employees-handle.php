@@ -34,57 +34,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $spreadsheet = IOFactory::load($targetFile);
     $worksheet = $spreadsheet->getActiveSheet();
     $data = $worksheet->toArray();
+    $highestColumn = $worksheet->getHighestColumn();
+    $numberOfColumns = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+    $worksheetArray = $worksheet->toArray();
+    array_shift($worksheetArray);
 
-    $firstRow = $data[0]; // Lấy hàng đầu tiên
-    $columnCount = count($firstRow); // Số cột là số phần tử trong hàng đầu tiên
-    if ($columnCount != 32) {   // Nếu số cột khác số cột trong file import thì báo lỗi(số cột trong file import đang format là 32)
+    if ($numberOfColumns != 33) {
         $_SESSION["error-import"] = "1";
-        header("Location: list-employee.php");
+        header("Location: list-employee.php"); // Nếu số cột khác 32 (theo format của excel) báo lỗi
     } else {
-        $skipFirstRow = true; // Bỏ qua dòng đầu
-        foreach ($data as $row) {
-            if ($skipFirstRow) {
-                $skipFirstRow = false;
-                continue; // Bỏ qua dòng đầu và chuyển sang dòng tiếp theo
-            }
-            "Employee Code	Photo	Employee Name	English Name	Gender	Marital Status	Date of Birth	
-            National	Military Service	Passport Number	Date of Issue	Date of Expiry	Place of Issue	
-            CICN	Date of Issue	Place of Issue	Place of Residence	Permanent Address	Health Checkup Date	
-            Type Contract	Job Tilte	Job Category	Team Position Level	Start Date	Contract Duration	End Date	
-            Phone Number	E-mail	Country	Location
-            ";
+        foreach ($worksheetArray as $key => $value) {
+            $EmployeeCode = $value[0];
 
-            $EmployeeCode = $row[0];
-            $EmployeeName = $row[1];
-            $EnglishName = $row[2];
-            $EmployeeGender = $row[3];
-            $EmployeeMaritalStatus = $row[4];
-            $DateofBirth = $row[5];
-            $National = $row[6];
-            $EmployeeMilitaryService = $row[7];
-            $PassportNumber = $row[8];
-            $DateofIssuepp = $row[9];
-            $DateofExpirypp = $row[10];
-            $PlaceofIssuepp = $row[11];
-            $CICN = $row[12];
-            $DateofIssuecicn = $row[13];
-            $PlaceofIssuecicn = $row[14];
-            $PlaceofResidence = $row[15];
-            $PermanentAddress = $row[16];
-            $HealthCheckupDate = $row[17];
-            $TypeContract = $row[18];
-            $JobTitle = $row[19];
-            $JobCategory = $row[20];
-            $Team = $row[21];
-            $Position = $row[22];
-            $Level = $row[23];
-            $StartDate = $row[24];
-            $ContractDuration = $row[25];
-            $EndDate = $row[26];
-            $PhoneNumber = $row[27];
-            $Email = $row[28];
-            $Country = $row[29];
-            $Location = $row[30];
             $FolderNamePhoto = "../assets/files/" . $EmployeeCode . "/Photo/";
             if (!file_exists($FolderNamePhoto)) {
                 mkdir($FolderNamePhoto, 0777, true);
@@ -108,6 +69,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Thư mục đã tồn tại: $FolderNamePersonalProfile";
             }
+
+            // Photo
+            $worksheet = $spreadsheet->getActiveSheet();
+            $drawing = $worksheet->getDrawingCollection()[$key];
+            $zipReader = fopen($drawing->getPath(), 'r');
+            $imageContents = '';
+            while (!feof($zipReader)) {
+                $imageContents .= fread($zipReader, 1024);
+            }
+            fclose($zipReader);
+            $extension = $drawing->getExtension();
+            $filename = $FolderNamePhoto . $value[1] . $EmployeeCode . '_Photo' . '.' . $extension;
+            file_put_contents($filename, $imageContents);
+
+            $Photo = $EmployeeCode . '_Photo' . '.' . $extension;
+            $LastName = $value[2];
+            $FirstName = $value[3];
+            $EnglishName = $value[4];
+            $EmployeeGender = $value[5];
+            $EmployeeMaritalStatus = $value[6];
+            $DateofBirth = $value[7];
+            $National = $value[8];
+            $EmployeeMilitaryService = $value[9];
+            $PassportNumber = $value[10];
+            $DateofIssuepp = $value[11];
+            $DateofExpirypp = $value[12];
+            $PlaceofIssuepp = $value[13];
+            $CICN = $value[14];
+            $DateofIssuecicn = $value[15];
+            $PlaceofIssuecicn = $value[16];
+            $PlaceofResidence = $value[17];
+            $PermanentAddress = $value[18];
+            $HealthCheckupDate = $value[19];
+            $TypeContract = $value[20];
+            $JobTitle = $value[21];
+            $JobCategory = $value[22];
+            $Team = $value[23];
+            $Position = $value[24];
+            $Level = $value[25];
+            $StartDate = $value[26];
+            $ContractDuration = $value[27];
+            $EndDate = $value[28];
+            $PhoneNumber = $value[29];
+            $Email = $value[30];
+            $Country = $value[31];
+            $Location = $value[32];
             //Level
             $SelectLevelId = "SELECT level_id FROM tb_level WHERE level_name = '" . $Level . "'";
             $ResultLevelId = mysqli_query($conn, $SelectLevelId);
@@ -175,16 +182,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $InsertEmployee = "INSERT INTO tb_employee(employee_code, photo,
-                employee_name, english_name, gender, marital_status, date_of_birth,
-                national_name, military_service, team_id, health_checkup_date,
-                job_title_id, job_category_id, position_id, level_id, country_id, location_id) 
-            VALUES ('" . $EmployeeCode . "','','" . $EmployeeName . "','" . $EnglishName . "',
-                    '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
-                    '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
-                    '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
+                            last_name, first_name, english_name, gender, marital_status, date_of_birth,
+                            national_name, military_service, team_id, health_checkup_date,
+                            job_title_id, job_category_id, position_id, level_id, country_id, location_id) 
+                        VALUES ('" . $EmployeeCode . "','" . $Photo . "','" . $LastName . "', '" . $FirstName . "', '" . $EnglishName . "',
+                                '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
+                                '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
+                                '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
             if (mysqli_query($conn, $InsertEmployee)) {
                 echo "insert thành công";
-
                 // echo $SelectEmployee;
                 $SelectEmployeeId = "SELECT employee_id  FROM tb_employee WHERE  employee_code = '" . $EmployeeCode . "'";
                 $ResultEmployeeId  = mysqli_query($conn, $SelectEmployeeId);
@@ -192,24 +198,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $EmployeeId  = $RowEmployeeId['employee_id'];
                 //Passport
                 $InsertPassport = "INSERT INTO tb_passport(pass_number, date_of_issue, date_of_expiry, place_of_issue, employee_id) 
-            VALUES ('" . $PassportNumber . "','" . $DateofIssuepp . "','" . $DateofExpirypp . "','" . $PlaceofIssuepp . "','" . $EmployeeId . "')";
+                        VALUES ('" . $PassportNumber . "','" . $DateofIssuepp . "','" . $DateofExpirypp . "','" . $PlaceofIssuepp . "','" . $EmployeeId . "')";
                 mysqli_query($conn, $InsertPassport);
 
                 //CICN
                 $InsertCICN = "INSERT INTO tb_citizen_identity(cccd_number, date_of_issue_cccd, place_of_issue_cccd, employee_id) 
-            VALUES ('" . $CICN . "','" . $DateofIssuecicn . "','" . $PlaceofIssuecicn . "','" . $EmployeeId . "')";
+                        VALUES ('" . $CICN . "','" . $DateofIssuecicn . "','" . $PlaceofIssuecicn . "','" . $EmployeeId . "')";
                 mysqli_query($conn, $InsertCICN);
 
                 //Address
                 $InsertAddress = "INSERT INTO tb_address(phone_number, place_of_residence, permanent_address, email, employee_id) 
-            VALUES ('" . $PhoneNumber . "','" . $PlaceofResidence . "','" . $PermanentAddress . "','" . $Email . "','" . $EmployeeId . "')";
+                        VALUES ('" . $PhoneNumber . "','" . $PlaceofResidence . "','" . $PermanentAddress . "','" . $Email . "','" . $EmployeeId . "')";
                 mysqli_query($conn, $InsertAddress);
 
                 //Contract
                 $InsertContract = "INSERT INTO tb_contract(start_date, contract_duration, end_date, type_contract_id, employee_id) 
-            VALUES ('" . $StartDate . "','" . $ContractDuration . "','" . $EndDate . "','" . $TypeOfContractId . "','" . $EmployeeId . "')";
+                        VALUES ('" . $StartDate . "','" . $ContractDuration . "','" . $EndDate . "','" . $TypeOfContractId . "','" . $EmployeeId . "')";
                 mysqli_query($conn, $InsertContract);
                 $_SESSION["success-import"] = "1";
+                header("Location: list-employee.php");
+            } else {
+                echo "insert thất vọng - " . $EmployeeCode;
+                $_SESSION["error-import"] = "1";
                 header("Location: list-employee.php");
             }
             //  else {
@@ -218,31 +228,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //     header("Location: list-employee.php");
             // }
         }
-        // Thêm hình vào db và lưu trong source
-
-        array_shift($data);
-        foreach ($data as $key => $value) {
-            $worksheet = $spreadsheet->getActiveSheet();
-            $drawing = $worksheet->getDrawingCollection()[$key];
-
-            $zipReader = fopen($drawing->getPath(), 'r');
-            $imageContents = '';
-            while (!feof($zipReader)) {
-                $imageContents .= fread($zipReader, 1024);
-            }
-            fclose($zipReader);
-            $extension = $drawing->getExtension();
-            // Generate a unique filename for each image based on the value in the first column
-            $imageDirectory = "../assets/files/" . $value[0] . "/Photo/";
-
-            $filename = $imageDirectory . $value[1] . $value[0] . '.' . $extension;
-            echo $filename;
-            // Save the image to the specified directory
-            file_put_contents($filename, $imageContents);
-        }
     }
 }
-
 
 
 // Đóng kết nối CSDL
