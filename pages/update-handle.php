@@ -330,7 +330,7 @@ if (isset($_GET["id"]) && $_GET['action'] == "up") {
        $conn->query($sql_up3);
        $conn->query($sql_up4);
        $conn->query($sql_up5);
-       header("location: ./profile-test.php?id=$id");
+       header("location: ./profile.php?id=$id");
        date_default_timezone_set('Asia/Ho_Chi_Minh');
        $id_account = $_SESSION['account_id'];
        $name_account = $_SESSION['username'];

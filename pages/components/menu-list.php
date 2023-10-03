@@ -13,17 +13,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../pages/list-employee.php">List Employee</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Manager Accounts</a>
-                        <ul>
-                            <li>
-                                <a href="../pages/manager-account.php">Account</a>
-                            </li>
-                            <li>
-                                <a href="../pages/tracking-account.php">Tracking</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <?php
+                    if (isset($_SESSION['role']) && $_SESSION['role'] == 'super') {
+                    ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Manager Accounts</a>
+                            <ul>
+                                <li>
+                                    <a href="../pages/manager-account.php">Account</a>
+                                </li>
+                                <li>
+                                    <a href="../pages/tracking-account.php">Tracking</a>
+                                </li>
+                            </ul>
+                        </li>
+                    <?php
+                    } ?>
+
                 </ul>
             </div>
         </nav>

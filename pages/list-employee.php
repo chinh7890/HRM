@@ -271,9 +271,14 @@ if (isset($_SESSION["notify-add"]) == 1) {
                             <li class="nav-item">
                                 <a class="nav-link" href="./list-employee.php">Employee List</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="./manager-account.php">Manager Accounts</a>
-                            </li>
+                            <?php
+                            if (isset($_SESSION['role']) && $_SESSION['role'] == 'super') {
+                            ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="./manager-account.php">Manager Accounts</a>
+                                </li>
+                            <?php
+                            } ?>
                         </ul>
                     </div>
                 </nav>
@@ -620,7 +625,13 @@ if (isset($_SESSION["notify-add"]) == 1) {
                                 <div id="cover_table" class="table-responsive ">
                                     <table id="example_certificate" class="table table-striped table-bordered second" style="width:100%">
                                         <thead>
-                                            <th>Actions</th>
+                                            <?php
+                                            if (isset($_SESSION['role']) && $_SESSION['role'] != 'user') {
+                                            ?>
+                                                <th>Actions</th>
+                                            <?php
+                                            } ?>
+
                                             <th>Employee Code</th>
                                             <th>Last Name</th>
                                             <th>First Name</th>
@@ -655,13 +666,19 @@ if (isset($_SESSION["notify-add"]) == 1) {
                                                 $result_cer = $conn->query($sql_cer);
                                             ?>
                                                 <tr>
-                                                    <td>
-                                                        <div class="btn-group ml-auto">
-                                                            <a href="./profile.php?id=<?php echo $row["employee_id"] . '#PersonalProfile' ?>" class="btn btn-sm btn-outline-light"><i class="far fa-edit"></i></a>
+                                                    <?php
+                                                    if (isset($_SESSION['role']) && $_SESSION['role'] != 'user') {
+                                                    ?>
+                                                        <td>
+                                                            <div class="btn-group ml-auto">
+                                                                <a href="./profile.php?id=<?php echo $row["employee_id"] . '#PersonalProfile' ?>" class="btn btn-sm btn-outline-light"><i class="far fa-edit"></i></a>
 
-                                                            <!-- <a data-toggle="modal" data-target="#exampleModalcer" data-id="<?php echo $row['employee_id']; ?> " data-cerid="<?php echo $row['certificate_id']; ?> " class="btn btn-sm btn-outline-light"><i class="far fa-trash-alt"></i></a> -->
-                                                        </div>
-                                                    </td>
+                                                                <!-- <a data-toggle="modal" data-target="#exampleModalcer" data-id="<?php echo $row['employee_id']; ?> " data-cerid="<?php echo $row['certificate_id']; ?> " class="btn btn-sm btn-outline-light"><i class="far fa-trash-alt"></i></a> -->
+                                                            </div>
+                                                        </td>
+                                                    <?php
+                                                    } ?>
+
                                                     <td><?php echo $row["employee_code"] ?></td>
                                                     <td><?php echo $row["last_name"] ?></td>
                                                     <td><?php echo $row["first_name"] ?></td>
@@ -685,7 +702,12 @@ if (isset($_SESSION["notify-add"]) == 1) {
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>Actions</th>
+                                                <?php
+                                                if (isset($_SESSION['role']) && $_SESSION['role'] != 'user') {
+                                                ?>
+                                                    <th>Actions</th>
+                                                <?php
+                                                } ?>
                                                 <th>Employee Code</th>
                                                 <th>Last Name</th>
                                                 <th>First Name</th>

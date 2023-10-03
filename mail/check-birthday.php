@@ -30,6 +30,3 @@ else
 {
     echo "không có sinh nhật";
 }
-
-
-?>
