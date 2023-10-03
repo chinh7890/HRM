@@ -33,14 +33,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Đọc tệp Excel
     $spreadsheet = IOFactory::load($targetFile);
     $worksheet = $spreadsheet->getActiveSheet();
+    $data = $worksheet->toArray();
     $highestColumn = $worksheet->getHighestColumn();
     $numberOfColumns = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
     $worksheetArray = $worksheet->toArray();
     array_shift($worksheetArray);
 
-    if ($numberOfColumns != 32) {
+    if ($numberOfColumns != 33) {
         $_SESSION["error-import"] = "1";
-        exit;
         header("Location: list-employee.php"); // Nếu số cột khác 32 (theo format của excel) báo lỗi
     } else {
         foreach ($worksheetArray as $key => $value) {
@@ -84,36 +84,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             file_put_contents($filename, $imageContents);
 
             $Photo = $EmployeeCode . '_Photo' . '.' . $extension;
-            $EmployeeName = $value[2];
-            $EnglishName = $value[3];
-            $EmployeeGender = $value[4];
-            $EmployeeMaritalStatus = $value[5];
-            $DateofBirth = $value[6];
-            $National = $value[7];
-            $EmployeeMilitaryService = $value[8];
-            $PassportNumber = $value[9];
-            $DateofIssuepp = $value[10];
-            $DateofExpirypp = $value[11];
-            $PlaceofIssuepp = $value[12];
-            $CICN = $value[13];
-            $DateofIssuecicn = $value[14];
-            $PlaceofIssuecicn = $value[15];
-            $PlaceofResidence = $value[16];
-            $PermanentAddress = $value[17];
-            $HealthCheckupDate = $value[18];
-            $TypeContract = $value[19];
-            $JobTitle = $value[20];
-            $JobCategory = $value[21];
-            $Team = $value[22];
-            $Position = $value[23];
-            $Level = $value[24];
-            $StartDate = $value[25];
-            $ContractDuration = $value[26];
-            $EndDate = $value[27];
-            $PhoneNumber = $value[28];
-            $Email = $value[29];
-            $Country = $value[30];
-            $Location = $value[31];
+            $LastName = $value[2];
+            $FirstName = $value[3];
+            $EnglishName = $value[4];
+            $EmployeeGender = $value[5];
+            $EmployeeMaritalStatus = $value[6];
+            $DateofBirth = $value[7];
+            $National = $value[8];
+            $EmployeeMilitaryService = $value[9];
+            $PassportNumber = $value[10];
+            $DateofIssuepp = $value[11];
+            $DateofExpirypp = $value[12];
+            $PlaceofIssuepp = $value[13];
+            $CICN = $value[14];
+            $DateofIssuecicn = $value[15];
+            $PlaceofIssuecicn = $value[16];
+            $PlaceofResidence = $value[17];
+            $PermanentAddress = $value[18];
+            $HealthCheckupDate = $value[19];
+            $TypeContract = $value[20];
+            $JobTitle = $value[21];
+            $JobCategory = $value[22];
+            $Team = $value[23];
+            $Position = $value[24];
+            $Level = $value[25];
+            $StartDate = $value[26];
+            $ContractDuration = $value[27];
+            $EndDate = $value[28];
+            $PhoneNumber = $value[29];
+            $Email = $value[30];
+            $Country = $value[31];
+            $Location = $value[32];
             //Level
             $SelectLevelId = "SELECT level_id FROM tb_level WHERE level_name = '" . $Level . "'";
             $ResultLevelId = mysqli_query($conn, $SelectLevelId);
@@ -181,10 +182,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $InsertEmployee = "INSERT INTO tb_employee(employee_code, photo,
-                            employee_name, english_name, gender, marital_status, date_of_birth,
+                            last_name, first_name, english_name, gender, marital_status, date_of_birth,
                             national_name, military_service, team_id, health_checkup_date,
                             job_title_id, job_category_id, position_id, level_id, country_id, location_id) 
-                        VALUES ('" . $EmployeeCode . "','" . $Photo . "','" . $EmployeeName . "','" . $EnglishName . "',
+                        VALUES ('" . $EmployeeCode . "','" . $Photo . "','" . $LastName . "', '" . $FirstName . "', '" . $EnglishName . "',
                                 '" . $Gender . "','" . $MaritalStatus . "','" . $DateofBirth . "','" . $National . "','" . $MilitaryService . "',
                                 '" . $TeamId . "','" . $HealthCheckupDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
                                 '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
@@ -221,10 +222,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["error-import"] = "1";
                 header("Location: list-employee.php");
             }
+            //  else {
+            //     echo "insert thất vọng";
+            //     $_SESSION["error-import"] = "1";
+            //     header("Location: list-employee.php");
+            // }
         }
     }
 }
-
 
 
 // Đóng kết nối CSDL

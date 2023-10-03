@@ -1639,7 +1639,7 @@ Left Navigation Sidebar
 
 .nav-left-sidebar {
     position: fixed;
-    width: 150px;
+    width: 175px;
     height: 100%;
     top: 60px;
     overflow: auto;
@@ -6970,7 +6970,30 @@ Media Query
 .simple-card .nav.nav-tabs .nav-item .nav-link {
     padding: 17px 29px;}
 }
+/*-------------- Certificate List ------------*/
+#cover_cers{
+    position: relative;
+    display: inline-block;
+}
 
+#cover_cers #contain_cers{
+    visibility: hidden;
+    display: none;   
+   
+}
+#cover_cers:hover #contain_cers{
+    visibility: visible;
+    display: inline-block;
+
+}
+#contain_cers{
+    margin-top:-10px;
+}
+#title_cers
+{
+    color:#0066FF;
+    text-decoration:underline;
+}
 
 
 

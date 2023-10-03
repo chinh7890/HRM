@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("../connect.php");
-if (!empty($_FILES['file1']) || !empty($_FILES['file']) ) {
+if (!empty($_FILES['file1']) || !empty($_FILES['file'])) {
        if ($_GET['action'] == "PersonalProfile" && isset($_GET["id"])) {
               //PersonalProfile
               $id = $_GET["id"];
@@ -155,7 +155,10 @@ if (isset($_GET["id"]) && $_GET['action'] == "up") {
        $id = $_GET["id"];
        $PersonalProfile = $_GET['action'];
        $EmployeeCode = $_GET["code"];
-       $FullName = $_POST["FullName"]; //
+
+       $LastName = $_POST["LastName"];
+       $FirstName = $_POST["FirstName"];
+
        $EngLishName = $_POST["EngLishName"]; //
        $Gender = $_POST["Gender"]; //
        $National = $_POST["National"]; //
@@ -266,7 +269,8 @@ if (isset($_GET["id"]) && $_GET['action'] == "up") {
                             `tb_employee`
                      SET
                             `photo` = '$Photo',
-                            `employee_name` = '$FullName',
+                            `last_name` = '$LastName',
+                            `first_name` = '$FirstName',
                             `english_name` = '$EngLishName',
                             `gender` = '$Gender',
                             `marital_status` = '$MaritalStatus',
@@ -320,12 +324,21 @@ if (isset($_GET["id"]) && $_GET['action'] == "up") {
                      
               WHERE
                      `employee_id` = '$id'";
+
        $conn->query($sql_up1);
        $conn->query($sql_up2);
        $conn->query($sql_up3);
        $conn->query($sql_up4);
        $conn->query($sql_up5);
-       header("location: ./profile.php?id=$id");
+       header("location: ./profile-test.php?id=$id");
+       date_default_timezone_set('Asia/Ho_Chi_Minh');
+       $id_account = $_SESSION['account_id'];
+       $name_account = $_SESSION['username'];
+       $action = "Update Employee";
+       $timestamp = date("Y-m-d H:i:s");
+       $log_sql = "INSERT INTO tb_log (id_account, name_account, action, timestap) VALUES ($id_account, '$name_account','$action', '$timestamp') ";
+       mysqli_query($conn, $log_sql);
+
        $_SESSION['update'] = "1";
 }
 function formatDateToMySQL($inputDate)
