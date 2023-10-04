@@ -9,7 +9,8 @@ function formatDateTime($Datetime)
 }
 if (isset($_POST['add'])) {
     $EmployeeCode = $_POST["EmployeeCode"];
-    $FullName = $_POST["FullName"];
+    $FirstName = $_POST["FirstName"];
+    $LastName = $_POST["LastName"];
     $EngLishName = $_POST["EngLishName"];
     $Gender = $_POST["Gender"];
     $National = $_POST["National"]; //
@@ -23,7 +24,7 @@ if (isset($_POST['add'])) {
     $Level = $_POST["Level"]; //
     $Country = $_POST["Country"]; //
     $Position = $_POST["Position"]; //
-    $Location = $_POST["Location"]; //
+    $location_name = $_POST["Location"]; //
     $JobCategory = $_POST["JobCategory"]; //
     $JobTitle = $_POST["JobTitle"]; //
     $Team = $_POST["Team"]; //
@@ -35,7 +36,7 @@ if (isset($_POST['add'])) {
     $CICN = $_POST["CICN"];
     $DOIcicn = formatDateTime($_POST["DOIcicn"]);
     $POIcicn = $_POST["POIcicn"];
-    $TypeOfContract = $_POST["TypeOfContract"]; //
+    $type_contract_name = $_POST["TypeOfContract"]; //
     $StartDate = formatDateTime($_POST["StartDate"]);
     $ContractDuration = $_POST["ContractDuration"]; //
     $EndDate = formatDateTime($_POST["EndDate"]);
@@ -101,7 +102,7 @@ if (isset($_POST['add'])) {
         isset($_SESSION["Error-PPNumber"]) ||
         isset($_SESSION["Error-CICN"])
     ) {
-        header("Location: add-employee.php");
+        header("Location: add-test.php");
     } else {
         //National
         foreach ($National as $nt) {
@@ -109,10 +110,12 @@ if (isset($_POST['add'])) {
         }
 
         //level
-        foreach ($Level as $lv) {
-            $LevelTemp = $lv;
-        }
-        $SelectLevelId = "SELECT level_id FROM tb_level WHERE level_name = '" . $LevelTemp . "'";
+
+        // foreach ($Level as $lv) {
+        //     $LevelTemp = $lv;    
+        // }
+
+        $SelectLevelId = "SELECT level_id FROM tb_level WHERE level_name = '" . $Level . "'";
         $ResultLevelId = mysqli_query($conn, $SelectLevelId);
         $RowLevelId = mysqli_fetch_assoc($ResultLevelId);
         $LevelId = $RowLevelId["level_id"];
@@ -127,7 +130,7 @@ if (isset($_POST['add'])) {
         $CountryId = $RowCountryId["country_id"];
 
         //Location
-        foreach ($Location as $lct) {
+        foreach ($location_name as $lct) {
             $LocationTemp = $lct;
         }
         $SelectLocationId = "SELECT location_id FROM tb_location WHERE location_name = '" . $LocationTemp . "'";
@@ -181,7 +184,7 @@ if (isset($_POST['add'])) {
         $TeamId  = $RowTeamId["team_id"];
 
         //TypeOfContract
-        foreach ($TypeOfContract as $toc) {
+        foreach ($type_contract_name as $toc) {
             $TypeOfContractTemp = $toc;
         }
         $SelectTypeOfContractId = "SELECT type_contract_id FROM tb_type_contract WHERE type_contract_name = '" . $TypeOfContractTemp . "'";
@@ -190,18 +193,18 @@ if (isset($_POST['add'])) {
         $TypeOfContractId  = $RowTypeOfContractId["type_contract_id"];
 
         //ContractDuration 
-        foreach ($ContractDuration as $cd) {
-            $ContractDurationTemp = $cd;
-        }
+        // foreach ($ContractDuration as $cd) {
+        //     $ContractDurationTemp = $cd;
+        // }
 
 
         //Employee
 
         $InsertEmployee = "INSERT INTO tb_employee(employee_code, photo,
-            employee_name, english_name, gender, marital_status, date_of_birth,
+            first_name, last_name, english_name, gender, marital_status, date_of_birth,
             national_name, military_service, team_id, health_checkup_date,
             job_title_id, job_category_id, position_id, level_id, country_id, location_id) 
-            VALUES ('" . $EmployeeCode . "','" . $Photo . "','" . $FullName . "','" . $EngLishName . "',
+            VALUES ('" . $EmployeeCode . "','" . $Photo . "','" . $FirstName . "', '" . $LastName . "','" . $EngLishName . "',
             '" . $Gender . "','" . $MaritalStatus . "','" . $DayOfBirth . "','" . $NationalTemp . "','" . $MilitaryService . "',
             '" . $TeamId . "','" . $HealthCheckUpDate . "','" . $JobTitleId . "','" . $JobCategoryId . "','" . $PositionId . "',
             '" . $LevelId . "','" . $CountryId . "','" . $LocationId . "')";
@@ -238,12 +241,12 @@ if (isset($_POST['add'])) {
 
         //Contract
         $InsertContract = "INSERT INTO tb_contract(start_date, contract_duration, end_date, type_contract_id, employee_id) 
-            VALUES ('" . $StartDate . "','" . $ContractDurationTemp . "','" . $EndDate . "','" . $TypeOfContractId . "','" . $EmployeeId . "')";
+            VALUES ('" . $StartDate . "','" . $ContractDuration . "','" . $EndDate . "','" . $TypeOfContractId . "','" . $EmployeeId . "')";
         mysqli_query($conn, $InsertContract);
 
 
         //Personal Profile
-        $FolderName = "../assets/files/" . $EmployeeCode . "/PersonalProfile/";
+        $FolderName = "../assets/files/" . $EmployeeCode . "/Personal-Profile/";
         if (!file_exists($FolderName)) {
             mkdir($FolderName, 0777, true);
             echo "Thư mục đã được tạo: $FolderName";

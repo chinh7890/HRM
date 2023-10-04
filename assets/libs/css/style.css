@@ -6146,11 +6146,19 @@ Vertical Timeline - by CodyHouse.co
     margin-right: 10px;
 }
 
-.email-head-sender {
+.email-head-sender{
     padding: 13px 25px;
     line-height: 40px;
 }
-
+.date{
+    display: flex;
+}
+.date-input{
+    margin: 0px;
+}
+#date_of_issue, #date_of_issue_cccd, #date_of_expiry{
+    margin-left: 10px;
+}
 .email-head-sender .date {
     float: right;
     font-size: 12px;

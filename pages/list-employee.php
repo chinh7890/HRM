@@ -319,7 +319,7 @@ if (isset($_SESSION["notify-add"]) == 1) {
                                 if ($_SESSION['role'] != 'user') {
 
                                 ?>
-                                    <a href="./add-test.php" class="btn btn-outline-primary">+ Add</a>
+                                    <a href="./add-employee.php" class="btn btn-outline-primary">+ Add</a>
                                     <a href="" data-toggle="modal" data-target="#importModal" class="btn btn-outline-primary "><i class="fas fa-file"></i> Import</a>
                                     <a href="" data-toggle="modal" data-target="#checkcolmodal" class="btn btn-outline-primary"><i class=" fas fa-arrow-down"></i> Export</a>
                                 <?php
